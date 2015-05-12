@@ -30,37 +30,37 @@ public class User implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to ForumMessage
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST) 
 	private List<ForumMessage> forumMessages;
 
 	//bi-directional many-to-one association to ForumThread
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST)
 	private List<ForumThread> forumThreads;
 
 	//bi-directional many-to-one association to Operation
-	@OneToMany(mappedBy="userSender")
+	@OneToMany(mappedBy="userSender", cascade=CascadeType.PERSIST)
 	private List<Operation> operationsSended;
 
 	//bi-directional many-to-one association to Operation
-	@OneToMany(mappedBy="userReceived")
+	@OneToMany(mappedBy="userReceived", cascade=CascadeType.PERSIST)
 	private List<Operation> operationsReceived;
 
 	//bi-directional many-to-one association to Post
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST)
 	private List<Post> posts;
 
 	//bi-directional many-to-one association to Address
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="id_address")
 	private Address address;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="id_role")
 	private Role role;
 
 	//uni-directional many-to-many association to User
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	@JoinTable(
 		name="users_followers"
 		, joinColumns={
@@ -73,7 +73,7 @@ public class User implements Serializable {
 	private List<User> followers;
 
 	//uni-directional many-to-many association to User
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	@JoinTable(
 		name="users_followings"
 		, joinColumns={
@@ -86,7 +86,7 @@ public class User implements Serializable {
 	private List<User> followings;
 
 	//bi-directional many-to-many association to Videogame
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.PERSIST)
 	@JoinTable(
 		name="users_videogames"
 		, joinColumns={

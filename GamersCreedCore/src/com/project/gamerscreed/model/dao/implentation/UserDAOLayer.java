@@ -17,10 +17,11 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		try{
 			User tmpUser = (User) anObject;
 			this.beginTransaction();
-			this.entityManager.persist(tmpUser.getRole());
-			this.entityManager.persist(tmpUser.getAddress().getCity().getCountry());
-			this.entityManager.persist(tmpUser.getAddress().getCity());
-			this.entityManager.persist(tmpUser.getAddress());
+//			this.entityManager.merge(tmpUser);
+//			this.entityManager.persist(tmpUser.getRole());
+//			this.entityManager.persist(tmpUser.getAddress().getCity().getCountry());
+//			this.entityManager.persist(tmpUser.getAddress().getCity());
+//			this.entityManager.persist(tmpUser.getAddress());
 			this.entityManager.persist(tmpUser);
 			this.commitTransaction();
 			this.closeTransaction();

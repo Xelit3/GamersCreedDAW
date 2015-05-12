@@ -17,9 +17,9 @@ public class MainCoreTest {
 		Role role = new Role("ADMIN");
 		
 		User user = new User();
-		user.setName("Xavi Rueda");
+		user.setName("Adrià Nieto");
 		user.setRole(role);
-		user.setUsername("Xelit3");
+		user.setUsername("nieto");
 		user.setPassword(Encrypter.getHash("1234"));
 		Address tmpAddress = new Address();
 		tmpAddress.setCp(800);
