@@ -1,7 +1,9 @@
 package com.project.gamerscreed.model.dto;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -97,6 +99,12 @@ public class User implements Serializable {
 	private List<Videogame> videogames;
 
 	public User() {
+	}
+
+	public User(String password, String username) {
+		super();
+		this.password = password;
+		this.username = username;
 	}
 
 	public int getId() {
