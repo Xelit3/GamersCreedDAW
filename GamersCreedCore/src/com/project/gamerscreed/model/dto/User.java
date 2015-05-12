@@ -103,6 +103,7 @@ public class User implements Serializable {
 
 	public User(String password, String username) {
 		super();
+		
 		this.password = password;
 		this.username = username;
 	}
