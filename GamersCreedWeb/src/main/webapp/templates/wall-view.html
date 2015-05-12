@@ -1,0 +1,14 @@
+<div class="centerDiv" id="mainWall">
+  <h2>Muro</h2>
+  <ul>
+    <li ng-repeat="post in gCreedCtrl.postArray">
+    	<div class="post">
+	    	<b>{{post.getUserName()}}</b> <label>{{post.getDate()}}</label><br/>
+	    	<p>{{post.getContent()}}</p>
+    	</div>
+
+
+    </li>
+  </ul>
+  <div class="clearBoth"></div>
+</div>

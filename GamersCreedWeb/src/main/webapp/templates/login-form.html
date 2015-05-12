@@ -1,0 +1,20 @@
+<fieldset class="centerDiv userForm" id="loginForm">
+	<legend>Login</legend>
+	<form novalidate action="" name="loginForm" ng-submit="loginForm.$valid && gCreedCtrl.login()">
+		<table>
+			<tr>
+				<td>User</td>
+				<td><input type="text" placeholder="user" ng-model="gCreedCtrl.user.username" required /> </td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" placeholder="password" ng-model="gCreedCtrl.user.password" ng-minlength="6" required /></td>
+			</tr>
+			<tr>
+				<td><input class="gCbutton" type="button" value="Register" ng-click="appAction=4"></td>
+				<td><input class="gCbutton" type="submit" value="Login" /></td>
+			</tr>
+		</table>
+		<div class="clearBoth"></div>
+	</form>
+</fieldset>
