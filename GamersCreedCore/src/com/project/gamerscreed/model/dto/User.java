@@ -12,9 +12,14 @@ import java.util.List;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@NamedQueries({
+	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
+})
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+//	query="SELECT c FROM Country c WHERE c.name = :name"),
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -294,6 +299,11 @@ public class User implements Serializable {
 
 	public void setVideogames(List<Videogame> videogames) {
 		this.videogames = videogames;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", mail=" + mail + ", name=" + name + ", password=" + password + ", username=" + username	+ ", address=" + address + ", role=" + role + "]";
 	}
 
 }

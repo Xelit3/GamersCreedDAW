@@ -91,4 +91,9 @@ public class Address implements Serializable {
 		return user;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [cp=" + cp + ", street=" + street + ", city=" + city + "]";
+	}
+
 }

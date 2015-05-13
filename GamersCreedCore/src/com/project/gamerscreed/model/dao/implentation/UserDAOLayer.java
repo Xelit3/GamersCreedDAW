@@ -2,6 +2,8 @@ package com.project.gamerscreed.model.dao.implentation;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dto.User;
@@ -42,15 +44,23 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public List<Object> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> getAll() {
+		TypedQuery<User> query = this.entityManager.createNamedQuery("User.findAll", User.class);
+		List<User> result = query.getResultList();
+		
+		return result;
 	}
 
 	@Override
-	public User login(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	public User login(String aUsername, String aPassword) {
+		TypedQuery<User> query = this.entityManager.createNamedQuery("User.loginUser", User.class);
+		System.out.println();
+		query.setParameter("username", aUsername);
+		query.setParameter("password", aPassword);
+		
+		User tmpUser = query.getSingleResult();
+		
+		return tmpUser;
 	}
 
 }

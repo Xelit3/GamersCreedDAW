@@ -15,7 +15,7 @@
 		<class>com.project.gamerscreed.model.dto.Role</class>
 		<class>com.project.gamerscreed.model.dto.User</class>
 		<class>com.project.gamerscreed.model.dto.Videogame</class>
-
+		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.user" value="gamerscreed" />

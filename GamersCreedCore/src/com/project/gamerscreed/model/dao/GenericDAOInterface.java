@@ -10,6 +10,6 @@ public interface GenericDAOInterface {
 	public boolean create(Object anObject);
 	public boolean modify(Object anObject);
 	public boolean remove(Object anObject);	
-	public List<Object> getAll();
+	public List<?> getAll();
 	
 }
