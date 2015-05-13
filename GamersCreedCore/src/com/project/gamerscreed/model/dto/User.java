@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,8 +20,6 @@ import java.util.List;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-//	query="SELECT c FROM Country c WHERE c.name = :name"),
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
@@ -299,6 +298,13 @@ public class User implements Serializable {
 
 	public void setVideogames(List<Videogame> videogames) {
 		this.videogames = videogames;
+	}
+	
+	public void addVideogame(Videogame aVideogame){
+		if(this.getVideogames() == null)
+			this.videogames = new ArrayList<Videogame>();
+		
+		this.videogames.add(aVideogame);
 	}
 	
 	@Override

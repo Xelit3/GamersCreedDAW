@@ -4,22 +4,22 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
-import com.project.gamerscreed.model.dao.UserDAO;
-import com.project.gamerscreed.model.dto.User;
+import com.project.gamerscreed.model.dto.Videogame;
 
-public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
+public class VideogameDAOLayer extends GenericDAOLayer implements GenericDAOInterface{
 	
-	public UserDAOLayer() {
+	public VideogameDAOLayer() {
 		super();
 	}
 
 	@Override
 	public boolean create(Object anObject) {
 		try{
-			User tmpUser = (User) anObject;
+			Videogame tmpVideogame = (Videogame) anObject;
 			this.beginTransaction();
-			this.entityManager.persist(tmpUser);
+			this.entityManager.persist(tmpVideogame);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -33,8 +33,8 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 
 	@Override
 	public boolean modify(Object anObject) {
+		//TODO Modificar videojuego
 		try{
-			User tmpUser = (User) anObject;
 			this.beginTransaction();			
 			this.commitTransaction();
 			this.closeTransaction();
@@ -50,10 +50,10 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	@Override
 	public boolean remove(Object anObject) {
 		try{
-			User tmpUser = (User) anObject;
+			Videogame tmpVideogame = (Videogame) anObject;
 			
 			this.beginTransaction();
-			this.entityManager.remove(tmpUser);
+			this.entityManager.remove(tmpVideogame);
 			this.commitTransaction();
 			this.closeTransaction();
 			
@@ -66,23 +66,11 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public List<User> getAll() {
-		TypedQuery<User> query = this.entityManager.createNamedQuery("User.findAll", User.class);
-		List<User> result = query.getResultList();
+	public List<Videogame> getAll() {
+		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.findAll", Videogame.class);
+		List<Videogame> result = query.getResultList();
 		
 		return result;
-	}
-
-	@Override
-	public User login(String aUsername, String aPassword) {
-		TypedQuery<User> query = this.entityManager.createNamedQuery("User.loginUser", User.class);
-		System.out.println();
-		query.setParameter("username", aUsername);
-		query.setParameter("password", aPassword);
-		
-		User tmpUser = query.getSingleResult();
-		
-		return tmpUser;
 	}
 
 }
