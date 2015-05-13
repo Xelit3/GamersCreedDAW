@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the users database table.
  * 
@@ -101,11 +100,10 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(String password, String username) {
+	public User(String aUsername, String aPassword) {
 		super();
-		
-		this.password = password;
-		this.username = username;
+		this.username = aUsername;
+		this.password = aPassword;		
 	}
 
 	public int getId() {

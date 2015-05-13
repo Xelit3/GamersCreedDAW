@@ -1,7 +1,9 @@
 package com.project.gamerscreed.model.dto;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -24,7 +26,7 @@ public class Address implements Serializable {
 	private String street;
 
 	//bi-directional many-to-one association to City
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="id_city")
 	private City city;
 
