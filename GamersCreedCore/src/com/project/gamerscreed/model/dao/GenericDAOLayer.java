@@ -20,7 +20,7 @@ public abstract class GenericDAOLayer {
 	
 	protected void commitTransaction(){
 		entityManager.getTransaction().commit();
-		entityManager.flush();
+//		entityManager.flush();
 	}
 	
 	protected void closeTransaction(){
