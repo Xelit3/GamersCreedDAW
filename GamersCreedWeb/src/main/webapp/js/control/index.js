@@ -36,6 +36,15 @@
 					console.log(xhr.status+"\n"+thrownError);
 				}
 		    });
+			/*if(response[0]){
+				//open session local
+				//redirect to $scope.appAction=1;
+			}
+			else{
+				//show fail to user
+				
+			}*/
+			alert(response[0]+"//"+response[1].username);
 			
 		}
 		

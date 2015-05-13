@@ -1,9 +1,7 @@
 package servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import modeltmp.User;
 import Beans.SessionBean;
 
 import com.google.gson.Gson;
+import com.project.gamerscreed.model.dao.UserDAO;
+import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
+import com.project.gamerscreed.model.dto.User;
 
 
 /**
@@ -78,10 +78,11 @@ public class UserServlet extends HttpServlet {
 		ArrayList array=new ArrayList();
 
 		if(username.equals("Paco")){//TODO class DAOUsers
-			array.add(true);
+			array.add(false);
 		}
 		else{
-			array.add(false);
+			array.add(true);
+			
 		}
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
@@ -93,15 +94,15 @@ public class UserServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();		
 		
 		User user = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
-				
-		//DAO user
+		UserDAO userDAO =new UserDAOLayer();	
+		userDAO.create(user);
 		
 	}
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		User tmpUser = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
 		//User user=UserDAO.validateUser(tmpUser.getUsername(),tmpUser.getPassword());//TODO class DAOUsers
-		User user=new User("Paco", "paquete","Eldelbar");
-		/*ArrayList array=new ArrayList();
+		User user=new User("Paco", "paquete");
+		ArrayList array=new ArrayList();
         if(user!=null){
          	startSession(request, user);//start server session
          	array.add(true);
@@ -113,7 +114,7 @@ public class UserServlet extends HttpServlet {
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);*/
+		response.getWriter().write(json);
 		
 	}
     private void startSession(HttpServletRequest request, User user){//TODO
