@@ -35,7 +35,8 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	public boolean modify(Object anObject) {
 		try{
 			User tmpUser = (User) anObject;
-			this.beginTransaction();			
+			this.beginTransaction();
+			this.entityManager.merge(tmpUser);
 			this.commitTransaction();
 			this.closeTransaction();
 

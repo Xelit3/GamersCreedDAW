@@ -33,9 +33,10 @@ public class VideogameDAOLayer extends GenericDAOLayer implements GenericDAOInte
 
 	@Override
 	public boolean modify(Object anObject) {
-		//TODO Modificar videojuego
 		try{
-			this.beginTransaction();			
+			Videogame tmpVideogame = (Videogame) anObject;
+			this.beginTransaction();
+			this.entityManager.merge(tmpVideogame);
 			this.commitTransaction();
 			this.closeTransaction();
 
