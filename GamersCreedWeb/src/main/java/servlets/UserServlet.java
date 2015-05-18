@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -101,13 +102,21 @@ public class UserServlet extends HttpServlet {
 	private void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String username = request.getParameter("username");
 		ArrayList array=new ArrayList();
-
-		if(username.equals("Paco")){//TODO class DAOUsers
-			array.add(false);
-		}
-		else{
-			array.add(true);			
-		}
+//
+//		if(username.equals("Paco")){//TODO class DAOUsers
+//			array.add(false);
+//		}
+//		else{
+//			array.add(true);			
+//		}
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		Map<String, String> tmpUsernames = tmpUserLayer.getAllUsernames();
+		
+		if(tmpUsernames.containsKey(username))
+			array.add(false);		
+		else
+			array.add(true);
+		
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
