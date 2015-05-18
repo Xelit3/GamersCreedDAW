@@ -43,7 +43,8 @@
 				$scope.appAction=0;
 				$scope.userType=response[1].role.id;
 			}
-		}
+		};
+		
 		this.login=function(){
 
 			this.user=angular.copy(this.user);
@@ -83,10 +84,8 @@
 				//TODO how wrong validation to the user
 				alert("The user or password is incorrect");
 				
-			}
-			
-			
-		}
+			}			
+		};
 		
 		this.userCreate=function(){
 			this.user=angular.copy(this.user);
@@ -109,6 +108,7 @@
 					}
 			    })
 		};
+		
 		this.checkAvail = function ()
 		{
 			if(this.user.getUsername()==""||this.user.getUsername()==null){
@@ -145,7 +145,7 @@
 				$("#user").addClass("ng-invalid");
 				$scope.userValid=false;
 			}
-		}
+		};
 		/**
 		 *This function check the password
 		 *NOTE: This function is used only by angular by using the actionHouseApp actionHouseCtrl controller		 
@@ -153,9 +153,7 @@
 		 *@param: none
 		 *@return: none
 		*/
-		this.checkPassword = function ()
-		{
-			//if( $("#password").val()!= $scope.passControl)
+		this.checkPassword = function (){
 			if( this.user.getPassword()!= $scope.passControl)
 			{
 				$("#password2").removeClass("ng-valid");
@@ -164,14 +162,13 @@
 			}
 			else
 			{
-
 				$("#password2").removeClass("ng-invalid");
 				$("#password2").addClass("ng-valid");
 				$scope.passwordValid = true;
 			}
-		}
-		this.logout = function ()
-		{
+		};
+		
+		this.logout = function (){
 			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
@@ -190,13 +187,31 @@
 			this.user = new userObj();
 			$scope.userType=0;
 			$scope.appAction=0;
-		}
+		};
 		
-		this.loadUsers(){
+		this.loadUsers = function (){
 			//TODO Load all users
-		}
+			this.user=angular.copy(this.user);
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 15					
+				},
+				async: true,
+				success : function(responseText) {
+					response = responseText;
+					alert(response);
+					$scope.appAction=1;
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		};
 		
-		this.getUserReceiverData(){
+		this.getUserReceiverData = function (){
 			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
 		}
 		
@@ -263,7 +278,6 @@
 		  controllerAs: 'userModifyForm'
 		};
 	});
-
 	gamersCreedApp.directive("forumView", function (){
 		return {
 		  restrict: 'E',

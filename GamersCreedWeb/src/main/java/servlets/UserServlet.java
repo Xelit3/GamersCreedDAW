@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -92,8 +93,9 @@ public class UserServlet extends HttpServlet {
 
 	private void getAllUsers(HttpServletResponse response) throws IOException {
 		UserDAO tmpUserLayer = new UserDAOLayer();
-				
-		String json = new Gson().toJson(tmpUserLayer.getAll());
+		List<User> tempUsers = (List<User>) tmpUserLayer.getAll();
+		//TODO falla al cargar el array de usuarios
+		String json = new Gson().toJson(tempUsers);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);

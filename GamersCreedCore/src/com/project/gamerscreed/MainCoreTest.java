@@ -1,6 +1,7 @@
 package com.project.gamerscreed;
 
 import com.project.gamerscreed.control.utilities.Encrypter;
+import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
 import com.project.gamerscreed.model.dto.User;
 
@@ -39,12 +40,15 @@ public class MainCoreTest {
 //			System.out.println(u.toString());
 //		}
 		
-		String username = "nieto";
-		String pwd = Encrypter.getHash("1234");
+//		String username = "nieto";
+//		String pwd = Encrypter.getHash("1234");
+//		
+//		User obtUser = new UserDAOLayer().login(username, pwd);
+//		System.out.println(obtUser.toString());
 		
-		User obtUser = new UserDAOLayer().login(username, pwd);
-		System.out.println(obtUser.toString());
-		
+		UserDAO dao = new UserDAOLayer();
+		dao.getAllUsernames();
+				
 		System.exit(0);
 		
 	}
