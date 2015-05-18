@@ -15,6 +15,7 @@ import Beans.SessionBean;
 import com.google.gson.Gson;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
+import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.User;
 
 
@@ -55,6 +56,7 @@ public class UserServlet extends HttpServlet {
 				case 10: //check if the username is in the DB
 						checkUsername(request, response);
 					break;
+	
 				case 11://add user in the DB
 						addUser(request, response);  
 					break;
@@ -64,6 +66,9 @@ public class UserServlet extends HttpServlet {
 				case 13://logout
 						logoutUser(request);
 					break;
+				case 14://checkSession
+					checkSession(request, response);
+				break;	
 				default:
 					out.println("Action number wrong");
 					break;
@@ -95,18 +100,31 @@ public class UserServlet extends HttpServlet {
 		
 		User user = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
 		UserDAO userDAO =new UserDAOLayer();	
-		userDAO.create(user);
+		boolean val=userDAO.create(user);
+		out.println(val);
 		
 	}
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		User tmpUser = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
 		//User user=UserDAO.validateUser(tmpUser.getUsername(),tmpUser.getPassword());//TODO class DAOUsers
-		User user=new User("Paco", "paquete");
+		
+		//BEGIN TEST -front end roles-
+			User user=tmpUser;
+			Role testRole=new Role();
+			if(tmpUser.getUsername().equals("admin")){
+				testRole.setId(2);
+			}
+			else {
+				testRole.setId(1);
+			}
+			tmpUser.setRole(testRole);
+		//END TEST
+			
 		ArrayList array=new ArrayList();
-        if(user!=null){
-         	startSession(request, user);//start server session
+        if(tmpUser!=null){
+         	startSession(request, tmpUser);//start server session
          	array.add(true);
-         	array.add(user);
+         	array.add(tmpUser);
         }
         else{
             array.add(false);
@@ -117,7 +135,7 @@ public class UserServlet extends HttpServlet {
 		response.getWriter().write(json);
 		
 	}
-    private void startSession(HttpServletRequest request, User user){//TODO
+    private void startSession(HttpServletRequest request, User user){
         HttpSession session = request.getSession();
         synchronized(session) {
             SessionBean sessionBean = (SessionBean)session.getAttribute("userSession");
@@ -130,13 +148,32 @@ public class UserServlet extends HttpServlet {
             
        }
     }
-	private void logoutUser(HttpServletRequest request){//TODO
+	private void logoutUser(HttpServletRequest request){
         HttpSession session = request.getSession();
         synchronized(session) {
            SessionBean sessionBean = (SessionBean)session.getAttribute("userSession");
            if (sessionBean != null) {
                session.removeAttribute("userSession");
            }
+        }
+    }
+	private void checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+        synchronized(session) {
+           SessionBean sessionBean = (SessionBean)session.getAttribute("userSession");
+    	   ArrayList array=new ArrayList();
+           if (sessionBean != null) {
+        	   User user=sessionBean.getUser();
+        	   array.add(true);
+        	   array.add(user);
+              
+           } else{
+               array.add(false);
+           }
+           String json = new Gson().toJson(array);
+	   		response.setContentType("application/json");
+	   		response.setCharacterEncoding("UTF-8");
+	   		response.getWriter().write(json);
         }
     }
 

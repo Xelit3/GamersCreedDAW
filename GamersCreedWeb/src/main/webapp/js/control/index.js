@@ -4,18 +4,38 @@
 	
 	gamersCreedApp.controller("gamersCreedController", function($scope){
 		console.log("Controller intitialized");
-
-		//SIMULATION OF POST
-		this.postArray=new Array();
-		for(var i=0;i<10;i++){
-			var post=new postObj();
-			post.construct(i, "UserId"+i, "Content "+i, new Date());
-			this.postArray.push(post);
-
-		}
 		
 		this.user=new userObj();
-
+		this.postArray=new Array();
+		
+		$scope.appAction=0;
+		$scope.userType=0;//if user is not registered, basic or admin
+		
+		this.sessionCtrl=function(){
+			
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 14
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    });
+			//alert(response[0]);
+			if(response[0]){
+				this.user = new userObj();
+				this.user.construct(response[1].id, response[1].role, response[1].name, response[1].username, response[1].password, response[1].mail,  response[1].address)
+				$scope.appAction=0;
+				$scope.userType=response[1].role.id;
+			}
+		}
 		this.login=function(){
 
 			this.user=angular.copy(this.user);
@@ -36,15 +56,27 @@
 					console.log(xhr.status+"\n"+thrownError);
 				}
 		    });
-			/*if(response[0]){
-				//open session local
-				//redirect to $scope.appAction=1;
+			//alert(response[0]+"//"+response[1].username);
+			if(response[0]){
+				//open session local?
+				/*if(typeof(Storage))
+				{
+					this.user = new userObj();
+					this.user.construct(outPutdata[1].id, outPutdata[1].role, outPutdata[1].name, outPutdata[1].username, outPutdata[1].password, outPutdata[1].mail,  outPutdata[1].address)
+					
+					sessionStorage.setItem("userConnected",JSON.stringify(this.user));
+				}
+				else alert("This browser does not support session variables");*/
+				
+				$scope.appAction=0;
+				$scope.userType=response[1].role.id;
 			}
 			else{
-				//show fail to user
+				//TODO how wrong validation to the user
+				alert("The user or password is incorrect");
 				
-			}*/
-			alert(response[0]+"//"+response[1].username);
+			}
+			
 			
 		}
 		
@@ -60,6 +92,7 @@
 					async: false,
 					success : function(responseText) {
 						response = responseText;
+						alert(response);
 						$scope.appAction=1;
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -67,9 +100,6 @@
 						console.log(xhr.status+"\n"+thrownError);
 					}
 			    })
-			    
-			    
-			
 		}
 		this.checkAvail = function ()
 		{
@@ -132,7 +162,58 @@
 				$scope.passwordValid = true;
 			}
 		}
+		this.logout = function ()
+		{
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 13
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    });
+			this.user = new userObj();
+			$scope.userType=0;
+			$scope.appAction=0;
+		}
+		
+		this.searchPosts=function(){
+			//SIMULATION OF POST	
+			for(var i=0;i<10;i++){
+				var post=new postObj();
+				post.construct(i, "UserId"+i, "Content "+i, new Date());
+				this.postArray.push(post);
 
+			}
+			
+			/*
+			 $.ajax({
+				url : 'PostServlet',
+				type : "POST",
+				data : {
+					action : 10
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+			 	if(response){
+			 		this.postArray=response;
+			 	}
+			 */
+			
+		}
 	});
 
 	gamersCreedApp.directive("loginForm", function (){
@@ -177,7 +258,36 @@
 		  controllerAs: 'forumView'
 		};
 	});
-
+	gamersCreedApp.directive("operationView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/operation-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'operationView'
+		};
+	});
+	gamersCreedApp.directive("manageUsersView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/manage-users-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'manageUsersView'
+		};
+	});
+	gamersCreedApp.directive("manageVideogamesView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/manage-videogames-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'manageVideogamesView'
+		};
+	});
 	gamersCreedApp.directive("wallView", function (){
 		return {
 		  restrict: 'E',
