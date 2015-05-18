@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the roles database table.
  * 
@@ -16,6 +15,10 @@ import java.util.List;
 @NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public enum RoleType{
+		ADMIN, MOD, BASIC
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -29,6 +32,11 @@ public class Role implements Serializable {
 	private List<User> users;
 
 	public Role() {
+	}
+	
+	public Role(RoleType aType){
+		this.roleName = aType.toString();
+		this.id = aType.ordinal();
 	}
 
 	public Role(String aName) {
