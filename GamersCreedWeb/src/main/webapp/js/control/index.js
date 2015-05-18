@@ -5,11 +5,19 @@
 	gamersCreedApp.controller("gamersCreedController", function($scope){
 		console.log("Controller intitialized");
 		
-		this.user=new userObj();
-		this.postArray=new Array();
+		this.user = new userObj();
+		this.postArray = new Array();
+		//Variables for operations
+		this.usersArray = new Array();
+		this.userReceiver = new userObj();
+		this.selectedUser = null;
+		this.selectedReceiverGame = null;
+		this.offeredPrice = 0.0;
+		this.selectedSendedGame = null;
 		
 		$scope.appAction=0;
-		$scope.userType=0;//if user is not registered, basic or admin
+		//if user is not registered, basic or admin
+		$scope.userType=0;
 		
 		this.sessionCtrl=function(){
 			
@@ -100,7 +108,7 @@
 						console.log(xhr.status+"\n"+thrownError);
 					}
 			    })
-		}
+		};
 		this.checkAvail = function ()
 		{
 			if(this.user.getUsername()==""||this.user.getUsername()==null){
@@ -182,6 +190,14 @@
 			this.user = new userObj();
 			$scope.userType=0;
 			$scope.appAction=0;
+		}
+		
+		this.loadUsers(){
+			//TODO Load all users
+		}
+		
+		this.getUserReceiverData(){
+			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
 		}
 		
 		this.searchPosts=function(){

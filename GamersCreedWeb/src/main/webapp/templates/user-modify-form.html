@@ -74,13 +74,33 @@
 		</tr>
 		<tr>
 			<td colspan="3">
-				<div class="listDiv">Lista juegos</div>
+				<div class="listDiv">
+					<h3>Videojuegos</h3>
+					<ul>
+						<li ng-repeat="vVideogame in gCreedCtrl.user.videogames">{{vVideogame.getName()}}</li>
+					</ul>
+				</div>
 			</td>
 		</tr>
 		<tr>
 			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
 			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
-			<td><input class="gCbutton" type="submit" value="Intercambiar" /></td>
+			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<div class="listDiv">
+					<h3>Operaciones</h3>
+<!-- 					<ul>
+						<li ng-repeat="vOperation in gCreedCtrl.user.operationsSended">{{vOperation.getName()}}</li>
+					</ul> -->
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
+			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
 		</tr>
 	</table>
 	<div class="clearBoth"></div>

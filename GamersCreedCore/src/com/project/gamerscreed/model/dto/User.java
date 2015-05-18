@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name="users")
 @NamedQueries({
 	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+	@NamedQuery(name="User.getAllUsernames", query="SELECT u.username FROM User u"),
 	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
 })
 public class User implements Serializable {
@@ -27,7 +28,7 @@ public class User implements Serializable {
 	private String mail;
 
 	private String name;
-
+	
 	private String password;
 
 	private String username;

@@ -54,7 +54,7 @@
 		<user-modify-form ng-show="appAction==2"></user-modify-form>
 		<forum-view ng-show="appAction==3"></forum-view>
 		<user-entry-form ng-show="appAction==4"></user-entry-form>
-		<operation-view ng-show="appAction==5"></operation-view>
+		<operation-view ng-show="appAction==5" ng-init="gCreedCtrl.loadUsers()"></operation-view>
 		<manage-users-view ng-show="appAction==6"></manage-users-view>
 		<manage-videogames-view ng-show="appAction==7"></manage-videogames-view>
 	</div>	
