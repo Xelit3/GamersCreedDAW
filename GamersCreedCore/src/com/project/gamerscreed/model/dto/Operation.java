@@ -11,7 +11,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name="operations")
-@NamedQuery(name="Operation.findAll", query="SELECT o FROM Operation o")
+@NamedQueries({
+	@NamedQuery(name="Operation.findAll", query="SELECT o FROM Operation o"),
+	//TODO Query error for accept operation
+//	@NamedQuery(name="Operation.acceptOperation", query="UPDATE Operation o SET o.dateAccepted = :date WHERE o.id = :id"),
+	@NamedQuery(name="Operation.rejectOperation", query="UPDATE Operation o SET o.rejected = false WHERE o.id = :id")
+})
 public class Operation implements Serializable {
 	private static final long serialVersionUID = 1L;
 

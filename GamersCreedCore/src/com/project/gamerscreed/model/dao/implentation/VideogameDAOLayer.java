@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
+import com.project.gamerscreed.model.dao.VideogameDAO;
 import com.project.gamerscreed.model.dto.Videogame;
 
-public class VideogameDAOLayer extends GenericDAOLayer implements GenericDAOInterface{
+public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	
 	public VideogameDAOLayer() {
 		super();
@@ -72,6 +72,25 @@ public class VideogameDAOLayer extends GenericDAOLayer implements GenericDAOInte
 		List<Videogame> result = query.getResultList();
 		
 		return result;
+	}
+
+	@Override
+	public boolean confirmVideogame(int anId) {
+		try{			
+			TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.confirmVideogame", Videogame.class);
+			query.setParameter("id", anId);
+			int tmpResult = query.executeUpdate();
+			
+			if(tmpResult > 0)
+				return true;
+			else
+				return false;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}	
+		
 	}
 
 }

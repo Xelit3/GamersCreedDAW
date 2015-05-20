@@ -7,7 +7,6 @@ import javax.persistence.TypedQuery;
 import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dto.Brand;
-import com.project.gamerscreed.model.dto.User;
 
 public class BrandDAOLayer extends GenericDAOLayer implements GenericDAOInterface {
 
@@ -35,7 +34,7 @@ public class BrandDAOLayer extends GenericDAOLayer implements GenericDAOInterfac
 
 	@Override
 	public boolean modify(Object anObject) {
-		// TODO Auto-generated method stub
+		// TODO Will not be implemented
 		return false;
 	}
 

@@ -101,7 +101,10 @@ public class User implements Serializable {
 		)
 	private List<Videogame> videogames;
 
-	public User() {
+	public User() {	}
+	
+	public User(Role aRole){
+		this.role = aRole;
 	}
 
 	public User(String aUsername, String aPassword) {
@@ -305,6 +308,20 @@ public class User implements Serializable {
 			this.videogames = new ArrayList<Videogame>();
 		
 		this.videogames.add(aVideogame);
+	}
+	
+	public void addFollower(User anUser){
+		if(this.getFollowers() == null)
+			this.followers = new ArrayList<User>();
+		
+		this.followers.add(anUser);
+	}
+	
+	public void addFollowing(User anUser){
+		if(this.getFollowings() == null)
+			this.followings = new ArrayList<User>();
+		
+		this.followings.add(anUser);
 	}
 	
 	@Override

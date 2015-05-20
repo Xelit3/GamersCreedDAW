@@ -12,13 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Beans.SessionBean;
-
 import com.google.gson.Gson;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
-import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.User;
+import com.project.gamerscreed.service.SessionBean;
 
 
 /**
@@ -93,9 +91,20 @@ public class UserServlet extends HttpServlet {
 
 	private void getAllUsers(HttpServletResponse response) throws IOException {
 		UserDAO tmpUserLayer = new UserDAOLayer();
-		List<User> tempUsers = (List<User>) tmpUserLayer.getAll();
-		//TODO falla al cargar el array de usuarios
-		String json = new Gson().toJson(tempUsers);
+		List<User> tmpListaUsuarios = (List<User>) tmpUserLayer.getAll();
+		User[] tmpUsers =  new User[tmpListaUsuarios.size()];
+		for(int i = 0; i < tmpListaUsuarios.size(); i++){
+			tmpUsers[i] = new User();
+			tmpUsers[i].setName(tmpListaUsuarios.get(i).getName());
+			tmpUsers[i].setUsername(tmpListaUsuarios.get(i).getUsername());			
+		}
+		
+		Gson gson = new Gson();
+//      Type tmpType = new TypeToken<List<User>>(){}.getType();
+//      String json = new Gson().toJson(tmpUsers, tmpType);
+
+		String json = new Gson().toJson(tmpUsers);
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
@@ -104,13 +113,7 @@ public class UserServlet extends HttpServlet {
 	private void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String username = request.getParameter("username");
 		ArrayList array=new ArrayList();
-//
-//		if(username.equals("Paco")){//TODO class DAOUsers
-//			array.add(false);
-//		}
-//		else{
-//			array.add(true);			
-//		}
+
 		UserDAO tmpUserLayer = new UserDAOLayer();
 		Map<String, String> tmpUsernames = tmpUserLayer.getAllUsernames();
 		
@@ -138,28 +141,33 @@ public class UserServlet extends HttpServlet {
 	
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		User tmpUser = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
+		
 		//User user=UserDAO.validateUser(tmpUser.getUsername(),tmpUser.getPassword());//TODO class DAOUsers
 		
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		User user = tmpUserLayer.login(tmpUser.getUsername(), tmpUser.getPassword());
+		ArrayList array=new ArrayList();
+				
 		//BEGIN TEST -front end roles-
-			User user=tmpUser;
+			/*User user=tmpUser;
 			Role testRole=new Role();
-			if(tmpUser.getUsername().equals("admin")){
+			if(user.getUsername().equals("admin")){
 				testRole.setId(2);
 			}
 			else {
 				testRole.setId(1);
 			}
-			tmpUser.setRole(testRole);
+			user.setRole(testRole);*/
 		//END TEST
 			
-		ArrayList array=new ArrayList();
-        if(tmpUser!=null){
-         	startSession(request, tmpUser);//start server session
-         	array.add(true);
-         	array.add(tmpUser);
-        }
-        else{
+        if(user==null || user.getUsername() == null || user.getUsername().equals("")){
             array.add(false);
+        }
+        else{//TODO banned users response
+        	startSession(request, tmpUser);//start server session
+         	array.add(true);
+         	array.add(user);
+
         }
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
@@ -167,6 +175,11 @@ public class UserServlet extends HttpServlet {
 		response.getWriter().write(json);
 		
 	}
+	
+	private void searchPost(HttpServletRequest request, HttpServletResponse response){
+		
+	}
+	
     private void startSession(HttpServletRequest request, User user){
         HttpSession session = request.getSession();
         synchronized(session) {

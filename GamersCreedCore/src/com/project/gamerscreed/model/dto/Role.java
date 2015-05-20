@@ -17,7 +17,7 @@ public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public enum RoleType{
-		ADMIN, MOD, BASIC
+		ADMIN, MOD, BASIC;		
 	}
 
 	@Id

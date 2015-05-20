@@ -1,4 +1,4 @@
-package Beans;
+package com.project.gamerscreed.service;
 import java.io.*;
 
 import com.project.gamerscreed.model.dto.User;

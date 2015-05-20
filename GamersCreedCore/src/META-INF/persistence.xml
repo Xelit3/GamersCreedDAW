@@ -35,8 +35,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.max_fetch_depth" value="3" />
 			<property name="show_sql" value="true"></property>
-		</properties> 
-
+		</properties>
 		
 	</persistence-unit>
 </persistence>

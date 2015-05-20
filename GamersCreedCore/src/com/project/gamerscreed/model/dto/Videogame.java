@@ -1,7 +1,9 @@
 package com.project.gamerscreed.model.dto;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -11,7 +13,10 @@ import java.util.List;
  */
 @Entity
 @Table(name="videogames")
-@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v")
+@NamedQueries({
+		@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v"),
+		@NamedQuery(name="Videogame.confirmVideogame", query="UPDATE Videogame v SET v.confirmed = true WHERE v.id = :id")
+})
 public class Videogame implements Serializable {
 	private static final long serialVersionUID = 1L;
 

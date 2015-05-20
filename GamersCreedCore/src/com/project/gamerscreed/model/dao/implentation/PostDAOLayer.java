@@ -27,20 +27,19 @@ public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterfac
 
 	@Override
 	public boolean modify(Object anObject) {
-		// TODO Auto-generated method stub
-		
+		// TODO Will not be implemented		
 		return false;
 	}
 
 	@Override
 	public boolean remove(Object anObject) {
-		// TODO Auto-generated method stub
+		// TODO Will not be implemented
 		return false;
 	}
 
 	@Override
 	public List<?> getAll() {
-		// TODO Auto-generated method stub
+		// TODO Will not be implemented
 		return null;
 	}
 
