@@ -1,45 +1,107 @@
 <form novalidate class="centerDiv" id="profileForm">
-  <h2>Perfil de usuario</h2>
-  <table>
-    <tr>
-      <td>Usuario</td>
-      <td><input type="text" /></td>
-      <td rowspan="3">
-        <img src="img/profile.jpg" alt="Foto perfil" />
-      </td>
-    </tr>
-    <tr>
-      <td>Contrase&ntilde;a</td>
-      <td><input type="password" /></td>      
-    </tr>
-    <tr>
-      <td>Correo</td>
-      <td><input type="mail" /></td>      
-    </tr>
-    <tr>
-      <td colspan="3">
-        <div class="listDiv">
-          Lista usuarios
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-      <td><input class="gCbutton" type="submit" value="Buscar" /></td>
-      <td><input class="gCbutton" type="submit" value="Borrar" /></td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <div class="listDiv">
-          Lista juegos
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-      <td><input class="gCbutton" type="submit" value="Borrar" /></td>
-      <td><input class="gCbutton" type="submit" value="Intercambiar" /></td>
-    </tr>
-  </table>
-  <div class="clearBoth"></div>
+	<h2>Perfil de usuario</h2>
+	<table>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td colspan="2"><img src="img/profile.jpg" alt="Foto perfil" />
+		</tr>
+		
+		<tr>
+			<td>Nombre</td>
+			<td colspan="2"><input type="text" /></td>
+			<td>Username</td>
+			<td colspan="2"><input type="text" readonly /></td>
+		</tr>
+		
+		<tr>
+			<td>Contrase&ntilde;a</td>
+			<td colspan="2"><input type="password" /></td>
+			<td>Rep. contrase&ntilde;a</td>
+			<td colspan="2"><input type="password" /></td>
+		</tr>
+		
+		<tr>
+			<td>Correo</td>
+			<td colspan="2"><input type="mail" /></td>			
+		</tr>
+		
+		<tr>
+		<td>Direcci&oacute;n</td>
+			<td colspan="2"><input type="text" /></td>
+			<td>Cp</td>
+			<td><input></td>			
+		</tr>
+
+		<tr>
+			<td>Country</td>
+			<td colspan="2"><select></select></td>
+			<td>City</td>
+			<td colspan="2"><input></td>
+		</tr>
+
+		<tr>
+			<td colspan="3">
+				<div class="listDiv">
+					<h3>Seguidores</h3>
+					<ul>
+						<li ng-repeat="vFollower in gCreedCtrl.user.followers">{{vFollower.getUsername()}}</li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
+			<td><input class="gCbutton" type="submit" value="Buscar" /></td>
+			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<div class="listDiv">
+					<h3>Siguiendo</h3>
+					<ul>
+						<li ng-repeat="vFollowing in gCreedCtrl.user.followings">{{vFollowing.getUsername()}}</li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
+			<td><input class="gCbutton" type="submit" value="Buscar" /></td>
+			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<div class="listDiv">
+					<h3>Videojuegos</h3>
+					<ul>
+						<li ng-repeat="vVideogame in gCreedCtrl.user.videogames">{{vVideogame.getName()}}</li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
+			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<div class="listDiv">
+					<h3>Operaciones</h3>
+<!-- 					<ul>
+						<li ng-repeat="vOperation in gCreedCtrl.user.operationsSended">{{vOperation.getName()}}</li>
+					</ul> -->
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
+			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
+		</tr>
+	</table>
+	<div class="clearBoth"></div>
 </form>

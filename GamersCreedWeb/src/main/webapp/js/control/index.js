@@ -4,18 +4,46 @@
 	
 	gamersCreedApp.controller("gamersCreedController", function($scope){
 		console.log("Controller intitialized");
-
-		//SIMULATION OF POST
-		this.postArray=new Array();
-		for(var i=0;i<10;i++){
-			var post=new postObj();
-			post.construct(i, "UserId"+i, "Content "+i, new Date());
-			this.postArray.push(post);
-
-		}
 		
-		this.user=new userObj();
-
+		this.user = new userObj();
+		this.postArray = new Array();
+		//Variables for operations
+		this.usersArray = new Array();
+		this.userReceiver = new userObj();
+		this.selectedUser = null;
+		this.selectedReceiverGame = null;
+		this.offeredPrice = 0.0;
+		this.selectedSendedGame = null;
+		
+		$scope.appAction=0;
+		//if user is not registered, basic or admin
+		$scope.userType=-1;
+		
+		this.sessionCtrl=function(){
+			
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 14
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    });
+			//alert(response[0]);
+			if(response[0]){
+				this.user = new userObj();
+				this.user.construct(response[1].id, response[1].role, response[1].name, response[1].username, response[1].password, response[1].mail,  response[1].address)
+				$scope.appAction=0;
+				$scope.userType=response[1].role.id;
+			}
+		};
 		this.login=function(){
 
 			this.user=angular.copy(this.user);
@@ -36,8 +64,28 @@
 					console.log(xhr.status+"\n"+thrownError);
 				}
 		    });
-			
-		}
+			//alert(response[0]+"//"+response[1].username);
+			if(response[0]){
+				//open session local?
+				/*if(typeof(Storage))
+				{
+					this.user = new userObj();
+					this.user.construct(outPutdata[1].id, outPutdata[1].role, outPutdata[1].name, outPutdata[1].username, outPutdata[1].password, outPutdata[1].mail,  outPutdata[1].address)
+					
+					sessionStorage.setItem("userConnected",JSON.stringify(this.user));
+				}
+				else alert("This browser does not support session variables");*/
+				
+				$scope.appAction=0;
+				$scope.userType=response[1].role.id;
+				location.reload();
+			}
+			else{
+				//TODO how wrong validation to the user
+				alert("The user or password is incorrect");
+				
+			}
+		};
 		
 		this.userCreate=function(){
 			this.user=angular.copy(this.user);
@@ -58,10 +106,7 @@
 						console.log(xhr.status+"\n"+thrownError);
 					}
 			    })
-			    
-			    
-			
-		}
+		};
 		this.checkAvail = function ()
 		{
 			if(this.user.getUsername()==""||this.user.getUsername()==null){
@@ -98,7 +143,7 @@
 				$("#user").addClass("ng-invalid");
 				$scope.userValid=false;
 			}
-		}
+		};
 		/**
 		 *This function check the password
 		 *NOTE: This function is used only by angular by using the actionHouseApp actionHouseCtrl controller		 
@@ -122,8 +167,109 @@
 				$("#password2").addClass("ng-valid");
 				$scope.passwordValid = true;
 			}
+		};
+		this.logout = function ()
+		{
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 13
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    });
+			this.user = new userObj();
+			$scope.userType=-1;
+			$scope.appAction=0;
+			location.reload();
+		};
+		
+		this.loadUsers= function (){
+				//TODO Load all users
+			/*this.user=angular.copy(this.user);
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 15					
+				},
+				async: true,
+				success : function(responseText) {
+					response = responseText;
+					alert(response);
+					$scope.appAction=1;
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })*/
+		};
+		
+		this.getUserReceiverData= function (){
+			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
 		}
-
+		
+		this.searchPosts=function(){
+			
+			 $.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 16
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			 });
+			 if (response) {
+				 for (var i = 0; i<response.length; i++) {
+					 var post = new postObj();
+					 post.construct(response[i].id, response[i].user.username, response[i].content, response[i].postDate);
+					 post.setDate(new Date());//TODO DATE
+					 this.postArray.push(post);
+				 }
+			}
+		};
+		this.submitPost=function(){
+			var post = new postObj();
+			 post.construct(101, this.user.getUsername(), $("#contentPostBox").val());
+			 this.postArray.push(post);
+			 
+			 $.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 17,
+					JSONPostData : JSON.stringify(post)
+				},
+				async : true,
+				success : function(responseText) {
+					response = responseText;
+					$("#contentPostBox").val("");
+					//location.reload();
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status + "\n" + thrownError);
+				} 	
+			 });
+		};
+		
+		
+		
 	});
 
 	gamersCreedApp.directive("loginForm", function (){
@@ -168,7 +314,36 @@
 		  controllerAs: 'forumView'
 		};
 	});
-
+	gamersCreedApp.directive("operationView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/operation-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'operationView'
+		};
+	});
+	gamersCreedApp.directive("manageUsersView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/manage-users-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'manageUsersView'
+		};
+	});
+	gamersCreedApp.directive("manageVideogamesView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/manage-videogames-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'manageVideogamesView'
+		};
+	});
 	gamersCreedApp.directive("wallView", function (){
 		return {
 		  restrict: 'E',

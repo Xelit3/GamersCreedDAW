@@ -29,6 +29,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSPLibrary"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/GamersCreedCore"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/GamersCreedCore"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

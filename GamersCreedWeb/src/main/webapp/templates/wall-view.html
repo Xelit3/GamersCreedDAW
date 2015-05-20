@@ -1,6 +1,11 @@
 <div class="centerDiv" id="mainWall">
-  <h2>Muro</h2>
+  <!--<h2>Wall</h2>-->
+  <div class="postBox" ng-show="userType!=-1">
+	  <textarea id="contentPostBox" maxlength="250"></textarea>
+	  <input type="button" class="gCbutton" value="Submit Post" ng-click="gCreedCtrl.submitPost()"/>
+  </div>
   <ul>
+  	
     <li ng-repeat="post in gCreedCtrl.postArray">
     	<div class="post">
 	    	<b>{{post.getUserName()}}</b> <label>{{post.getDate()}}</label><br/>
