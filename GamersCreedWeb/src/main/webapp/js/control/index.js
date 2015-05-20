@@ -17,7 +17,7 @@
 		
 		$scope.appAction=0;
 		//if user is not registered, basic or admin
-		$scope.userType=0;
+		$scope.userType=-1;
 		
 		this.sessionCtrl=function(){
 			
@@ -44,7 +44,6 @@
 				$scope.userType=response[1].role.id;
 			}
 		};
-		
 		this.login=function(){
 
 			this.user=angular.copy(this.user);
@@ -79,12 +78,13 @@
 				
 				$scope.appAction=0;
 				$scope.userType=response[1].role.id;
+				location.reload();
 			}
 			else{
 				//TODO how wrong validation to the user
 				alert("The user or password is incorrect");
 				
-			}			
+			}
 		};
 		
 		this.userCreate=function(){
@@ -99,7 +99,6 @@
 					async: false,
 					success : function(responseText) {
 						response = responseText;
-						alert(response);
 						$scope.appAction=1;
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -108,7 +107,6 @@
 					}
 			    })
 		};
-		
 		this.checkAvail = function ()
 		{
 			if(this.user.getUsername()==""||this.user.getUsername()==null){
@@ -153,7 +151,9 @@
 		 *@param: none
 		 *@return: none
 		*/
-		this.checkPassword = function (){
+		this.checkPassword = function ()
+		{
+			//if( $("#password").val()!= $scope.passControl)
 			if( this.user.getPassword()!= $scope.passControl)
 			{
 				$("#password2").removeClass("ng-valid");
@@ -162,13 +162,14 @@
 			}
 			else
 			{
+
 				$("#password2").removeClass("ng-invalid");
 				$("#password2").addClass("ng-valid");
 				$scope.passwordValid = true;
 			}
 		};
-		
-		this.logout = function (){
+		this.logout = function ()
+		{
 			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
@@ -185,13 +186,14 @@
 				}
 		    });
 			this.user = new userObj();
-			$scope.userType=0;
+			$scope.userType=-1;
 			$scope.appAction=0;
+			location.reload();
 		};
 		
-		this.loadUsers = function (){
-			//TODO Load all users
-			this.user=angular.copy(this.user);
+		this.loadUsers= function (){
+				//TODO Load all users
+			/*this.user=angular.copy(this.user);
 			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
@@ -208,28 +210,20 @@
 					alert("There has been an error while connecting to the server, try later");
 					console.log(xhr.status+"\n"+thrownError);
 				}
-		    })
+		    })*/
 		};
 		
-		this.getUserReceiverData = function (){
+		this.getUserReceiverData= function (){
 			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
 		}
 		
 		this.searchPosts=function(){
-			//SIMULATION OF POST	
-			for(var i=0;i<10;i++){
-				var post=new postObj();
-				post.construct(i, "UserId"+i, "Content "+i, new Date());
-				this.postArray.push(post);
-
-			}
 			
-			/*
 			 $.ajax({
-				url : 'PostServlet',
+				url : 'UserServlet',
 				type : "POST",
 				data : {
-					action : 10
+					action : 16
 				},
 				async: false,
 				success : function(responseText) {
@@ -238,13 +232,44 @@
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert("There has been an error while connecting to the server, try later");
 					console.log(xhr.status+"\n"+thrownError);
-				}
-			 	if(response){
-			 		this.postArray=response;
-			 	}
-			 */
-			
-		}
+				} 	
+			 });
+			 if (response) {
+				 for (var i = 0; i<response.length; i++) {
+					 var post = new postObj();
+					 post.construct(response[i].id, response[i].user.username, response[i].content, response[i].postDate);
+					 post.setDate(new Date());//TODO DATE
+					 this.postArray.push(post);
+				 }
+			}
+		};
+		this.submitPost=function(){
+			var post = new postObj();
+			 post.construct(101, this.user.getUsername(), $("#contentPostBox").val());
+			 this.postArray.push(post);
+			 
+			 $.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 17,
+					JSONPostData : JSON.stringify(post)
+				},
+				async : true,
+				success : function(responseText) {
+					response = responseText;
+					$("#contentPostBox").val("");
+					//location.reload();
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status + "\n" + thrownError);
+				} 	
+			 });
+		};
+		
+		
+		
 	});
 
 	gamersCreedApp.directive("loginForm", function (){
@@ -278,6 +303,7 @@
 		  controllerAs: 'userModifyForm'
 		};
 	});
+
 	gamersCreedApp.directive("forumView", function (){
 		return {
 		  restrict: 'E',

@@ -37,13 +37,13 @@
 
 		<ul>
 			<li><a href="" ng-click="appAction=0">Principal</a></li>
-			<li ng-show="userType==1"><a href="" ng-click="appAction=5">Operations</a></li>
-			<li ng-show="userType==1"><a href="" ng-click="appAction=2">Perfil</a></li>
-			<li ng-show="userType==2"><a href="" ng-click="appAction=6">Manage users</a></li>
+			<li ng-show="userType==2"><a href="" ng-click="appAction=5">Operations</a></li>
+			<li ng-show="userType==2"><a href="" ng-click="appAction=2">Perfil</a></li>
+			<li ng-show="userType==0"><a href="" ng-click="appAction=6">Manage users</a></li>
 			<li><a href="" ng-click="appAction=3">Foro</a></li>
-			<li ng-show="userType==2"><a href="" ng-click="appAction=7">Manage videogames list</a></li>
-			<li ng-show="userType==0"><a href="" id="loginButton" ng-click="appAction=1">Login</a></li>
-			<li ng-show="userType!=0"><a href="" id="loginButton" ng-click="gCreedCtrl.logout()">Logout</a></li>
+			<li ng-show="userType==0"><a href="" ng-click="appAction=7">Manage videogames list</a></li>
+			<li ng-show="userType==-1"><a href="" id="loginButton" ng-click="appAction=1">Login</a></li>
+			<li ng-show="userType!=-1"><a href="" id="loginButton" ng-click="gCreedCtrl.logout()">Logout</a></li>
 		</ul>
 		
 	</header>
