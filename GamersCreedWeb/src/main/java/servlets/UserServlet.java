@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -17,8 +18,13 @@ import javax.servlet.http.HttpSession;
 
 
 
+
+
+
 import com.google.gson.Gson;
+import com.project.gamerscreed.control.utilities.Encrypter;
 import com.project.gamerscreed.model.dao.UserDAO;
+import com.project.gamerscreed.model.dao.implentation.PostDAOLayer;
 import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
 import com.project.gamerscreed.model.dto.Post;
 import com.project.gamerscreed.model.dto.Role;
@@ -95,11 +101,11 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		catch(IOException ioE){
-			out.println("IO error");
+			System.out.println("IO error");
 			ioE.printStackTrace();
 		}
 		catch(Exception e){
-			out.println("Error in the server - "+e);
+			System.out.println("Error in the server - "+e);
 			e.printStackTrace();
 		}
 		
@@ -155,25 +161,26 @@ public class UserServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();		
 		
 		User user = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
+		user.setPassword(Encrypter.getHash(user.getPassword()));
 		UserDAO userDAO =new UserDAOLayer();
 		user.setRole(new Role(RoleType.BASIC));
-		boolean val=userDAO.create(user);
-		out.println(val);
+		boolean val=userDAO.create(user);//TODO userDAO.crate crashes when creating user with role
+		System.out.println("User creation is: "+val);
+		out.print(val);
+		
 		
 	}
 	
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		User tmpUser = new Gson().fromJson(request.getParameter("JSONUserData"), User.class);
-		
-//		User user=UserDAO.validateUser(tmpUser.getUsername(),tmpUser.getPassword());//TODO class DAOUsers
-		
-		//UserDAO tmpUserLayer = new UserDAOLayer();
-		//User user = tmpUserLayer.login(tmpUser.getUsername(), tmpUser.getPassword());
+		tmpUser.setPassword(Encrypter.getHash(tmpUser.getPassword()));
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		User user = tmpUserLayer.login(tmpUser.getUsername(), tmpUser.getPassword());
 
 		ArrayList array=new ArrayList();
 				
 		//BEGIN TEST -front end roles-
-			User user=tmpUser;
+			/*User user=tmpUser;
 			Role testRole=new Role();
 			if(user.getUsername().equals("admin")){
 				testRole.setId(0);
@@ -181,16 +188,15 @@ public class UserServlet extends HttpServlet {
 			else {
 				testRole.setId(2);
 			}
-			user.setRole(testRole);
+			user.setRole(testRole);*/
 		//END TEST
 			
         if(user==null || user.getUsername() == null || user.getUsername().equals("")){
             array.add(false);
         }
         else{//TODO banned users response
-        	startSession(request, tmpUser);//start server session
+        	startSession(request, user);//start server session
          	array.add(true);
-         	array.add(user);
 
         }
 		String json = new Gson().toJson(array);
@@ -241,14 +247,23 @@ public class UserServlet extends HttpServlet {
 		
 		SessionBean sessionBean =sessionIsOpen(request);
 		User user=sessionBean.getUser();
+		
+		//START TESTING users without login
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		user = tmpUserLayer.login(user.getUsername(), user.getPassword());
+		//END TESTING 
+		
 		Post post = new Gson().fromJson(request.getParameter("JSONPostData"), Post.class);
 		post.setUser(user);
 		Date date = new Date();
 		post.setPostDate(date);
+		PostDAOLayer postLayer = new PostDAOLayer();//TODO
+		boolean val = postLayer.create(post);
+		
 		//user.addPost(post);
 		//UserDAO userDAO =new UserDAOLayer();
 		//boolean val=userDAO.modify(user);
-		//out.println(val);
+		out.println(val);
 		
 	}
 	

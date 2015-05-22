@@ -18,6 +18,7 @@
 		$scope.appAction=0;
 		//if user is not registered, basic or admin
 		$scope.userType=-1;
+		$scope.passwordValid=true;
 		
 		this.sessionCtrl=function(){
 			
@@ -45,7 +46,7 @@
 			}
 		};
 		this.login=function(){
-
+			this.user.setRole(null);
 			this.user=angular.copy(this.user);
 			
 			$.ajax({
@@ -64,30 +65,20 @@
 					console.log(xhr.status+"\n"+thrownError);
 				}
 		    });
-			//alert(response[0]+"//"+response[1].username);
 			if(response[0]){
-				//open session local?
-				/*if(typeof(Storage))
-				{
-					this.user = new userObj();
-					this.user.construct(outPutdata[1].id, outPutdata[1].role, outPutdata[1].name, outPutdata[1].username, outPutdata[1].password, outPutdata[1].mail,  outPutdata[1].address)
-					
-					sessionStorage.setItem("userConnected",JSON.stringify(this.user));
-				}
-				else alert("This browser does not support session variables");*/
-				
-				$scope.appAction=0;
-				$scope.userType=response[1].role.id;
+
 				location.reload();
 			}
 			else{
 				//TODO how wrong validation to the user
-				alert("The user or password is incorrect");
+				//alert("The user or password is incorrect");
+				$scope.noLoginValidate=true;
 				
 			}
 		};
 		
 		this.userCreate=function(){
+			this.user.setRole(null);
 			this.user=angular.copy(this.user);
 				$.ajax({
 					url : 'UserServlet',
@@ -99,13 +90,19 @@
 					async: false,
 					success : function(responseText) {
 						response = responseText;
-						$scope.appAction=1;
+						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
 						alert("There has been an error while connecting to the server, try later");
 						console.log(xhr.status+"\n"+thrownError);
 					}
 			    })
+			    if(response){
+			    	$scope.appAction=1;
+			    }
+			    else{
+			    	alert("Error in register");
+			    }
 		};
 		this.checkAvail = function ()
 		{
@@ -186,8 +183,8 @@
 				}
 		    });
 			this.user = new userObj();
-			$scope.userType=-1;
-			$scope.appAction=0;
+			//$scope.userType=-1;
+			//$scope.appAction=0;
 			location.reload();
 		};
 		

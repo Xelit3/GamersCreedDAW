@@ -96,6 +96,12 @@ footer{
 	color: #82D4EA;
   	font-size: 30px;
 }
+#loginForm form{
+	border:0px;
+}
+#loginForm p{
+	color:red;
+}
 .userForm td{
 	height: 1.5em;
 	color: #ffffff;
