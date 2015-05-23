@@ -24,16 +24,16 @@ public class Brand implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Country
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
 	@JoinColumn(name="id_country")
 	private Country country;
 
 	//bi-directional many-to-one association to Videogame
-	@OneToMany(mappedBy="developer", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="developer")
 	private List<Videogame> videogamesDeveloped;
 
 	//bi-directional many-to-one association to Videogame
-	@OneToMany(mappedBy="publisher", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="publisher")
 	private List<Videogame> videogamesPublished;
 
 	public Brand() {

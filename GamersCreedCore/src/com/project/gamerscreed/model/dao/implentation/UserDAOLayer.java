@@ -8,7 +8,9 @@ import javax.persistence.TypedQuery;
 
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dao.UserDAO;
+import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.User;
+import com.project.gamerscreed.model.dto.Videogame;
 
 public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	
@@ -17,11 +19,14 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public boolean create(Object anObject) {
-		try{
-			User tmpUser = (User) anObject;
+	public boolean create(User anObject) {
+		try{			
 			this.beginTransaction();
-			this.entityManager.persist(tmpUser);
+			Role tmpRole = anObject.getRole();
+			anObject.setRole(this.entityManager.getReference(Role.class, tmpRole.getId()));
+			this.entityManager.persist(anObject);
+			tmpRole.addUser(anObject);
+			this.entityManager.merge(tmpRole);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -34,11 +39,10 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public boolean modify(Object anObject) {
-		try{
-			User tmpUser = (User) anObject;
+	public boolean modify(User anObject) {
+		try{			
 			this.beginTransaction();
-			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(anObject);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -51,12 +55,10 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public boolean remove(Object anObject) {
-		try{
-			User tmpUser = (User) anObject;
-			
+	public boolean remove(User anObject) {
+		try{			
 			this.beginTransaction();
-			this.entityManager.remove(tmpUser);
+			this.entityManager.remove(anObject);
 			this.commitTransaction();
 			this.closeTransaction();
 			
@@ -99,5 +101,155 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		
 		return tmpUsernames;
 	}
+
+	@Override
+	public boolean addVideogameToUser(User anUser, Videogame aVideogame) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			Videogame tmpVideogame = this.entityManager.getReference(Videogame.class, aVideogame.getId());
+			
+			tmpUser.addVideogame(tmpVideogame);
+			tmpVideogame.addUser(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpVideogame);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean removeVideogameFromUser(User anUser, Videogame aVideogame) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			Videogame tmpVideogame = this.entityManager.getReference(Videogame.class, aVideogame.getId());
+			
+			tmpUser.removeVideogame(tmpVideogame);
+			tmpVideogame.removeUser(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpVideogame);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addFollower(User anUser, User aFollower) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			User tmpFollower = this.entityManager.getReference(User.class, aFollower.getId());
+			
+			tmpUser.addFollower(tmpFollower);
+			tmpFollower.addFollowing(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpFollower);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean removeFollower(User anUser, User aFollower) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			User tmpFollower = this.entityManager.getReference(User.class, aFollower.getId());
+			
+			tmpUser.removeFollower(tmpFollower);
+			tmpFollower.removeFollowing(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpFollower);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addFollowing(User anUser, User aFollowing) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			User tmpFollowing = this.entityManager.getReference(User.class, aFollowing.getId());
+			
+			tmpUser.addFollowing(aFollowing);
+			aFollowing.addFollower(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpFollowing);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean removeFollowing(User anUser, User aFollowing) {
+		try{
+			this.beginTransaction();
+			
+			User tmpUser = this.entityManager.getReference(User.class, anUser.getId());
+			User tmpFollowing = this.entityManager.getReference(User.class, aFollowing.getId());
+			
+			tmpUser.removeFollowing(tmpFollowing);
+			tmpFollowing.removeFollower(tmpUser);
+			
+			this.entityManager.merge(tmpUser);
+			this.entityManager.merge(tmpFollowing);
+			
+			this.commitTransaction();
+			this.closeTransaction();	
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}	
 
 }

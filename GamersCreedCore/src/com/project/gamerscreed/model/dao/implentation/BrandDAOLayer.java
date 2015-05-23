@@ -8,19 +8,17 @@ import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dto.Brand;
 
-public class BrandDAOLayer extends GenericDAOLayer implements GenericDAOInterface {
+public class BrandDAOLayer extends GenericDAOLayer implements GenericDAOInterface<Brand> {
 
 	public BrandDAOLayer() {
 		super();
 	}
 
 	@Override
-	public boolean create(Object anObject) {		
+	public boolean create(Brand anObject) {		
 		try{
-			Brand tmpRole = (Brand) anObject;
-			
 			this.beginTransaction();
-			this.entityManager.persist(tmpRole);
+			this.entityManager.persist(anObject);
 			this.commitTransaction();
 			this.closeTransaction();
 			
@@ -33,18 +31,16 @@ public class BrandDAOLayer extends GenericDAOLayer implements GenericDAOInterfac
 	}
 
 	@Override
-	public boolean modify(Object anObject) {
-		// TODO Will not be implemented
+	public boolean modify(Brand anObject) {
+		//Will not be implemented. NOT NEEDED
 		return false;
 	}
 
 	@Override
-	public boolean remove(Object anObject) {
+	public boolean remove(Brand anObject) {
 		try{
-			Brand tmpBrand = (Brand) anObject;
-			
 			this.beginTransaction();
-			this.entityManager.remove(tmpBrand);
+			this.entityManager.remove(anObject);
 			this.commitTransaction();
 			this.closeTransaction();
 			

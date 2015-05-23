@@ -2,11 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -14,12 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-
-
-
-
-
 
 import com.google.gson.Gson;
 import com.project.gamerscreed.control.utilities.Encrypter;
@@ -44,7 +35,6 @@ public class UserServlet extends HttpServlet {
      */
     public UserServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -133,6 +123,7 @@ public class UserServlet extends HttpServlet {
 	}
 
 	private void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		//TODO Adri has de tipar los arrays, ArrayList<T>
 		String username = request.getParameter("username");
 		ArrayList array=new ArrayList();
 //
@@ -257,7 +248,8 @@ public class UserServlet extends HttpServlet {
 		post.setUser(user);
 		Date date = new Date();
 		post.setPostDate(date);
-		PostDAOLayer postLayer = new PostDAOLayer();//TODO
+		//TODO Post layer
+		PostDAOLayer postLayer = new PostDAOLayer();
 		boolean val = postLayer.create(post);
 		
 		//user.addPost(post);

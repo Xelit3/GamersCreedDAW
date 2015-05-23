@@ -7,18 +7,38 @@ import javax.persistence.TypedQuery;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dao.OperationDAO;
 import com.project.gamerscreed.model.dto.Operation;
+import com.project.gamerscreed.model.dto.User;
+import com.project.gamerscreed.model.dto.Videogame;
 
 public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 
 	@Override
-	public boolean create(Object anObject) {
+	public boolean create(Operation anOperation) {
 		try{
-			Operation tmpOperation = (Operation) anObject;
 			this.beginTransaction();
-			this.entityManager.persist(tmpOperation);
+			
+			anOperation.setUserReceived(this.entityManager.getReference(User.class, anOperation.getUserReceived().getId()));
+			anOperation.setUserSender(this.entityManager.getReference(User.class, anOperation.getUserSender().getId()));
+			anOperation.setVideogameReceived(this.entityManager.getReference(Videogame.class, anOperation.getVideogameReceived().getId()));
+			//Just in case of a trade between two games
+			if(anOperation.getVideogameSended() != null)
+				anOperation.setVideogameSended(this.entityManager.getReference(Videogame.class, anOperation.getVideogameSended().getId()));
+			
+			this.entityManager.persist(anOperation);
+			
+			anOperation.getUserReceived().addOperationsReceived(anOperation);
+			anOperation.getUserSender().addOperationsSended(anOperation);
+			anOperation.getVideogameSended().addOperationsSended(anOperation);
+			anOperation.getVideogameReceived().addOperationsReceived(anOperation);
+			
+			this.entityManager.merge(anOperation.getUserReceived());
+			this.entityManager.merge(anOperation.getUserSender());
+			this.entityManager.merge(anOperation.getVideogameSended());
+			this.entityManager.merge(anOperation.getVideogameReceived());
+			
 			this.commitTransaction();
 			this.closeTransaction();
-
+			
 			return true;
 		}
 		catch(Exception e){
@@ -28,24 +48,13 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 	}
 
 	@Override
-	public boolean modify(Object anObject) {
-		try{
-			Operation tmpOperation = (Operation) anObject;
-			this.beginTransaction();
-			this.entityManager.merge(tmpOperation);
-			this.commitTransaction();
-			this.closeTransaction();
-
-			return true;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
+	public boolean modify(Operation anObject) {
+		//Will not be implemented. NOT NEEDED
+		return false;
 	}
 
 	@Override
-	public boolean remove(Object anObject) {
+	public boolean remove(Operation anObject) {
 		try{
 			Operation tmpOperation = (Operation) anObject;
 			
@@ -93,6 +102,6 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 			return false;
 		}
 		
-	}
+	}	
 
 }

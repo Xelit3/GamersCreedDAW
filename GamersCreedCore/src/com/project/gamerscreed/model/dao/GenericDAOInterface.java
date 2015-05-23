@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-public interface GenericDAOInterface {
+public interface GenericDAOInterface<T> {
 
 	@Transactional
-	public boolean create(Object anObject);
-	public boolean modify(Object anObject);
-	public boolean remove(Object anObject);	
-	public List<?> getAll();
+	public boolean create(T anObject);
+	public boolean modify(T anObject);
+	public boolean remove(T anObject);	
+	public List<T> getAll();
 	
 }

@@ -33,23 +33,23 @@ public class User implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to ForumMessage
-	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST) 
+	@OneToMany(mappedBy="user") 
 	private List<ForumMessage> forumMessages;
 
 	//bi-directional many-to-one association to ForumThread
-	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="user")
 	private List<ForumThread> forumThreads;
 
 	//bi-directional many-to-one association to Operation
-	@OneToMany(mappedBy="userSender", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="userSender")
 	private List<Operation> operationsSended;
 
 	//bi-directional many-to-one association to Operation
-	@OneToMany(mappedBy="userReceived", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="userReceived")
 	private List<Operation> operationsReceived;
 
 	//bi-directional many-to-one association to Post
-	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="user")
 	private List<Post> posts;
 
 	//bi-directional many-to-one association to Address
@@ -58,7 +58,7 @@ public class User implements Serializable {
 	private Address address;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_role")
 	private Role role;
 
@@ -111,6 +111,13 @@ public class User implements Serializable {
 		super();
 		this.username = aUsername;
 		this.password = aPassword;		
+	}
+	
+	public User(String aUsername, String aName, String aMail, Address anAddress){
+		this.username = aUsername;
+		this.name = aName;
+		this.mail = aMail;
+		this.address = anAddress;
 	}
 
 	public int getId() {
@@ -322,6 +329,25 @@ public class User implements Serializable {
 			this.followings = new ArrayList<User>();
 		
 		this.followings.add(anUser);
+	}
+	
+	public void removeVideogame(Videogame aVideogame){
+		if(this.getVideogames() != null)
+			this.videogames.remove(aVideogame);			
+	}
+	
+	public void removeFollower(User anUser){
+		if(this.getFollowers() != null)
+			this.followers.remove(anUser);
+	}
+	
+	public void removeFollowing(User anUser){
+		if(this.getFollowings() != null)
+			this.followings.remove(anUser);
+	}
+	
+	public User getBasicData(){
+		return new User(this.username, this.name, this.mail, this.address);		
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name="videogames")
 @NamedQueries({
 		@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v"),
+		@NamedQuery(name="Videogame.findAllUnconfirmed", query="SELECT v FROM Videogame v WHERE v.confirmed = false"),
 		@NamedQuery(name="Videogame.confirmVideogame", query="UPDATE Videogame v SET v.confirmed = true WHERE v.id = :id")
 })
 public class Videogame implements Serializable {
@@ -129,6 +131,18 @@ public class Videogame implements Serializable {
 		operationsSended.setVideogameSended(null);
 
 		return operationsSended;
+	}
+	
+	public void addUser(User anUser){
+		if(this.getUsers() == null)
+			this.users = new ArrayList<User>();
+		
+		this.users.add(anUser);
+	}
+	
+	public void removeUser(User anUser){
+		if(this.getUsers() != null)
+			this.users.remove(anUser);
 	}
 
 	public List<User> getUsers() {

@@ -4,18 +4,23 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import com.project.gamerscreed.model.dao.ForumThreadDAO;
 import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
+import com.project.gamerscreed.model.dto.ForumMessage;
+import com.project.gamerscreed.model.dto.ForumSection;
 import com.project.gamerscreed.model.dto.ForumThread;
+import com.project.gamerscreed.model.dto.User;
 
-public class ForumThreadDAOLayer extends GenericDAOLayer implements GenericDAOInterface{
+public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadDAO{
 
 	@Override
-	public boolean create(Object anObject) {
+	public boolean create(ForumThread aThread) {
 		try{
-			ForumThread tmpForumThread = (ForumThread) anObject;
 			this.beginTransaction();
-			this.entityManager.persist(tmpForumThread);
+			aThread.setUser(this.entityManager.getReference(User.class, aThread.getUser().getId()));
+			aThread.setForumSection(this.entityManager.getReference(ForumSection.class, aThread.getForumSection().getId()));
+			this.entityManager.persist(aThread);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -28,11 +33,10 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements GenericDAOIn
 	}
 
 	@Override
-	public boolean modify(Object anObject) {
-		try{
-			ForumThread tmpForumThread = (ForumThread) anObject;
+	public boolean modify(ForumThread aThread) {
+		try{			
 			this.beginTransaction();
-			this.entityManager.merge(tmpForumThread);
+			this.entityManager.merge(aThread);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -45,12 +49,10 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements GenericDAOIn
 	}
 
 	@Override
-	public boolean remove(Object anObject) {
-		try{
-			ForumThread tmpForumThread = (ForumThread) anObject;
-			
+	public boolean remove(ForumThread aThread) {
+		try{			
 			this.beginTransaction();
-			this.entityManager.remove(tmpForumThread);
+			this.entityManager.remove(aThread);
 			this.commitTransaction();
 			this.closeTransaction();
 			
@@ -68,6 +70,28 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements GenericDAOIn
 		List<ForumThread> result = query.getResultList();
 		
 		return result;
+	}
+
+	@Override
+	public boolean commentThread(ForumThread aThread, ForumMessage aMessage) {
+		try{
+			aThread = this.entityManager.getReference(ForumThread.class, aThread.getId());
+			aMessage.setForumThread(aThread);
+			aMessage.setUser(this.entityManager.getReference(User.class, aMessage.getUser().getId()));
+			aThread.addForumMessage(aMessage);
+			
+			this.entityManager.persist(aMessage);
+			this.entityManager.merge(aThread);
+			
+			this.commitTransaction();
+			this.closeTransaction();
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;	
+		}		
 	}
 
 }

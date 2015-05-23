@@ -6,10 +6,10 @@ import com.project.gamerscreed.model.dao.GenericDAOInterface;
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dto.Post;
 
-public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterface{
+public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterface<Post>{
 
 	@Override
-	public boolean create(Object anObject) {
+	public boolean create(Post anObject) {
 		try{
 			Post tmpPost = (Post) anObject;
 			this.beginTransaction();
@@ -26,20 +26,20 @@ public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterfac
 	}
 
 	@Override
-	public boolean modify(Object anObject) {
-		// TODO Will not be implemented		
+	public boolean modify(Post anObject) {
+		//Will not be implemented. NOT NEEDED
 		return false;
 	}
 
 	@Override
-	public boolean remove(Object anObject) {
-		// TODO Will not be implemented
+	public boolean remove(Post anObject) {
+		//Will not be implemented. NOT NEEDED
 		return false;
 	}
 
 	@Override
-	public List<?> getAll() {
-		// TODO Will not be implemented
+	public List<Post> getAll() {
+		//Will not be implemented. NOT NEEDED
 		return null;
 	}
 

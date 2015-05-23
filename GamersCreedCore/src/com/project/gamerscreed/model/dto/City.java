@@ -24,11 +24,11 @@ public class City implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="city", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="city", cascade=CascadeType.MERGE)
 	private List<Address> addresses;
 
 	//bi-directional many-to-one association to Country
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
 	@JoinColumn(name="id_country")
 	private Country country;
 

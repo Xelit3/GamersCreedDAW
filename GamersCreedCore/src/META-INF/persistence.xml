@@ -30,7 +30,7 @@
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.user" value="gamerscreed" />
-			<property name="javax.persistence.jdbc.password" value="gamerscreed" />
+			<property name="javax.persistence.jdbc.password" value="gamersCreed" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/gamerscreed" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.max_fetch_depth" value="3" />

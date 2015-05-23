@@ -24,11 +24,11 @@ public class Country implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Brand
-	@OneToMany(mappedBy="country")
+	@OneToMany(mappedBy="country", cascade=CascadeType.MERGE)
 	private List<Brand> brands;
 
 	//bi-directional many-to-one association to City
-	@OneToMany(mappedBy="country")
+	@OneToMany(mappedBy="country", cascade=CascadeType.MERGE)
 	private List<City> cities;
 
 	public Country() {
