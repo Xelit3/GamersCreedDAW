@@ -22,6 +22,7 @@ import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.Role.RoleType;
 import com.project.gamerscreed.model.dto.User;
 import com.project.gamerscreed.service.SessionBean;
+import com.project.gamerscreed.view.UserBasicInfo;
 
 
 /**
@@ -290,12 +291,13 @@ public class UserServlet extends HttpServlet {
 		if (sessionBean != null) {
 			User user = sessionBean.getUser();
 			array.add(true);
-			User tmpUser = user.getBasicData(); 
-			array.add(tmpUser);
+			array.add(new UserBasicInfo(user));
 
 		} else {
 			array.add(false);
 		}
+		
+		
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
