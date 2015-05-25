@@ -40,7 +40,7 @@
 			//alert(response[0]);
 			if(response[0]){
 				this.user = new userObj();
-				this.user.construct(response[1].id, response[1].role, response[1].name, response[1].username, response[1].password, response[1].mail,  response[1].address)
+				//this.user.construct(response[1].id, response[1].role, response[1].name, response[1].username, response[1].password, response[1].mail,  response[1].address)
 				$scope.appAction=0;
 				$scope.userType=response[1].role.id;
 			}

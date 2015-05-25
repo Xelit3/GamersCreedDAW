@@ -85,7 +85,7 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		query.setParameter("password", aPassword);
 		
 		User tmpUser = query.getSingleResult();
-		
+			
 		return tmpUser;
 	}
 

@@ -8,10 +8,9 @@
   	<servlet-name>UserServlet</servlet-name>
   	<display-name>UserServlet</display-name>
   	<description></description>
-  	<servlet-class>servlets.UserServlet</servlet-class>
+  	<servlet-class>com.project.gamerscreed.control.UserServlet</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>UserServlet</servlet-name>
   	<url-pattern>/UserServlet</url-pattern>
-  </servlet-mapping>
-</web-app>
+  </servlet-mapping></web-app>

@@ -1,4 +1,4 @@
-package servlets;
+package com.project.gamerscreed.control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -185,11 +185,12 @@ public class UserServlet extends HttpServlet {
         if(user==null || user.getUsername() == null || user.getUsername().equals("")){
             array.add(false);
         }
-        else{//TODO banned users response
+        else{
+        	//TODO banned users response
         	startSession(request, user);//start server session
          	array.add(true);
-
         }
+        
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -285,11 +286,12 @@ public class UserServlet extends HttpServlet {
 	
 	private void checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		SessionBean sessionBean = sessionIsOpen(request);
-		ArrayList array = new ArrayList();
+		ArrayList<Object> array = new ArrayList<Object>();
 		if (sessionBean != null) {
 			User user = sessionBean.getUser();
 			array.add(true);
-			array.add(user);
+			User tmpUser = user.getBasicData(); 
+			array.add(tmpUser);
 
 		} else {
 			array.add(false);

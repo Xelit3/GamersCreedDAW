@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,9 +69,11 @@ public class Role implements Serializable {
 	}
 
 	public User addUser(User user) {
-		getUsers().add(user);
-		user.setRole(this);
-
+		if(this.getUsers() == null)
+			this.users = new ArrayList<User>();
+		
+		this.getUsers().add(user);
+		
 		return user;
 	}
 

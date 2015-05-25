@@ -58,7 +58,7 @@ public class User implements Serializable {
 	private Address address;
 
 	//bi-directional many-to-one association to Role
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_role")
 	private Role role;
 
@@ -113,11 +113,12 @@ public class User implements Serializable {
 		this.password = aPassword;		
 	}
 	
-	public User(String aUsername, String aName, String aMail, Address anAddress){
+	public User(String aUsername, Role aRole, String aName, String aMail, Address anAddress){
 		this.username = aUsername;
 		this.name = aName;
 		this.mail = aMail;
 		this.address = anAddress;
+		this.role = aRole;
 	}
 
 	public int getId() {
@@ -347,7 +348,7 @@ public class User implements Serializable {
 	}
 	
 	public User getBasicData(){
-		return new User(this.username, this.name, this.mail, this.address);		
+		return 	new User(this.username, this.role, this.name, this.mail, this.address);
 	}
 	
 	@Override
