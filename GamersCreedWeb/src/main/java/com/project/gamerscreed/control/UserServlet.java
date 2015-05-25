@@ -41,6 +41,7 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.sendRedirect("index.jsp");
 	}
@@ -48,6 +49,7 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType( "text/html; charset=iso-8859-1" );
 		PrintWriter out = response.getWriter();
@@ -145,8 +147,7 @@ public class UserServlet extends HttpServlet {
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
-		
+		response.getWriter().write(json);		
 	}
 	
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -158,9 +159,7 @@ public class UserServlet extends HttpServlet {
 		user.setRole(new Role(RoleType.BASIC));
 		boolean val=userDAO.create(user);//TODO userDAO.crate crashes when creating user with role
 		System.out.println("User creation is: "+val);
-		out.print(val);
-		
-		
+		out.print(val);		
 	}
 	
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -198,6 +197,7 @@ public class UserServlet extends HttpServlet {
 		response.getWriter().write(json);
 		
 	}
+	
 	private void searchPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		SessionBean sessionBean =sessionIsOpen(request);
 		ArrayList array = new ArrayList();
@@ -235,6 +235,7 @@ public class UserServlet extends HttpServlet {
 		response.getWriter().write(json);
 
 	}
+	
 	private void submitPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		PrintWriter out = response.getWriter();		
 		
@@ -301,9 +302,9 @@ public class UserServlet extends HttpServlet {
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
-       
+		response.getWriter().write(json);       
     }
+	
 	private SessionBean sessionIsOpen(HttpServletRequest request){
 		HttpSession session = request.getSession();
         synchronized(session) {
