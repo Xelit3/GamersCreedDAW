@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -22,7 +23,7 @@ import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.Role.RoleType;
 import com.project.gamerscreed.model.dto.User;
 import com.project.gamerscreed.service.SessionBean;
-import com.project.gamerscreed.view.UserBasicInfo;
+import com.project.gamerscreed.view.UserBasicData;
 
 
 /**
@@ -41,7 +42,6 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.sendRedirect("index.jsp");
 	}
@@ -49,7 +49,6 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType( "text/html; charset=iso-8859-1" );
 		PrintWriter out = response.getWriter();
@@ -58,19 +57,19 @@ public class UserServlet extends HttpServlet {
 		try{
 			switch (action){
 				case 10: //check if username already exist in DB
-						checkUsername(request, response);
+					checkUsername(request, response);
 					break;
 	
 				case 11: //add user into DB
-						addUser(request, response);  
+					addUser(request, response);  
 					break;
 					
 				case 12: //login
-						loginUser(request, response);
+					loginUser(request, response);
 					break;
 					
 				case 13: //logout
-						logoutUser(request);
+					logoutUser(request);
 					break;
 				
 				case 14: //checkSession
@@ -84,9 +83,14 @@ public class UserServlet extends HttpServlet {
 				case 16: //search user Post
 					searchPost(request, response);
 					break;
+					
 				case 17: //submit user Post
 					submitPost(request, response);
-					break;		
+					break;
+					
+				case 18: //Get all list of data for session user
+					getAllUserLists(request, response);
+					break;
 				
 				default:
 					out.println("Action number wrong");
@@ -126,16 +130,9 @@ public class UserServlet extends HttpServlet {
 	}
 
 	private void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//TODO Adri has de tipar los arrays, ArrayList<T>
 		String username = request.getParameter("username");
-		ArrayList array=new ArrayList();
-//
-//		if(username.equals("Paco")){//TODO class DAOUsers
-//			array.add(false);
-//		}
-//		else{
-//			array.add(true);			
-//		}
+		List<Object> array=new ArrayList<Object>();
+
 		UserDAO tmpUserLayer = new UserDAOLayer();
 		Map<String, String> tmpUsernames = tmpUserLayer.getAllUsernames();
 		
@@ -147,7 +144,8 @@ public class UserServlet extends HttpServlet {
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);		
+		response.getWriter().write(json);
+		
 	}
 	
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -168,20 +166,8 @@ public class UserServlet extends HttpServlet {
 		UserDAO tmpUserLayer = new UserDAOLayer();
 		User user = tmpUserLayer.login(tmpUser.getUsername(), tmpUser.getPassword());
 
-		ArrayList array=new ArrayList();
+		List<Object> array=new ArrayList<Object>();
 				
-		//BEGIN TEST -front end roles-
-			/*User user=tmpUser;
-			Role testRole=new Role();
-			if(user.getUsername().equals("admin")){
-				testRole.setId(0);
-			}
-			else {
-				testRole.setId(2);
-			}
-			user.setRole(testRole);*/
-		//END TEST
-			
         if(user==null || user.getUsername() == null || user.getUsername().equals("")){
             array.add(false);
         }
@@ -190,12 +176,10 @@ public class UserServlet extends HttpServlet {
         	startSession(request, user);//start server session
          	array.add(true);
         }
-        
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
-		
+		response.getWriter().write(json);		
 	}
 	
 	private void searchPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -233,7 +217,6 @@ public class UserServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
-
 	}
 	
 	private void submitPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -288,22 +271,40 @@ public class UserServlet extends HttpServlet {
 	
 	private void checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		SessionBean sessionBean = sessionIsOpen(request);
-		ArrayList<Object> array = new ArrayList<Object>();
+		List<Object> array = new ArrayList<Object>();
 		if (sessionBean != null) {
 			User user = sessionBean.getUser();
 			array.add(true);
-			array.add(new UserBasicInfo(user));
-
-		} else {
+			array.add(new UserBasicData(user));
+		} 
+		else {
 			array.add(false);
 		}
-		
-		
 		String json = new Gson().toJson(array);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);       
     }
+	
+	private void getAllUserLists(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		SessionBean sessionBean = sessionIsOpen(request);
+		List<Object> array = new ArrayList<Object>();
+		
+		if (sessionBean != null) {
+			User user = sessionBean.getUser();
+			array.add(true);
+			UserDAO tmpLayer = new UserDAOLayer();
+			user = tmpLayer.getAllReferences(user);
+			System.out.println();
+		} 
+		else {
+			array.add(false);
+		}
+		String json = new Gson().toJson(array);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
+	}
 	
 	private SessionBean sessionIsOpen(HttpServletRequest request){
 		HttpSession session = request.getSession();

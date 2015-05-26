@@ -15,5 +15,6 @@ public interface UserDAO extends GenericDAOInterface<User> {
 	public boolean removeFollower(User anUser, User aFollower);
 	public boolean addFollowing(User anUser, User aFollowing);
 	public boolean removeFollowing(User anUser, User aFollowing);
+	public User getAllReferences(User anUser);
 	
 }

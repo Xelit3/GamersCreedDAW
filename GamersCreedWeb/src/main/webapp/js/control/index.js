@@ -40,12 +40,14 @@
 			//alert(response[0]);
 			if(response[0]){
 				this.user = new userObj();
-				//this.user.construct(response[1].id, response[1].role, response[1].name, response[1].username, response[1].password, response[1].mail,  response[1].address)
+				this.user.construct(response[1].id, response[1].roleId, response[1].name, response[1].username, response[1].mail);
+				this.user.setAddress(response[1].addressStreet, response[1].addressCp, response[1].addressCity, response[1].addressCountry);
 				$scope.appAction=0;
 				$scope.userType=response[1].roleId;
 			}
 		};
-		this.login=function(){
+		
+		this.login = function(){
 			this.user.setRole(null);
 			this.user=angular.copy(this.user);
 			
@@ -76,7 +78,7 @@
 				
 			}
 		};
-		
+				
 		this.userCreate=function(){
 			this.user.setRole(null);
 			this.user=angular.copy(this.user);
@@ -104,6 +106,7 @@
 			    	alert("Error in register");
 			    }
 		};
+		
 		this.checkAvail = function ()
 		{
 			if(this.user.getUsername()==""||this.user.getUsername()==null){
@@ -141,6 +144,7 @@
 				$scope.userValid=false;
 			}
 		};
+		
 		/**
 		 *This function check the password
 		 *NOTE: This function is used only by angular by using the actionHouseApp actionHouseCtrl controller		 
@@ -165,6 +169,7 @@
 				$scope.passwordValid = true;
 			}
 		};
+		
 		this.logout = function ()
 		{
 			$.ajax({
@@ -210,9 +215,27 @@
 		    })*/
 		};
 		
-		this.getUserReceiverData= function (){
+		this.getUserReceiverData = function (){
 			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
-		}
+		};
+		
+		this.getUserListData = function (){
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 18					
+				},
+				async: true,
+				success : function(responseText) {
+					//TODO
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		};
 		
 		this.searchPosts=function(){
 			

@@ -11,35 +11,35 @@
 		
 		<tr>
 			<td>Nombre</td>
-			<td colspan="2"><input type="text" /></td>
+			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.name" /></td>
 			<td>Username</td>
-			<td colspan="2"><input type="text" readonly /></td>
+			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.username" readonly /></td>
 		</tr>
 		
 		<tr>
 			<td>Contrase&ntilde;a</td>
-			<td colspan="2"><input type="password" /></td>
+			<td colspan="2"><input type="password" ng-model="gCreedCtrl.user.password" /></td>
 			<td>Rep. contrase&ntilde;a</td>
-			<td colspan="2"><input type="password" /></td>
+			<td colspan="2"><input type="password" ng-change="gCreedCtrl.checkPassword()" ng-model="passControl" /></td>
 		</tr>
 		
 		<tr>
 			<td>Correo</td>
-			<td colspan="2"><input type="mail" /></td>			
+			<td colspan="2"><input type="mail" ng-model="gCreedCtrl.user.mail"/></td>			
 		</tr>
 		
 		<tr>
 		<td>Direcci&oacute;n</td>
-			<td colspan="2"><input type="text" /></td>
+			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.addressStreet" /></td>
 			<td>Cp</td>
-			<td><input></td>			
+			<td><input type="number" ng-model="gCreedCtrl.user.addressCp"></td>			
 		</tr>
 
 		<tr>
 			<td>Country</td>
-			<td colspan="2"><select></select></td>
+			<td colspan="2"><select><option>{{gCreedCtrl.user.addressCountry}}</option></select></td>
 			<td>City</td>
-			<td colspan="2"><input></td>
+			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.addressCity" /></td>
 		</tr>
 
 		<tr>

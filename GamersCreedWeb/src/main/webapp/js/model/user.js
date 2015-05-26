@@ -12,20 +12,21 @@ function userObj ()
 	this.username;
 	this.password;
 	this.mail;
-	this.address
+	this.addressCp;
+	this.addressStreet;
+	this.addressCity;
+	this.addressCountry;
 	this.operationsSended;
 	this.operationsReceived;
 	this.videogames;
 	this.posts;
 
-	this.construct = function (id, role, name, username, password, mail, address){
-		this.id=role;
-		this.role=id;
+	this.construct = function (id, role, name, username, mail){
+		this.id=id;
+		this.role=role;
 		this.name=name;
-		this.username=username;
-		this.password=password;
+		this.username=username;		
 		this.mail=mail;
-		this.address=address;
 	}
 
 	this.setId = function (id){this.id=id;}
@@ -34,19 +35,23 @@ function userObj ()
 	this.setUsername = function (username){this.username=username;}
 	this.setPassword = function (password){this.password=password;}
 	this.setMail = function (mail){this.mail=mail;}
-	this.setAddress = function (address){this.address=address;}
 	this.setOperationsSended = function (operationsSended){this.operationsSended=operationsSended;}
 	this.setOperationsReceived = function (operationsReceived){this.operationsReceived=operationsReceived;}
 	this.setVideogames = function (videogames){this.videogames=videogames;}
 	this.setPosts = function (posts){this.posts=posts;}
-
+	this.setAddress = function(street, cp, city, country){
+		this.addressCp = cp;
+		this.addressCity = city;
+		this.addressCountry = country;
+		this.addressStreet = street;
+	}
 	this.getId = function () {return this.id;}
 	this.getRole = function () {return this.role;}
 	this.getName = function () {return this.name;}
 	this.getUsername = function () {return this.username;}
 	this.getPassword = function () {return this.password;}
 	this.getMail = function () {return this.mail;}
-	this.getAddress = function () {return this.address;}
+	
 	this.getOperationsSended = function (){return this.operationsSended;}
 	this.getOperationsReceived = function (){return this.operationsReceived;}
 	this.getVideogames = function (){return this.videogames;}

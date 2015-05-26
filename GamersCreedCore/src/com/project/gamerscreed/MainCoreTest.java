@@ -1,14 +1,18 @@
 package com.project.gamerscreed;
 
+import java.util.Date;
+
 import com.project.gamerscreed.control.utilities.Encrypter;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.VideogameDAO;
+import com.project.gamerscreed.model.dao.implentation.PostDAOLayer;
 import com.project.gamerscreed.model.dao.implentation.UserDAOLayer;
 import com.project.gamerscreed.model.dao.implentation.VideogameDAOLayer;
 import com.project.gamerscreed.model.dto.Address;
 import com.project.gamerscreed.model.dto.Brand;
 import com.project.gamerscreed.model.dto.City;
 import com.project.gamerscreed.model.dto.Country;
+import com.project.gamerscreed.model.dto.Post;
 import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.Role.RoleType;
 import com.project.gamerscreed.model.dto.User;
@@ -74,9 +78,20 @@ public class MainCoreTest {
 //		layer.create(tmpUser);
 //		layer.create(tmpUser2);
 		
-		VideogameDAO vGameLayer = new VideogameDAOLayer();
+//		VideogameDAO vGameLayer = new VideogameDAOLayer();
+//		
+//		vGameLayer.getAll();
 		
-		vGameLayer.getAll();
+		Post post = new Post();
+		post.setContent("Post test");
+		User user = new User();
+		user.setId(2);
+		post.setUser(user);
+		post.setPostDate(new Date());
+		
+		PostDAOLayer layer = new PostDAOLayer();
+		layer.create(post);
+		
 								
 		System.exit(0);
 		
