@@ -254,27 +254,11 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	}
 
 	@Override
-	public User getAllReferences(User anUser) {
-		this.beginTransaction();
-		for(int i = 0; i < anUser.getFollowers().size(); i++){
-			anUser.getFollowers().set(i, this.entityManager.getReference(User.class, anUser.getFollowers().get(i).getId()));
-		}
-		for(int i = 0; i < anUser.getFollowings().size(); i++){
-			anUser.getFollowings().set(i, this.entityManager.getReference(User.class, anUser.getFollowings().get(i).getId()));
-		}
-		for(int i = 0; i < anUser.getOperationsSended().size(); i++){
-			anUser.getOperationsSended().set(i, this.entityManager.getReference(Operation.class, anUser.getOperationsSended().get(i).getId()));
-		}	
-		for(int i = 0; i < anUser.getOperationsReceived().size(); i++){
-			anUser.getOperationsReceived().set(i, this.entityManager.getReference(Operation.class, anUser.getOperationsReceived().get(i).getId()));
-		}
-		for(int i = 0; i < anUser.getVideogames().size(); i++){
-			anUser.getVideogames().set(i, this.entityManager.getReference(Videogame.class, anUser.getVideogames().get(i).getId()));
-		}
-		this.commitTransaction();
-		this.closeTransaction();
-		
-		return anUser;
+	public User getUserById(int anId) {
+		TypedQuery<User> query = this.entityManager.createNamedQuery("User.getById", User.class);
+		query.setParameter("id", anId);
+				
+		return query.getSingleResult();
 	}
 
 }

@@ -1,4 +1,4 @@
-<form class="centerDiv userForm" id="registerForm" ng-submit="gCreedCtrl.userCreate()" novalidate>
+<form class="centerDiv userForm" name="userEntryForm" id="registerForm" ng-submit="gCreedCtrl.userCreate()" novalidate>
 	<h2>Create an Account </h2>
 	<table>
 		<tr>
@@ -8,11 +8,11 @@
 		</tr>
 		<tr>
 			<td>Password</td>
-			<td><input type="password" id="password" ng-minlength="6" ng-model="gCreedCtrl.user.password" ng-change="gCreedCtrl.checkPassword()" required /></td><td><p ng-init="userEntryForm.password.$invalid=false" ng-if="userEntryForm.password.$error.minlength || userEntryForm.password.$invalid" >Password must be at least 6 characters</p></td>
+			<td><input type="password" id="password" ng-minlength="6" ng-model="gCreedCtrl.user.password" ng-change="gCreedCtrl.checkPassword()" required /></td><td><p ng-init="userEntryForm.password.$invalid=false" ng-show="userEntryForm.password.$error.minlength || userEntryForm.password.$invalid" >Password must be at least 6 characters</p></td>
 		</tr>
 		<tr>
 			<td>Repeat password</td>
-			<td><input type="password" id="password2" ng-change="gCreedCtrl.checkPassword()" ng-minlength="6" ng-model="passControl" required /></td><td><p ng-init="passwordValid=true" ng-if="!passwordValid">Password do not match</p></td>
+			<td><input type="password" id="password2" ng-change="gCreedCtrl.checkPassword()" ng-minlength="6" ng-model="passControl" required /></td><td><p ng-init="passwordValid=true" ng-show="!passwordValid">Password do not match</p></td>
 		</tr>
 		<tr>
 			<td>Email address</td>

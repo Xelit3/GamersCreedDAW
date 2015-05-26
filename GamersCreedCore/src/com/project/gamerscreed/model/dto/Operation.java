@@ -13,8 +13,6 @@ import java.util.Date;
 @Table(name="operations")
 @NamedQueries({
 	@NamedQuery(name="Operation.findAll", query="SELECT o FROM Operation o"),
-	//TODO Query error for accept operation
-//	@NamedQuery(name="Operation.acceptOperation", query="UPDATE Operation o SET o.dateAccepted = :date WHERE o.id = :id"),
 	@NamedQuery(name="Operation.rejectOperation", query="UPDATE Operation o SET o.rejected = false WHERE o.id = :id")
 })
 public class Operation implements Serializable {

@@ -28,6 +28,7 @@
 	<!-- Other JS scripts -->			
 	<script type="text/javascript" src="js/model/post.js"></script>
 	<script type="text/javascript" src="js/model/user.js"></script>
+	<script type="text/javascript" src="js/model/videogame.js"></script>
 	<script type="text/javascript" src="js/control/index.js"></script>
 </head>
 
@@ -60,11 +61,13 @@
 	</div>	
 	
 	<aside class="advDiv contentSections">
-		Publicidad terceros
+		<img src="img/googleAdsense.jpg"/>
 	</aside>
 	
-	<footer class="contentSections">
-		<p>Pie</p>
+	<footer>
+		<p>Gamer's Creed</p>
+		<p>DAW Final Porject</p>
+		<p>Adria Nieto & Xavi Rueda</p>
 	</footer>
 
 </body>

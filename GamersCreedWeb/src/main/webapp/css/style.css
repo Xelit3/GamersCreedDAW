@@ -15,18 +15,22 @@ body{
 h1, h2{
 	color: #82D4EA;
 }
+
 header{
 	min-width: 25em;
 }
+
 header ul{
 	background: #ffffff;
 	text-align: right;
 }
+
 header li a{
 	text-decoration: none;
 	margin-left: auto;
     margin-right: auto;
 }
+
 header li{
 	display: inline-block;
 	padding: 10px 10px;
@@ -34,9 +38,11 @@ header li{
 	width:5em;*/
 
 }
+
 header li:hover{
 	background: #2980b9;
 }
+
 header li:hover a{
 	color: #ffffff;
 }
@@ -57,30 +63,43 @@ header #loginButton:hover{
 	float: left;
 	width: 65%;	
 	min-width: 25em;
-	height:80%
+	min-height: 60%;
+	height:auto;
 }
 
 .advDiv{
 	float: right;
 	width: 20%;
-	height:80%
+	min-height: 60%;
+	height:auto;
+}
+
+.advDiv img{
+	width: 100%;
+	height: 80%;
+	margin-left: auto;
+    margin-right: auto;    
 }
 
 footer{
+	position: relative;
+	background-color: rgba(255, 255, 255, 0.6);
+  	border-radius: 5px;
+  	margin-bottom: 2em;
+  	padding: 1%;  	
 	margin-top: 2em;
-	width: 94%;
+	width: 98%;
 	float: left;
+}
+
+footer p{
+	margin: 1%;
+	color: white;
 }
 
 .centerDiv{
 	margin: auto;    
-    /*margin-top: 50px;*/
-    /*padding: 10px;*/
-  	/*background-color: rgba(66, 66, 66, 0.6);*/
-
 }
-
-
 
 #loginForm{
 	width: 25%;
@@ -96,32 +115,38 @@ footer{
 	color: #82D4EA;
   	font-size: 30px;
 }
+
 #loginForm form{
 	border:0px;
 }
+
 #loginForm p{
 	color:red;
 }
+
 .userForm td{
 	height: 1.5em;
 	color: #ffffff;
 }
 
 .userForm tr td input[type="text"], .userForm tr td input[type="password"], .userForm tr td input[type="email"]{
-/*.userForm tr td *{*/
 	height: 100%;
 }
+
 .userForm tr:last-child td{
 	padding-top:40px;
 	
 }
+
 .userForm tr:last-child td *{
 	float: right;
 }
+
 .userForm p{
 	margin:0px;
 	padding:0px;
 }
+
 #registerForm{
 	width: 50%;
     height: auto;
@@ -146,6 +171,7 @@ footer{
 	background-color: #ffffff;
 	border-radius: 5px;
 }
+
 #mainWall .postBox{
 	border:2px black solid;
 	/*width: 90%;*/
@@ -154,8 +180,8 @@ footer{
 	margin-left:40px;
 	padding:5px;
 	color: #ffffff;
-	
 }
+
 #mainWall .postBox textArea{
 	width:90%;
 	height:70px;
@@ -167,9 +193,11 @@ footer{
 	font-size:20px;
 	resize: none;
 }
+
 #mainWall .postBox input{
 	/*float:right;*/
 }
+
 #mainWall ul{
 	list-style-type: none;
 	height: 29em;
@@ -183,15 +211,17 @@ footer{
 	/*background-color: rgba(255, 255, 255, 0.6);*/
 	margin-bottom:10px;
 	padding:5px;
-	color: #ffffff;
-	
+	color: #ffffff;	
 }
+
 .post b{
 	color: #82D4EA;
 }
+
 .post label{
 	float:right;
 }
+
 .post p{
 	word-wrap: break-word;
 }
@@ -246,6 +276,7 @@ footer{
 	text-decoration:none;
 	text-shadow:0px 1px 0px #7cacde;
 }
+
 .gCbutton:hover {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
 	background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
@@ -256,6 +287,7 @@ footer{
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
 	background-color:#468ccf;
 }
+
 .gCbutton:active {
 	position:relative;
 	top:1px;
@@ -264,6 +296,7 @@ footer{
 .inputDefault{
 	border: 1.5px solid #82D4EA;
 }
+
 .ng-invalid.ng-dirty
 {
 	border: 1.5px solid red;
@@ -275,4 +308,6 @@ footer{
 	border: 1.5px solid green;
 }
 
-
+#profileForm div{
+	overflow: auto;
+}

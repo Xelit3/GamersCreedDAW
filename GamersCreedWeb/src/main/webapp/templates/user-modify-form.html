@@ -1,4 +1,4 @@
-<form novalidate class="centerDiv" id="profileForm">
+<form novalidate id="profileForm">
 	<h2>Perfil de usuario</h2>
 	<table>
 		<tr>
@@ -44,10 +44,10 @@
 
 		<tr>
 			<td colspan="3">
-				<div class="listDiv">
-					<h3>Seguidores</h3>
+				<h3>Seguidores</h3>
+				<div class="listDiv">					
 					<ul>
-						<li ng-repeat="vFollower in gCreedCtrl.user.followers">{{vFollower.getUsername()}}</li>
+						<li ng-repeat="vFollower in gCreedCtrl.followersArray">{{vFollower.getUsername()}}</li>
 					</ul>
 				</div>
 			</td>
@@ -59,10 +59,10 @@
 		</tr>
 		<tr>
 			<td colspan="3">
+				<h3>Siguiendo</h3>
 				<div class="listDiv">
-					<h3>Siguiendo</h3>
 					<ul>
-						<li ng-repeat="vFollowing in gCreedCtrl.user.followings">{{vFollowing.getUsername()}}</li>
+						<li ng-repeat="vFollowing in gCreedCtrl.followingsArray">{{vFollowing.getUsername()}}</li>
 					</ul>
 				</div>
 			</td>
@@ -74,10 +74,10 @@
 		</tr>
 		<tr>
 			<td colspan="3">
-				<div class="listDiv">
-					<h3>Videojuegos</h3>
+				<h3>Videojuegos</h3>
+				<div class="listDiv">					
 					<ul>
-						<li ng-repeat="vVideogame in gCreedCtrl.user.videogames">{{vVideogame.getName()}}</li>
+						<li ng-repeat="vVideogame in gCreedCtrl.videogamesArray">{{vVideogame.getName()}}</li>
 					</ul>
 				</div>
 			</td>
@@ -89,9 +89,9 @@
 		</tr>
 		<tr>
 			<td colspan="3">
-				<div class="listDiv">
-					<h3>Operaciones</h3>
-<!-- 					<ul>
+				<h3>Operaciones</h3>
+				<div class="listDiv">					
+					<!--<ul>
 						<li ng-repeat="vOperation in gCreedCtrl.user.operationsSended">{{vOperation.getName()}}</li>
 					</ul> -->
 				</div>

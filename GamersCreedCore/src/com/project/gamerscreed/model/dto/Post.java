@@ -11,7 +11,10 @@ import java.util.Date;
  */
 @Entity
 @Table(name="posts")
-@NamedQuery(name="Post.findAll", query="SELECT p FROM Post p")
+@NamedQueries({
+	@NamedQuery(name="Post.findAll", query="SELECT p FROM Post p"),
+	@NamedQuery(name="Post.findAllByUser", query="SELECT p FROM Post p JOIN FETCH p.user WHERE p.user.id=:id")
+})
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 

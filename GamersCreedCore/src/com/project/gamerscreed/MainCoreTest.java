@@ -1,6 +1,7 @@
 package com.project.gamerscreed;
 
 import java.util.Date;
+import java.util.List;
 
 import com.project.gamerscreed.control.utilities.Encrypter;
 import com.project.gamerscreed.model.dao.UserDAO;
@@ -82,18 +83,22 @@ public class MainCoreTest {
 //		
 //		vGameLayer.getAll();
 		
-		Post post = new Post();
-		post.setContent("Post test");
-		User user = new User();
-		user.setId(2);
-		post.setUser(user);
-		post.setPostDate(new Date());
+//		Post post = new Post();
+//		post.setContent("Post test");
+//		User user = new User();
+//		user.setId(2);
+//		post.setUser(user);
+//		post.setPostDate(new Date());
+//		
+//		PostDAOLayer layer = new PostDAOLayer();
+//		layer.create(post);
 		
-		PostDAOLayer layer = new PostDAOLayer();
-		layer.create(post);
-		
-								
-		System.exit(0);
+//		UserDAO layer = new UserDAOLayer();
+//		List<User> all = layer.getAll();
+//		User yo = all.get(0);
+//		yo = layer.getAllReferences(yo);		
+//								
+//		System.exit(0);
 		
 	}
 

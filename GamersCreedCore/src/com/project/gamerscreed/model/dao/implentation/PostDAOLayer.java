@@ -2,12 +2,14 @@ package com.project.gamerscreed.model.dao.implentation;
 
 import java.util.List;
 
-import com.project.gamerscreed.model.dao.GenericDAOInterface;
+import javax.persistence.TypedQuery;
+
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
+import com.project.gamerscreed.model.dao.PostDAO;
 import com.project.gamerscreed.model.dto.Post;
 import com.project.gamerscreed.model.dto.User;
 
-public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterface<Post>{
+public class PostDAOLayer  extends GenericDAOLayer implements PostDAO{
 
 	@Override
 	public boolean create(Post aPost) {
@@ -44,6 +46,16 @@ public class PostDAOLayer  extends GenericDAOLayer implements GenericDAOInterfac
 	public List<Post> getAll() {
 		//Will not be implemented. NOT NEEDED
 		return null;
+	}
+
+	@Override
+	public List<Post> getPostById(User anUser) {
+		
+		TypedQuery<Post> query = this.entityManager.createNamedQuery("Post.findAllByUser", Post.class);
+		query.setParameter("id", anUser.getId());
+		List<Post> result = query.getResultList();
+		
+		return result;
 	}
 
 }

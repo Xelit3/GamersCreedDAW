@@ -22,8 +22,11 @@ import com.project.gamerscreed.model.dto.Post;
 import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.Role.RoleType;
 import com.project.gamerscreed.model.dto.User;
+import com.project.gamerscreed.model.dto.Videogame;
 import com.project.gamerscreed.service.SessionBean;
+import com.project.gamerscreed.view.PostBasicData;
 import com.project.gamerscreed.view.UserBasicData;
+import com.project.gamerscreed.view.VideogameBasicData;
 
 
 /**
@@ -155,7 +158,7 @@ public class UserServlet extends HttpServlet {
 		user.setPassword(Encrypter.getHash(user.getPassword()));
 		UserDAO userDAO =new UserDAOLayer();
 		user.setRole(new Role(RoleType.BASIC));
-		boolean val=userDAO.create(user);//TODO userDAO.crate crashes when creating user with role
+		boolean val=userDAO.create(user);
 		System.out.println("User creation is: "+val);
 		out.print(val);		
 	}
@@ -172,8 +175,8 @@ public class UserServlet extends HttpServlet {
             array.add(false);
         }
         else{
-        	//TODO banned users response
-        	startSession(request, user);//start server session
+        	//start server session
+        	startSession(request, user);
          	array.add(true);
         }
 		String json = new Gson().toJson(array);
@@ -184,22 +187,12 @@ public class UserServlet extends HttpServlet {
 	
 	private void searchPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		SessionBean sessionBean =sessionIsOpen(request);
-		ArrayList array = new ArrayList();
+		List<Post> postList = new ArrayList<Post>();
 		if (sessionBean != null) {
 			User user = sessionBean.getUser();
-			//UserDAO tmpUserLayer = new UserDAOLayer();
-			//User user = tmpUserLayer.);//TODO POSTDAO del user
+			PostDAOLayer postLayer = new PostDAOLayer();
+			postList = postLayer.getPostById(user);
 			
-			//BEGIN TEST -POST USERS-
-			for(int i=0;i<10;i++){
-				Post post=new Post();
-				post.setId(i);
-				post.setUser(new User("conectado"+i,"paco2"));
-				post.setContent("Content"+i);
-				array.add(post);
-
-			}
-			//END TEST
 		}
 		else{
 			//BEGIN TEST -POST USERS-
@@ -208,15 +201,20 @@ public class UserServlet extends HttpServlet {
 				post.setId(i);
 				post.setUser(new User("des"+i,"paco"));
 				post.setContent("Content"+i);
-				array.add(post);
+				postList.add(post);
 
 			}
 			//END TEST
 		}
-		String json = new Gson().toJson(array);
+		List<PostBasicData> postBasicDataList = new ArrayList<PostBasicData>();
+		for(int i=0; i<postList.size();i++){
+			postBasicDataList.add(new PostBasicData(postList.get(i)));
+		}
+		String json = new Gson().toJson(postBasicDataList);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
+
 	}
 	
 	private void submitPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -225,24 +223,53 @@ public class UserServlet extends HttpServlet {
 		SessionBean sessionBean =sessionIsOpen(request);
 		User user=sessionBean.getUser();
 		
-		//START TESTING users without login
-		UserDAO tmpUserLayer = new UserDAOLayer();
-		user = tmpUserLayer.login(user.getUsername(), user.getPassword());
-		//END TESTING 
-		
 		Post post = new Gson().fromJson(request.getParameter("JSONPostData"), Post.class);
 		post.setUser(user);
 		Date date = new Date();
 		post.setPostDate(date);
-		//TODO Post layer
+
 		PostDAOLayer postLayer = new PostDAOLayer();
 		boolean val = postLayer.create(post);
 		
-		//user.addPost(post);
-		//UserDAO userDAO =new UserDAOLayer();
-		//boolean val=userDAO.modify(user);
 		out.println(val);
 		
+	}
+	
+	private void getAllUserLists(HttpServletRequest aRequest, HttpServletResponse aResponse) throws IOException{
+		SessionBean tmpSessionBean = sessionIsOpen(aRequest);
+		List<Object> tmpResponseArray = new ArrayList<Object>();
+		
+		if (tmpSessionBean != null) {
+			User tmpUser = tmpSessionBean.getUser();
+			tmpResponseArray.add(true);
+			UserDAO tmpLayer = new UserDAOLayer();
+			tmpUser = tmpLayer.getUserById(tmpUser.getId());
+			//Followers array creation
+			List<UserBasicData> tmpFollows = new ArrayList<UserBasicData>();
+			for(User u : tmpUser.getFollowers()){
+				tmpFollows.add(new UserBasicData(u));
+			}
+			tmpResponseArray.add(tmpFollows);
+			//Followings array creation
+			tmpFollows = new ArrayList<UserBasicData>();
+			for(User u : tmpUser.getFollowings()){
+				tmpFollows.add(new UserBasicData(u));
+			}
+			tmpResponseArray.add(tmpFollows);
+			//Videogames array creation
+			List<VideogameBasicData> tmpVideogames = new ArrayList<VideogameBasicData>();
+			for(Videogame v : tmpUser.getVideogames()){
+				tmpVideogames.add(new VideogameBasicData(v));
+			}
+			tmpResponseArray.add(tmpVideogames);
+		} 
+		else {
+			tmpResponseArray.add(false);
+		}
+		String json = new Gson().toJson(tmpResponseArray);
+		aResponse.setContentType("application/json");
+		aResponse.setCharacterEncoding("UTF-8");
+		aResponse.getWriter().write(json);
 	}
 	
     private void startSession(HttpServletRequest request, User user){
@@ -284,27 +311,7 @@ public class UserServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);       
-    }
-	
-	private void getAllUserLists(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		SessionBean sessionBean = sessionIsOpen(request);
-		List<Object> array = new ArrayList<Object>();
-		
-		if (sessionBean != null) {
-			User user = sessionBean.getUser();
-			array.add(true);
-			UserDAO tmpLayer = new UserDAOLayer();
-			user = tmpLayer.getAllReferences(user);
-			System.out.println();
-		} 
-		else {
-			array.add(false);
-		}
-		String json = new Gson().toJson(array);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
-	}
+    }	
 	
 	private SessionBean sessionIsOpen(HttpServletRequest request){
 		HttpSession session = request.getSession();

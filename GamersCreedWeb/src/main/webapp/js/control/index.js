@@ -6,6 +6,9 @@
 		console.log("Controller intitialized");
 		
 		this.user = new userObj();
+		this.followersArray = new Array();
+		this.followingsArray = new Array();
+		this.videogamesArray = new Array();
 		this.postArray = new Array();
 		//Variables for operations
 		this.usersArray = new Array();
@@ -219,26 +222,44 @@
 			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
 		};
 		
-		this.getUserListData = function (){
+		this.getUserListData = function (){			
 			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
 				data : {
 					action : 18					
 				},
-				async: true,
+				async: false,
 				success : function(responseText) {
-					//TODO
+					response = responseText;
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert("There has been an error while connecting to the server, try later");
 					console.log(xhr.status+"\n"+thrownError);
 				}
 		    })
+		    if(response[0]){
+				for(var i=0; i<response[1].length; i++){
+					var user = new userObj();
+					user.construct(response[1][i].id, response[1][i].roleId, response[1][i].name, response[1][i].username, response[1][i].mail);
+					user.setAddress(response[1][i].addressStreet, response[1][i].addressCp, response[1][i].addressCity, response[1][i].addressCountry);
+					this.followersArray.push(user);
+				}
+				for(var i=0; i<response[2].length; i++){
+					var user = new userObj();
+					user.construct(response[2][i].id, response[2][i].roleId, response[2][i].name, response[2][i].username, response[2][i].mail);
+					user.setAddress(response[2][i].addressStreet, response[2][i].addressCp, response[2][i].addressCity, response[2][i].addressCountry);
+					this.followingsArray.push(user);
+				}
+				for(var i=0; i<response[3].length; i++){
+					var videogame = new videogameObj();
+					videogame.construct(response[3][i].id, response[3][i].name, response[3][i].developer, response[3][i].publisher, response[3][i].year);
+					this.videogamesArray.push(videogame);
+				}
+			}
 		};
 		
-		this.searchPosts=function(){
-			
+		this.searchPosts=function(){			
 			 $.ajax({
 				url : 'UserServlet',
 				type : "POST",
@@ -257,15 +278,15 @@
 			 if (response) {
 				 for (var i = 0; i<response.length; i++) {
 					 var post = new postObj();
-					 post.construct(response[i].id, response[i].user.username, response[i].content, response[i].postDate);
-					 post.setDate(new Date());//TODO DATE
+					 post.construct(response[i].id, response[i].username, response[i].content, response[i].postDate);
 					 this.postArray.push(post);
 				 }
 			}
 		};
+		
 		this.submitPost=function(){
 			var post = new postObj();
-			 post.construct(101, this.user.getUsername(), $("#contentPostBox").val());
+			 post.construct(null, this.user.getUsername(), $("#contentPostBox").val());
 			 this.postArray.push(post);
 			 
 			 $.ajax({
@@ -286,10 +307,7 @@
 					console.log(xhr.status + "\n" + thrownError);
 				} 	
 			 });
-		};
-		
-		
-		
+		};		
 	});
 
 	gamersCreedApp.directive("loginForm", function (){

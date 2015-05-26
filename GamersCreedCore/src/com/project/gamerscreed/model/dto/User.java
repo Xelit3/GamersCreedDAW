@@ -14,8 +14,10 @@ import java.util.List;
 @Entity
 @Table(name="users")
 @NamedQueries({
-	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),	
-	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
+	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+	@NamedQuery(name="User.getById", query="SELECT u FROM User u WHERE u.id = :id"),
+	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
+	@NamedQuery(name="User.getAllFollowers", query="SELECT u FROM User u JOIN FETCH u.followers WHERE u.id = :id")
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
