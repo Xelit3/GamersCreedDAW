@@ -91,16 +91,16 @@
 			<td colspan="3">
 				<h3>Operaciones</h3>
 				<div class="listDiv">					
-					<!--<ul>
-						<li ng-repeat="vOperation in gCreedCtrl.user.operationsSended">{{vOperation.getName()}}</li>
-					</ul> -->
+					<ul>
+						<li ng-repeat="vOperation in gCreedCtrl.operationsArray">{{vOperation}}</li>
+					</ul>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
 			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
-			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
+			<td><input class="gCbutton" type="submit" value="Intercambio" ng-click="appAction=5" /></td>
 		</tr>
 	</table>
 	<div class="clearBoth"></div>

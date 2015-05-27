@@ -1,1 +1,22 @@
-<h1>manage users view</h1>
+<h2>Manage users</h2>
+<form class="defaultform">
+	<table>
+		<tr>
+			<th>Username</th><th>Name</th><th>Role</th><th>Address street</th><th>Address CP</th><th>Address city</th><th>Address country</th>
+		</tr>
+		<tr ng-repeat="vUser in gCreedCtrl.usersArray">
+			<td><input type="text" ng-model="vUser.username"/></td>
+			<td><input type="text" ng-model="vUser.name"/></td>
+			<td><select ng-model="vUser.role" ng-options="o for o in [0,1,2]"></select></td>
+			
+			<td><input type="text" ng-model="vUser.addressStreet"/></td>
+			<td><input type="text" ng-model="vUser.addressCp"/></td>
+			<td><input type="text" ng-model="vUser.addressCity"/></td>
+			<td>
+				<select ng-model="vUser.addressCountry">
+	        		<option ng-repeat="country in gCreedCtrl.countryArray">{{country.name}}</option>
+	      		</select>
+			</td>			
+		</tr>
+	</table>
+</form>

@@ -10,7 +10,38 @@
   	<description></description>
   	<servlet-class>com.project.gamerscreed.control.UserServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>VideogameServlet</servlet-name>
+  	<display-name>VideogameServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.project.gamerscreed.control.VideogameServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>OperationsServlet</servlet-name>
+  	<display-name>OperationsServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.project.gamerscreed.control.OperationsServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ForumServlet</servlet-name>
+  	<display-name>ForumServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.project.gamerscreed.control.ForumServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>UserServlet</servlet-name>
   	<url-pattern>/UserServlet</url-pattern>
-  </servlet-mapping></web-app>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>VideogameServlet</servlet-name>
+  	<url-pattern>/VideogameServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>OperationsServlet</servlet-name>
+  	<url-pattern>/OperationsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ForumServlet</servlet-name>
+  	<url-pattern>/ForumServlet</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -10,8 +10,16 @@ import com.project.gamerscreed.model.dto.Operation;
 import com.project.gamerscreed.model.dto.User;
 import com.project.gamerscreed.model.dto.Videogame;
 
+/**
+ * The Class OperationDAOLayer.
+ * @author: Xavi Rueda
+ * @version: 1.0, 5/27/15
+ */
 public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#create(java.lang.Object)
+	 */
 	@Override
 	public boolean create(Operation anOperation) {
 		try{
@@ -47,12 +55,18 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#modify(java.lang.Object)
+	 */
 	@Override
 	public boolean modify(Operation anObject) {
 		//Will not be implemented. NOT NEEDED
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(Operation anObject) {
 		try{
@@ -71,6 +85,9 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 		}	
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#getAll()
+	 */
 	@Override
 	public List<Operation> getAll() {
 		TypedQuery<Operation> query = this.entityManager.createNamedQuery("Operation.findAll", Operation.class);
@@ -79,12 +96,18 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.OperationDAO#acceptOperation(int)
+	 */
 	@Override
 	public boolean acceptOperation(int anId) {
 		//TODO Accept operation
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.OperationDAO#rejectOperation(int)
+	 */
 	@Override
 	public boolean rejectOperation(int anId) {
 		try{

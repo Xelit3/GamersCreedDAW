@@ -8,17 +8,27 @@ import javax.persistence.TypedQuery;
 
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dao.UserDAO;
-import com.project.gamerscreed.model.dto.Operation;
 import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.User;
 import com.project.gamerscreed.model.dto.Videogame;
 
+/**
+ * The Class UserDAOLayer.
+ * @author: Xavi Rueda
+ * @version: 1.0, 5-27-15
+ */
 public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	
+	/**
+	 * Instantiates a new user dao layer.
+	 */
 	public UserDAOLayer() {
 		super();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#create(java.lang.Object)
+	 */
 	@Override
 	public boolean create(User anObject) {
 		try{			
@@ -39,6 +49,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#modify(java.lang.Object)
+	 */
 	@Override
 	public boolean modify(User anObject) {
 		try{			
@@ -55,6 +68,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(User anObject) {
 		try{			
@@ -71,6 +87,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}	
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#getAll()
+	 */
 	@Override
 	public List<User> getAll() {
 		TypedQuery<User> query = this.entityManager.createNamedQuery("User.findAll", User.class);
@@ -79,6 +98,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#login(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public User login(String aUsername, String aPassword) {
 		TypedQuery<User> query = this.entityManager.createNamedQuery("User.loginUser", User.class);
@@ -90,6 +112,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		return tmpUser;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#getAllUsernames()
+	 */
 	@Override
 	public Map<String, String> getAllUsernames() {
 		Map<String, String> tmpUsernames = new HashMap<String, String>();
@@ -103,6 +128,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		return tmpUsernames;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#addVideogameToUser(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.Videogame)
+	 */
 	@Override
 	public boolean addVideogameToUser(User anUser, Videogame aVideogame) {
 		try{
@@ -128,6 +156,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#removeVideogameFromUser(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.Videogame)
+	 */
 	@Override
 	public boolean removeVideogameFromUser(User anUser, Videogame aVideogame) {
 		try{
@@ -153,6 +184,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#addFollower(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.User)
+	 */
 	@Override
 	public boolean addFollower(User anUser, User aFollower) {
 		try{
@@ -178,6 +212,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#removeFollower(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.User)
+	 */
 	@Override
 	public boolean removeFollower(User anUser, User aFollower) {
 		try{
@@ -203,6 +240,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#addFollowing(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.User)
+	 */
 	@Override
 	public boolean addFollowing(User anUser, User aFollowing) {
 		try{
@@ -228,6 +268,9 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#removeFollowing(com.project.gamerscreed.model.dto.User, com.project.gamerscreed.model.dto.User)
+	 */
 	@Override
 	public boolean removeFollowing(User anUser, User aFollowing) {
 		try{
@@ -253,12 +296,26 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#getUserById(int)
+	 */
 	@Override
 	public User getUserById(int anId) {
 		TypedQuery<User> query = this.entityManager.createNamedQuery("User.getById", User.class);
 		query.setParameter("id", anId);
 				
 		return query.getSingleResult();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#getOtherUsers(int)
+	 */
+	@Override
+	public List<User> getOtherUsers(int anId) {
+		TypedQuery<User> query = this.entityManager.createNamedQuery("User.findOthers", User.class);
+		query.setParameter("id", anId);
+				
+		return query.getResultList();
 	}
 
 }

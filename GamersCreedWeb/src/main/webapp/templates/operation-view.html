@@ -1,36 +1,28 @@
 <h2>Operations</h2>
-<!-- 
-<form ng-submit="">
+<form class="defaultform" ng-submit="gCreedCtrl.makeOperation()">
 	<div id="fromUserDiv">
-		<select id="selectedUserReceiver" ng-change="gCreedCtrl.getUserReceiverData()">
-			<option ng-repeat="vUser in gCreedCtrl.usersArray" id="{{vUser.getId()}}">{{vUser.getUsername()}}</option>			
-		</select>
-		<select id="videogameReceiverSelected" ng-model="gCreedCtrl.selectedReceiverGame" ng-if="gCreedCtrl.selectedUser != null">
-			<option ng-repeat="vVideogame in gCreedCtrl.selectedUser.videogames" id="{{vVideogame.getId()}}">{{vVideogame.getName()}}</option>
-		</select>
+		<select id="selectedUserReceiver" ng-change="gCreedCtrl.getUserReceiverData()" ng-model="gCreedCtrl.tempUserReceiver" ng-options="vUser.username for vUser in gCreedCtrl.usersArray track by vUser.id"></select>
+		<select id="videogameReceiverSelected" ng-model="gCreedCtrl.tmpVideogameReceiver" ng-if="gCreedCtrl.tempUserReceiver != null" ng-options="vVideogame.name for vVideogame in gCreedCtrl.videogamesRecieverArray track by vVideogame.id"></select> 
 	</div>
 	
-	<div id="localUserDiv" ng-show="gCreedCtrl.selectedReceiverGame">
+ 	<div id="localUserDiv" ng-show="gCreedCtrl.tmpVideogameReceiver">
 		<table>
 			<tr>
 				<td>Price: </td>
-				<td><input type="text" name="offeredPrice" ng-model="gCreedCtrl.offeredPrice"/></td>
+				<td><input type="number" step="any" name="offeredPrice" ng-model="gCreedCtrl.operation.price" /></td>
 			</tr>
 			<tr>
 				<td>Game to exange</td>
 				<td>
-					<select id="videogamesSenderSelected" ng-model="gCreedCtrl.selectedSendedGame">
-						<option ng-repeat="vVideogame in gCreedCtrl.user.videogames" id="{{vVideogame.getId()}}">{{vVideogame.getName()}}</option>
-					</select>
+					<select id="videogamesSenderSelected" ng-model="gCreedCtrl.tmpVideogameSender" ng-options="vVideogame.name for vVideogame in gCreedCtrl.videogamesSenderArray track by vVideogame.id"></select>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<input ng-show="gCreedCtrl.selectedReceiverGame && (gCreedCtrl.offeredPrice > 0 || gCreedCtrl.selectedSendedGame != null)" type="submit" value="Make offer" />
+					<input ng-show="gCreedCtrl.tmpVideogameReceiver && (gCreedCtrl.operation.price > 0 || gCreedCtrl.tmpVideogameSender != null)" type="submit" value="Make offer" />
 				</td>
 			</tr>
-		</table>		
-	
+		</table>	
 	</div>
 	
-</form>-->
+</form>

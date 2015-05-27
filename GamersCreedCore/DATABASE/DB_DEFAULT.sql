@@ -89,3 +89,7 @@ INSERT INTO users_followers VALUES(2, 1);
 
 INSERT INTO users_followings VALUES(1, 2);
 INSERT INTO users_followings VALUES(2, 1);
+
+INSERT INTO forum_sections VALUES(1, "Hardware");
+INSERT INTO forum_sections VALUES(2, "Games");
+INSERT INTO forum_sections VALUES(3, "Community");

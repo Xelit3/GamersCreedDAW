@@ -12,8 +12,16 @@ import com.project.gamerscreed.model.dto.ForumSection;
 import com.project.gamerscreed.model.dto.ForumThread;
 import com.project.gamerscreed.model.dto.User;
 
+/**
+ * The Class ForumThreadDAOLayer.
+ * @author: Xavi Rueda
+ * @version: 1.0, 5-27-15
+ */
 public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadDAO{
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#create(java.lang.Object)
+	 */
 	@Override
 	public boolean create(ForumThread aThread) {
 		try{
@@ -32,6 +40,9 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadD
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#modify(java.lang.Object)
+	 */
 	@Override
 	public boolean modify(ForumThread aThread) {
 		try{			
@@ -48,6 +59,9 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadD
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(ForumThread aThread) {
 		try{			
@@ -64,6 +78,9 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadD
 		}	
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#getAll()
+	 */
 	@Override
 	public List<ForumThread> getAll() {
 		TypedQuery<ForumThread> query = this.entityManager.createNamedQuery("ForumThread.findAll", ForumThread.class);
@@ -72,6 +89,9 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadD
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.ForumThreadDAO#commentThread(com.project.gamerscreed.model.dto.ForumThread, com.project.gamerscreed.model.dto.ForumMessage)
+	 */
 	@Override
 	public boolean commentThread(ForumThread aThread, ForumMessage aMessage) {
 		try{
@@ -92,6 +112,17 @@ public class ForumThreadDAOLayer extends GenericDAOLayer implements ForumThreadD
 			e.printStackTrace();
 			return false;	
 		}		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.ForumThreadDAO#getAllSections()
+	 */
+	@Override
+	public List<ForumSection> getAllSections() {
+		TypedQuery<ForumSection> query = this.entityManager.createNamedQuery("ForumSection.findAll", ForumSection.class);
+		List<ForumSection> result = query.getResultList();
+		
+		return result;
 	}
 
 }

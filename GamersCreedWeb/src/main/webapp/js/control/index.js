@@ -6,23 +6,29 @@
 		console.log("Controller intitialized");
 		
 		this.user = new userObj();
+		this.usersArray = new Array();
 		this.followersArray = new Array();
 		this.followingsArray = new Array();
 		this.videogamesArray = new Array();
+		this.operationsArray = new Array();
 		this.postArray = new Array();
-		//Variables for operations
-		this.usersArray = new Array();
-		this.userReceiver = new userObj();
-		this.selectedUser = null;
-		this.selectedReceiverGame = null;
-		this.offeredPrice = 0.0;
-		this.selectedSendedGame = null;
+		this.brandArray = new Array();
+		this.countryArray = new Array();
+		this.citieArray = new Array();
+		this.forumSectionsArray = new Array();
+		this.forumThreadsArray = new Array();
+		//Variables for operations		
+		this.videogamesRecieverArray = new Array();
+		this.videogamesSenderArray = new Array();
+		this.operation = new operationObj();		
+		this.tempUserReceiver;
+		this.tmpVideogameSender;
+		this.tmpVideogameReceiver;
 		
 		$scope.appAction=0;
 		//if user is not registered, basic or admin
 		$scope.userType=-1;
-		$scope.passwordValid=true;
-		
+				
 		this.sessionCtrl=function(){
 			
 			$.ajax({
@@ -197,29 +203,221 @@
 		};
 		
 		this.loadUsers= function (){
-				//TODO Load all users
-			/*this.user=angular.copy(this.user);
 			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
 				data : {
 					action : 15					
 				},
-				async: true,
+				async: false,
 				success : function(responseText) {
-					response = responseText;
-					alert(response);
-					$scope.appAction=1;
+					response = responseText;										
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert("There has been an error while connecting to the server, try later");
 					console.log(xhr.status+"\n"+thrownError);
 				}
-		    })*/
+		    })
+		    if(response[0]){
+		    	for(var i=0; i<response[1].length; i++){
+		    		var user = new userObj();
+		    		user.construct(response[1][i].id, response[1][i].roleId, response[1][i].name, response[1][i].username, response[1][i].mail);
+					user.setAddress(response[1][i].addressStreet, response[1][i].addressCp, response[1][i].addressCity, response[1][i].addressCountry);
+		    		this.usersArray.push(user);
+		    	}
+		    }
 		};
 		
 		this.getUserReceiverData = function (){
-			//TODO Recibir mediante el ID el usuario entero, juegos etc (this.selectedUser)
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 31,
+					userId: this.tempUserReceiver.getId()
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.videogamesRecieverArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var videogame = new videogameObj();
+		    		videogame.construct(response[1][i].id, response[1][i].name, response[1][i].developer, response[1][i].publisher, response[1][i].year);
+		    		videogame.setConfirmed(response[1][i].confirmed);
+		    		this.videogamesRecieverArray.push(videogame);
+		    	}
+		    }
+			this.getSessionUserVideogames();			
+		};
+		
+		this.getSessionUserVideogames = function(){
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 31,
+					userId: this.user.getId()
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.videogamesSenderArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var videogame = new videogameObj();
+		    		videogame.construct(response[1][i].id, response[1][i].name, response[1][i].developer, response[1][i].publisher, response[1][i].year);
+		    		videogame.setConfirmed(response[1][i].confirmed);
+		    		this.videogamesSenderArray.push(videogame);
+		    	}
+		    }
+		};
+		
+		
+		this.videogameSuggest = function(){
+			//TODO
+		};
+		
+		this.makeOperation = function(){			
+			this.operation.formatOperation(this.user, this.tempUserReceiver, this.tmpVideogameSender, this.tmpVideogameReceiver);
+			$.ajax({
+				url : 'OperationsServlet',
+				type : "POST",
+				data : {
+					action : 40,
+					JSONOperationData : JSON.stringify(this.operation)
+				},
+				async: true,
+				success : function(responseText) {
+					response = responseText;					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })		    
+		};
+		
+		this.loadAllVideogames = function (){
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 30					
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.videogamesArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var videogame = new videogameObj();
+		    		videogame.construct(response[1][i].id, response[1][i].name, response[1][i].developer, response[1][i].publisher, response[1][i].year);
+		    		videogame.setConfirmed(response[1][i].confirmed);
+		    		this.videogamesArray.push(videogame);
+		    	}
+		    }
+		};
+		
+		this.loadAllBrands = function (){
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 32					
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.brandArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var brand = new brandObj();
+		    		brand.construct(response[1][i].id, response[1][i].name, response[1][i].country);
+		    		this.brandArray.push(brand);
+		    	}
+		    }
+		};
+		
+		this.loadAllPlaces = function (){
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 33					
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.countryArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var country = new countryObj();
+		    		country.construct(response[1][i].id, response[1][i].name);
+		    		this.countryArray.push(country);
+		    	}
+		    }
+			if(response[2]){
+		    	this.cityArray = new Array();
+		    	for(var i=0; i<response[3].length; i++){
+		    		var city = new cityObj();
+		    		city.construct(response[3][i].id, response[3][i].name);
+		    		this.cityArray.push(city);
+		    	}
+		    }
+		};
+		
+		this.getForumSections = function(){
+			$.ajax({
+				url : 'ForumServlet',
+				type : "POST",
+				data : {
+					action : 20					
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	for(var i=0; i<response[1].length; i++){
+		    		this.forumSectionsArray.push(response[1][i].name);
+		    	}		    	
+		    }
 		};
 		
 		this.getUserListData = function (){			
@@ -255,6 +453,9 @@
 					var videogame = new videogameObj();
 					videogame.construct(response[3][i].id, response[3][i].name, response[3][i].developer, response[3][i].publisher, response[3][i].year);
 					this.videogamesArray.push(videogame);
+				}
+				for(var i=0; i<response[4].length; i++){
+					this.operationsArray.push(response[4][i]);
 				}
 			}
 		};
@@ -390,6 +591,16 @@
 			
 		  },
 		  controllerAs: 'wallView'
+		};
+	});
+	gamersCreedApp.directive("videogameSuggestionForm", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/videogame-suggestion-form.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'videogameSuggestionForm'
 		};
 	});
 

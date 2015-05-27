@@ -2,18 +2,45 @@ package com.project.gamerscreed.view;
 
 import com.project.gamerscreed.model.dto.User;
 
+/**
+ * The Class UserBasicData.
+ * @author: Xavi Rueda
+ * @version: 1.0, 5-27-15
+ */
 public class UserBasicData {
 	
+	/** The id. */
 	private int id;
+	
+	/** The username. */
 	private String username;
+	
+	/** The name. */
 	private String name;
+	
+	/** The mail. */
 	private String mail;
+	
+	/** The role id. */
 	private int roleId;
+	
+	/** The address cp. */
 	private int addressCp;
+	
+	/** The address street. */
 	private String addressStreet;
+	
+	/** The address city. */
 	private String addressCity;
+	
+	/** The address country. */
 	private String addressCountry;
 	
+	/**
+	 * Instantiates a new user basic data.
+	 *
+	 * @param anUser the an user
+	 */
 	public UserBasicData(User anUser){
 		this.id = anUser.getId();
 		this.username = anUser.getUsername();
@@ -29,6 +56,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the username.
+	 *
 	 * @return the username
 	 */
 	public String getUsername() {
@@ -36,6 +65,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the username.
+	 *
 	 * @param username the username to set
 	 */
 	public void setUsername(String username) {
@@ -43,6 +74,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the name.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -50,6 +83,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the name.
+	 *
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
@@ -57,6 +92,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the mail.
+	 *
 	 * @return the mail
 	 */
 	public String getMail() {
@@ -64,6 +101,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the mail.
+	 *
 	 * @param mail the mail to set
 	 */
 	public void setMail(String mail) {
@@ -71,6 +110,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the role id.
+	 *
 	 * @return the roleId
 	 */
 	public int getRoleId() {
@@ -78,6 +119,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the role id.
+	 *
 	 * @param roleId the roleId to set
 	 */
 	public void setRoleId(int roleId) {
@@ -85,6 +128,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the id.
+	 *
 	 * @return the id
 	 */
 	public int getId() {
@@ -92,6 +137,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the id.
+	 *
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
@@ -99,6 +146,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the address cp.
+	 *
 	 * @return the addressCp
 	 */
 	public int getAddressCp() {
@@ -106,6 +155,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the address cp.
+	 *
 	 * @param addressCp the addressCp to set
 	 */
 	public void setAddressCp(int addressCp) {
@@ -113,6 +164,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the address street.
+	 *
 	 * @return the addressStreet
 	 */
 	public String getAddressStreet() {
@@ -120,6 +173,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the address street.
+	 *
 	 * @param addressStreet the addressStreet to set
 	 */
 	public void setAddressStreet(String addressStreet) {
@@ -127,6 +182,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the address city.
+	 *
 	 * @return the addressCity
 	 */
 	public String getAddressCity() {
@@ -134,6 +191,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the address city.
+	 *
 	 * @param addressCity the addressCity to set
 	 */
 	public void setAddressCity(String addressCity) {
@@ -141,6 +200,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Gets the address country.
+	 *
 	 * @return the addressCountry
 	 */
 	public String getAddressCountry() {
@@ -148,6 +209,8 @@ public class UserBasicData {
 	}
 
 	/**
+	 * Sets the address country.
+	 *
 	 * @param addressCountry the addressCountry to set
 	 */
 	public void setAddressCountry(String addressCountry) {

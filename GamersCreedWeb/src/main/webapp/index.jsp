@@ -28,7 +28,11 @@
 	<!-- Other JS scripts -->			
 	<script type="text/javascript" src="js/model/post.js"></script>
 	<script type="text/javascript" src="js/model/user.js"></script>
+	<script type="text/javascript" src="js/model/brand.js"></script>
+	<script type="text/javascript" src="js/model/city.js"></script>
+	<script type="text/javascript" src="js/model/country.js"></script>
 	<script type="text/javascript" src="js/model/videogame.js"></script>
+	<script type="text/javascript" src="js/model/operation.js"></script>
 	<script type="text/javascript" src="js/control/index.js"></script>
 </head>
 
@@ -37,27 +41,29 @@
 		<h1>Gamer's creed</h1>
 
 		<ul>
-			<li><a href="" ng-click="appAction=0">Principal</a></li>
-			<li ng-show="userType==2"><a href="" ng-click="appAction=5">Operations</a></li>
-			<li ng-show="userType>-1"><a href="" ng-click="appAction=2">Perfil</a></li>
-			<li ng-show="userType==0"><a href="" ng-click="appAction=6">Manage users</a></li>
-			<li><a href="" ng-click="appAction=3">Foro</a></li>
+			<li><a href="" ng-click="appAction=0">Main</a></li>
+			<li ng-show="userType>-1"><a href="" ng-click="appAction=5">Operations</a></li>
+			<li ng-show="userType>-1"><a href="" ng-click="appAction=2">Profile</a></li>
+			<li ng-show="userType==0"><a href="" ng-click="appAction=6">Manage users</a></li>			
 			<li ng-show="userType==0"><a href="" ng-click="appAction=7">Manage videogames list</a></li>
+			<li ng-show="userType>0"><a href="" ng-click="appAction=8">Suggest videogame</a></li>
+			<li><a href="" ng-click="appAction=3">Forum</a></li>
 			<li ng-show="userType==-1"><a href="" id="loginButton" ng-click="appAction=1">Login</a></li>
 			<li ng-show="userType!=-1"><a href="" id="loginButton" ng-click="gCreedCtrl.logout()">Logout</a></li>
 		</ul>
 		
 	</header>
 
-	<div class="mainDiv contentSections">
+	<div class="mainDiv contentSections" ng-init="gCreedCtrl.loadUsers()">
 		<wall-view ng-show="appAction==0" ng-init="gCreedCtrl.searchPosts()"></wall-view>
 		<login-form ng-show="appAction==1"></login-form>
 		<user-modify-form ng-if="appAction==2" ng-init="gCreedCtrl.getUserListData()"></user-modify-form>
-		<forum-view ng-show="appAction==3"></forum-view>
+		<forum-view ng-if="appAction==3" ng-init="gCreedCtrl.getForumSections()"></forum-view>
 		<user-entry-form ng-show="appAction==4"></user-entry-form>
-		<operation-view ng-show="appAction==5" ng-init="gCreedCtrl.loadUsers()"></operation-view>
-		<manage-users-view ng-show="appAction==6"></manage-users-view>
-		<manage-videogames-view ng-show="appAction==7"></manage-videogames-view>
+		<operation-view ng-show="appAction==5"></operation-view>
+		<manage-users-view ng-show="appAction==6" ng-init="gCreedCtrl.loadAllPlaces()"></manage-users-view>
+		<manage-videogames-view ng-if="appAction==7" ng-init="gCreedCtrl.loadAllVideogames(); gCreedCtrl.loadAllBrands()"></manage-videogames-view>
+		<videogame-suggestion-form ng-show="appAction==8"></videogame-suggestion-form>
 	</div>	
 	
 	<aside class="advDiv contentSections">

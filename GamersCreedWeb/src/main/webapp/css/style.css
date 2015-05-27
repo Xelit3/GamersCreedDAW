@@ -57,6 +57,7 @@ header #loginButton:hover{
   	background-color: rgba(255, 255, 255, 0.6);
   	border-radius: 5px;
   	margin-bottom: 2em;
+  	overflow: auto;
 }
 
 .mainDiv{	
@@ -310,4 +311,7 @@ footer p{
 
 #profileForm div{
 	overflow: auto;
+}
+.defaultform{
+	border: none !important;
 }

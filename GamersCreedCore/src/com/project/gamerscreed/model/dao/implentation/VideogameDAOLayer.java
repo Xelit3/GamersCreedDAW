@@ -9,12 +9,23 @@ import com.project.gamerscreed.model.dao.VideogameDAO;
 import com.project.gamerscreed.model.dto.Brand;
 import com.project.gamerscreed.model.dto.Videogame;
 
+/**
+ * The Class VideogameDAOLayer.
+ * @author: Xavi Rueda
+ * @version: 1.0, 5-27-15
+ */
 public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	
+	/**
+	 * Instantiates a new videogame dao layer.
+	 */
 	public VideogameDAOLayer() {
 		super();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#create(java.lang.Object)
+	 */
 	@Override
 	public boolean create(Videogame aVideogame) {
 		try{			
@@ -40,6 +51,9 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#modify(java.lang.Object)
+	 */
 	@Override
 	public boolean modify(Videogame anObject) {
 		try{			
@@ -56,6 +70,9 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#remove(java.lang.Object)
+	 */
 	@Override
 	public boolean remove(Videogame anObject) {
 		try{			
@@ -72,6 +89,9 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		}	
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#getAll()
+	 */
 	@Override
 	public List<Videogame> getAll() {
 		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.findAll", Videogame.class);
@@ -80,6 +100,9 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.VideogameDAO#confirmVideogame(int)
+	 */
 	@Override
 	public boolean confirmVideogame(int anId) {
 		try{			
@@ -99,6 +122,9 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.VideogameDAO#getAllUnconfirmedGames()
+	 */
 	@Override
 	public List<Videogame> getAllUnconfirmedGames() {
 		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.findAllUnconfirmed", Videogame.class);
