@@ -27,7 +27,10 @@ public class VideogameBasicData {
 	/** The confirmed. */
 	public boolean confirmed;
 	
+	/** The publisher Id. */
 	public int publisherId;
+	
+	/** The developer Id. */
 	public int developerId;
 	
 	/**
@@ -40,6 +43,8 @@ public class VideogameBasicData {
 		this.name = aVideogame.getName();
 		this.developer = aVideogame.getDeveloper().getName();
 		this.publisher = aVideogame.getPublisher().getName();
+		this.developerId = aVideogame.getDeveloper().getId();
+		this.publisherId = aVideogame.getPublisher().getId();
 		this.year = aVideogame.getYear();
 		this.confirmed = aVideogame.getConfirmed();
 	}

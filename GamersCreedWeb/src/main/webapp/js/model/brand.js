@@ -7,10 +7,9 @@ function brandObj() {
 	this.name;
 	this.country;
 	
-	this.construct = function (id, name, country){
+	this.construct = function (id, name){
 		this.id=id;
-		this.name=name;
-		this.country=country;
+		this.name=name;		
 	}
 	
 	this.setId = function(id) {this.id = id;}

@@ -1,5 +1,5 @@
 <h2>Manage videogames</h2>
-<form class="defaultform">
+<form class="defaultform" ng-submit="gCreedCtrl.modifyVideogamesArray()">
 	<table>
 		<tr>
 			<th>Name</th><th>Publisher</th><th>Developer</th><th>Year</th><th>Confirmed</th>
@@ -7,18 +7,22 @@
 		<tr ng-repeat="vVideogame in gCreedCtrl.videogamesArray">
 			<td><input type="text" ng-model="vVideogame.name" /></td>
 			<td>
-				<select ng-model="vVideogame.publisher">
+				<!--  <select ng-model="vVideogame.publisher">
 	        		<option ng-repeat="publisher in gCreedCtrl.brandArray">{{publisher.name}}</option>
+	      		</select>-->
+	      		<select ng-model="vVideogame.publisher" ng-options="publisher.name for publisher in gCreedCtrl.brandArray track by publisher.id">
 	      		</select>
 	      	</td>
 						
 			<td>
-				<select ng-model="vVideogame.developer">
+				<!-- <select ng-model="vVideogame.developer">
 	        		<option ng-repeat="publisher in gCreedCtrl.brandArray">{{publisher.name}}</option>
-	      		</select>
+	      		</select> -->
+	      		<select ng-model="vVideogame.developer" ng-options="publisher.name for publisher in gCreedCtrl.brandArray track by publisher.id">
 	      	</td>
 			<td><input type="number" ng-model="vVideogame.year" /></td>
 			<td><input type="checkbox" ng-model="vVideogame.confirmed" ng-change="gCreedCtrl.confirmVideogame($index)"/></td>
 		</tr>
+		<tr><td></td><td></td><td></td><td></td><td><input type="submit"/></td></tr>
 	</table>
 </form>

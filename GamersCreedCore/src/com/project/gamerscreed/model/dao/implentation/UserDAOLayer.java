@@ -79,8 +79,7 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 						
 			this.entityManager.merge(tmpUserReference);
 			this.commitTransaction();
-			this.closeTransaction();
-
+			
 			return true;
 		}
 		catch(Exception e){
@@ -349,5 +348,10 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 				
 		return query.getResultList();
 	}
+	
+	public void closeTransactionConnection(){
+		this.closeTransaction();
+	}
+
 
 }

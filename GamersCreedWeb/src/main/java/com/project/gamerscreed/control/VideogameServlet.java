@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.VideogameDAO;
 import com.project.gamerscreed.model.dao.implentation.BrandDAOLayer;
@@ -105,6 +106,10 @@ public class VideogameServlet extends HttpServlet {
 				case 36:
 					changeVideogameConfirmation(request, response);
 					break;
+					
+				case 37:
+					modifyVideogames(request, response);
+					break;	
 								
 				default:
 					out.println("Action number wrong");
@@ -310,6 +315,21 @@ public class VideogameServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
+		
+	}
+	
+	private void modifyVideogames(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		List<VideogameBasicData> tmpVideogameReceivedList = new Gson().fromJson(request.getParameter("JSONVideogameListData"), new TypeToken<List<VideogameBasicData>>() {}.getType());
+		List<Videogame> videogameList= new ArrayList<Videogame>();
+		for (VideogameBasicData videogame : tmpVideogameReceivedList){
+			Videogame tmpVideogame = new Videogame(videogame);
+			videogameList.add(tmpVideogame);
+		}
+		VideogameDAOLayer tmpLayer = new VideogameDAOLayer();
+		for (Videogame v : videogameList) {
+			tmpLayer.modify(v);
+		}
+		tmpLayer.closeTransactionConnection();
 		
 	}
 

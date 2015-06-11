@@ -74,6 +74,7 @@ public class Videogame implements Serializable {
 	}
 
 	public Videogame(VideogameBasicData aVideogameBasicData) {
+		this.id = aVideogameBasicData.getId();
 		this.name = aVideogameBasicData.getName();
 		this.year = aVideogameBasicData.getYear();
 		this.publisher = new Brand();

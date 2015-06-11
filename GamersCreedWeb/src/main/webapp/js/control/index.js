@@ -65,7 +65,7 @@
 		};
 		
 		this.login = function(){
-			this.user.setRole(null);
+			this.user.setRoleId(null);
 			this.user=angular.copy(this.user);
 			
 			$.ajax({
@@ -95,9 +95,60 @@
 				
 			}
 		};
+		
+		this.modifyUsersArray= function (){
+			for(var i=0;i<this.usersArray;i++){				
+				this.usersArray[i].format();
+			}
+			
+			this.usersArray=angular.copy(this.usersArray);
+			
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 23,
+					JSONUserListData : JSON.stringify(this.usersArray)
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })			
+		};
+		
+		this.modifyVideogamesArray = function(){
+			var videogamesArray=angular.copy(this.videogamesArray);
+			for(var i=0;i<this.videogamesArray.length;i++){
+				this.videogamesArray[i].format();
+			}
+			
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 37,
+					JSONVideogameListData : JSON.stringify(this.videogamesArray)
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+	
+		    this.videogamesArray=videogamesArray;
+		};
 				
 		this.userCreate=function(){
-			this.user.setRole(null);
+			this.user.setRoleId(null);
 			this.user=angular.copy(this.user);
 				$.ajax({
 					url : 'UserServlet',
@@ -375,8 +426,12 @@
 		    if(response[0]){
 		    	this.videogamesArray = new Array();
 		    	for(var i=0; i<response[1].length; i++){
+		    		var tmpDeveloper = new brandObj();		
+		    		tmpDeveloper.construct(response[1][i].developerId, response[1][i].developer);
+					var tmpPublisher = new brandObj();		
+					tmpPublisher.construct(response[1][i].publisherId, response[1][i].publisher);
 		    		var videogame = new videogameObj();
-		    		videogame.construct(response[1][i].id, response[1][i].name, response[1][i].developer, response[1][i].publisher, response[1][i].year);
+		    		videogame.construct(response[1][i].id, response[1][i].name, tmpDeveloper, tmpPublisher, response[1][i].year);
 		    		videogame.setConfirmed(response[1][i].confirmed);
 		    		this.videogamesArray.push(videogame);
 		    	}
@@ -403,7 +458,7 @@
 		    	this.brandArray = new Array();
 		    	for(var i=0; i<response[1].length; i++){
 		    		var brand = new brandObj();
-		    		brand.construct(response[1][i].id, response[1][i].name, response[1][i].country);
+		    		brand.construct(response[1][i].id, response[1][i].name);
 		    		this.brandArray.push(brand);
 		    	}
 		    }
@@ -731,7 +786,8 @@
 					alert("There has been an error while connecting to the server, try later");
 					console.log(xhr.status+"\n"+thrownError);
 				}
-		    })		    
+		    });
+			this.foundedArray = new Array();
 		};
 		
 	});

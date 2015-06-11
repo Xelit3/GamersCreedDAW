@@ -7,7 +7,7 @@ function userObj ()
 {
 	//Attributes declaration
 	this.id;
-	this.role;
+	this.roleId;
 	this.name;
 	this.username;
 	this.password;
@@ -22,16 +22,16 @@ function userObj ()
 	this.videogames;
 	this.posts;
 
-	this.construct = function (id, role, name, username, mail){
+	this.construct = function (id, roleId, name, username, mail){
 		this.id=id;
-		this.role=role;
+		this.roleId=roleId;
 		this.name=name;
 		this.username=username;		
 		this.mail=mail;
 	}
 
 	this.setId = function (id){this.id=id;}
-	this.setRole = function (role){this.role=role;}
+	this.setRoleId = function (roleId){this.roleId=roleId;}
 	this.setName = function (name){this.name=name;}
 	this.setUsername = function (username){this.username=username;}
 	this.setPassword = function (password){this.password=password;}
@@ -47,7 +47,7 @@ function userObj ()
 		this.addressStreet = street;
 	}
 	this.getId = function () {return this.id;}
-	this.getRole = function () {return this.role;}
+	this.getRoleId = function () {return this.roleId;}//TODO RoleID
 	this.getName = function () {return this.name;}
 	this.getUsername = function () {return this.username;}
 	this.getPassword = function () {return this.password;}

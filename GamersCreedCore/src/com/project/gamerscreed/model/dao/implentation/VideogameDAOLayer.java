@@ -42,7 +42,7 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 			
 			this.commitTransaction();
 			this.closeTransaction();
-
+			
 			return true;
 		}
 		catch(Exception e){
@@ -55,13 +55,17 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	 * @see com.project.gamerscreed.model.dao.GenericDAOInterface#modify(java.lang.Object)
 	 */
 	@Override
-	public boolean modify(Videogame anObject) {
+	public boolean modify(Videogame aVideogame) {
 		try{			
 			this.beginTransaction();
-			this.entityManager.merge(anObject);
+			Videogame tmpVideogame = this.entityManager.getReference(Videogame.class, aVideogame.getId());
+			if(!tmpVideogame.getName().equals(aVideogame.getName()))
+				tmpVideogame.setName(aVideogame.getName());
+			tmpVideogame.setPublisher(this.entityManager.getReference(Brand.class, aVideogame.getPublisher().getId()));
+			tmpVideogame.setDeveloper(this.entityManager.getReference(Brand.class, aVideogame.getDeveloper().getId()));
+			this.entityManager.merge(tmpVideogame);
 			this.commitTransaction();
-			this.closeTransaction();
-
+			
 			return true;
 		}
 		catch(Exception e){
@@ -145,6 +149,10 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 		List<Videogame> result = query.getResultList();
 		
 		return result;
+	}
+	
+	public void closeTransactionConnection(){
+		this.closeTransaction();
 	}
 
 }

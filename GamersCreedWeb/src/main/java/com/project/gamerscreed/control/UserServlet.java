@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.project.gamerscreed.control.utilities.Encrypter;
 import com.project.gamerscreed.model.dao.UserDAO;
 import com.project.gamerscreed.model.dao.implentation.PostDAOLayer;
@@ -127,7 +128,11 @@ public class UserServlet extends HttpServlet {
 					
 				case 22: //modify user
 					modifyUser(request, response);
-					break;	
+					break;
+					
+				case 23: //modify userArray
+					modifyUserArray(request, response);
+					break;
 								
 				default:
 					out.println("Action number wrong");
@@ -145,6 +150,25 @@ public class UserServlet extends HttpServlet {
 		
 	}
 	
+	private void modifyUserArray(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		SessionBean sessionBean =sessionIsOpen(request);
+		if(sessionBean!=null){
+			PrintWriter out = response.getWriter();
+			List<UserBasicData> tmpReceivedUserList = new Gson().fromJson(request.getParameter("JSONUserListData"), new TypeToken<List<UserBasicData>>() {}.getType());
+			List<User> tmpUsers = new ArrayList<User>();
+			UserDAOLayer userDAO =new UserDAOLayer();
+			
+			for(UserBasicData u : tmpReceivedUserList){
+				tmpUsers.add(new User(u));
+			}
+			
+			for(User u : tmpUsers){
+				userDAO.modify(u);
+			}
+			userDAO.closeTransactionConnection();
+		}		
+	}
+	
 	private void modifyUser(HttpServletRequest request,	HttpServletResponse response) throws IOException {
 		SessionBean sessionBean =sessionIsOpen(request);
 		if(sessionBean!=null){
@@ -152,8 +176,9 @@ public class UserServlet extends HttpServlet {
 			UserBasicData tmpReceivedUser = new Gson().fromJson(request.getParameter("JSONUserData"), UserBasicData.class);
 			User tmpUser = new User(tmpReceivedUser);
 		
-			UserDAO userDAO =new UserDAOLayer();
-			boolean val = userDAO.modify(tmpUser);			
+			UserDAOLayer userDAO =new UserDAOLayer();
+			boolean val = userDAO.modify(tmpUser);
+			userDAO.closeTransactionConnection();
 			out.print("User mod is: " + val);	
 		}
 	}
