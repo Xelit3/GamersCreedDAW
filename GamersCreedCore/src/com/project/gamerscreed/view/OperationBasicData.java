@@ -1,5 +1,7 @@
 package com.project.gamerscreed.view;
 
+import com.project.gamerscreed.model.dto.Operation;
+
 /**
  * The Class OperationBasicData.
  * @author: Xavi Rueda
@@ -8,16 +10,28 @@ package com.project.gamerscreed.view;
 public class OperationBasicData {
 	
 	/** The user sender id. */
+	private int id;
+	
+	/** The user sender id. */
 	private int userSenderId;
 	
 	/** The user receiver id. */
 	private int userReceiverId;
+	
+	/** The videogame receiver id. */
+	private String userSenderName;
 	
 	/** The videogame sender id. */
 	private int videogameSenderId;
 	
 	/** The videogame receiver id. */
 	private int videogameReceiverId;
+	
+	/** The price. */
+	private String videogameSenderName;
+	
+	/** The price. */
+	private String videogameReceiverName;
 	
 	/** The date sended. */
 	private String dateSended;
@@ -28,10 +42,30 @@ public class OperationBasicData {
 	/** The price. */
 	private float price;
 	
+	/** The rejected. */
+	private boolean rejected;
+	
 	/**
 	 * Instantiates a new operation basic data.
 	 */
 	public OperationBasicData(){}
+	
+	/**
+	 * Instantiates a new operation basic data from an Operation class
+	 */
+	public OperationBasicData(Operation anOperation){
+		this.id = anOperation.getId();
+		this.userSenderId = anOperation.getUserSender().getId();
+		this.userReceiverId = anOperation.getUserReceived().getId();
+		this.userSenderName = anOperation.getUserSender().getUsername();
+		this.videogameSenderId = anOperation.getVideogameSended().getId();
+		this.videogameSenderName = anOperation.getVideogameSended().getName();
+		this.videogameReceiverId = anOperation.getVideogameReceived().getId();
+		this.videogameReceiverName = anOperation.getVideogameReceived().getName();
+		this.dateSended = anOperation.getDateSended().toString();
+		this.price = anOperation.getPrice();
+		this.rejected = anOperation.getRejected();
+	}
 	
 	/**
 	 * Gets the user sender id.
@@ -157,5 +191,75 @@ public class OperationBasicData {
 	 */
 	public void setDateAccepted(String dateAccepted) {
 		this.dateAccepted = dateAccepted;
+	}
+
+	/**
+	 * @return the userSenderName
+	 */
+	public String getUserSenderName() {
+		return userSenderName;
+	}
+
+	/**
+	 * @param userSenderName the userSenderName to set
+	 */
+	public void setUserSenderName(String userSenderName) {
+		this.userSenderName = userSenderName;
+	}
+
+	/**
+	 * @return the videogameSenderName
+	 */
+	public String getVideogameSenderName() {
+		return videogameSenderName;
+	}
+
+	/**
+	 * @param videogameSenderName the videogameSenderName to set
+	 */
+	public void setVideogameSenderName(String videogameSenderName) {
+		this.videogameSenderName = videogameSenderName;
+	}
+
+	/**
+	 * @return the videogameReceiverName
+	 */
+	public String getVideogameReceiverName() {
+		return videogameReceiverName;
+	}
+
+	/**
+	 * @param videogameReceiverName the videogameReceiverName to set
+	 */
+	public void setVideogameReceiverName(String videogameReceiverName) {
+		this.videogameReceiverName = videogameReceiverName;
+	}
+
+	/**
+	 * @return the rejected
+	 */
+	public boolean isRejected() {
+		return rejected;
+	}
+
+	/**
+	 * @param rejected the rejected to set
+	 */
+	public void setRejected(boolean rejected) {
+		this.rejected = rejected;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }

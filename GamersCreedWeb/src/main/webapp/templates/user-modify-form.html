@@ -1,5 +1,5 @@
-<form novalidate id="profileForm">
-	<h2>Perfil de usuario</h2>
+<form class="defaultform" novalidate id="profileForm">
+	<h2>User profile</h2>
 	<table>
 		<tr>
 			<td></td>
@@ -10,26 +10,26 @@
 		</tr>
 		
 		<tr>
-			<td>Nombre</td>
+			<td>Name</td>
 			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.name" /></td>
 			<td>Username</td>
 			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.username" readonly /></td>
 		</tr>
 		
 		<tr>
-			<td>Contrase&ntilde;a</td>
+			<td>Password</td>
 			<td colspan="2"><input type="password" ng-model="gCreedCtrl.user.password" /></td>
-			<td>Rep. contrase&ntilde;a</td>
+			<td>Rep. password</td>
 			<td colspan="2"><input type="password" ng-change="gCreedCtrl.checkPassword()" ng-model="passControl" /></td>
 		</tr>
 		
 		<tr>
-			<td>Correo</td>
+			<td>E-mail</td>
 			<td colspan="2"><input type="mail" ng-model="gCreedCtrl.user.mail"/></td>			
 		</tr>
 		
 		<tr>
-		<td>Direcci&oacute;n</td>
+		<td>Address</td>
 			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.addressStreet" /></td>
 			<td>Cp</td>
 			<td><input type="number" ng-model="gCreedCtrl.user.addressCp"></td>			
@@ -37,14 +37,26 @@
 
 		<tr>
 			<td>Country</td>
-			<td colspan="2"><select><option>{{gCreedCtrl.user.addressCountry}}</option></select></td>
+			<td colspan="2">
+				<select ng-model="gCreedCtrl.user.addressCountry" ng-options="vCountry.name for vCountry in gCreedCtrl.countryArray track by vCountry.id">
+					<!-- <option ng-repeat="country in gCreedCtrl.countryArray" ng-click="indexCountry=$index">{{country.name}}</option> -->
+				</select>
+			</td>
 			<td>City</td>
 			<td colspan="2"><input type="text" ng-model="gCreedCtrl.user.addressCity" /></td>
 		</tr>
 
 		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><input type="submit" value="Save changes" ng-click="gCreedCtrl.modifyUser()" /></td>
+		</tr>
+
+		<tr>
 			<td colspan="3">
-				<h3>Seguidores</h3>
+				<h3>Followers</h3>
 				<div class="listDiv">					
 					<ul>
 						<li ng-repeat="vFollower in gCreedCtrl.followersArray">{{vFollower.getUsername()}}</li>
@@ -53,13 +65,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-			<td><input class="gCbutton" type="submit" value="Buscar" /></td>
-			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
-		</tr>
-		<tr>
 			<td colspan="3">
-				<h3>Siguiendo</h3>
+				<h3>Followings</h3>
 				<div class="listDiv">
 					<ul>
 						<li ng-repeat="vFollowing in gCreedCtrl.followingsArray">{{vFollowing.getUsername()}}</li>
@@ -68,13 +75,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-			<td><input class="gCbutton" type="submit" value="Buscar" /></td>
-			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
+			<td><input class="gCbutton" type="submit" value="Add" ng--click="appAction=10"/></td>
+			<td></td>
+			<td><input class="gCbutton" type="submit" value="Remove" /></td>			
 		</tr>
 		<tr>
 			<td colspan="3">
-				<h3>Videojuegos</h3>
+				<h3>Videogames</h3>
 				<div class="listDiv">					
 					<ul>
 						<li ng-repeat="vVideogame in gCreedCtrl.videogamesArray">{{vVideogame.getName()}}</li>
@@ -83,13 +90,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
-			<td><input class="gCbutton" type="submit" value="Intercambio" /></td>
+			<td><input class="gCbutton" type="submit" value="Add" ng--click="appAction=11" /></td>
+			<td></td>
+			<td><input class="gCbutton" type="submit" value="Remove" /></td>			
 		</tr>
 		<tr>
 			<td colspan="3">
-				<h3>Operaciones</h3>
+				<h3>Operations</h3>
 				<div class="listDiv">					
 					<ul>
 						<li ng-repeat="vOperation in gCreedCtrl.operationsArray">{{vOperation}}</li>
@@ -98,9 +105,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input class="gCbutton" type="submit" value="A&ntilde;adir" /></td>
-			<td><input class="gCbutton" type="submit" value="Borrar" /></td>
-			<td><input class="gCbutton" type="submit" value="Intercambio" ng-click="appAction=5" /></td>
+			<td><input class="gCbutton" type="submit" value="See unconfirmed" ng--click="appAction=12" /></td>
+			<td></td>
+			<td><input class="gCbutton" type="submit" value="Make operation" ng--click="appAction=5" /></td>
 		</tr>
 	</table>
 	<div class="clearBoth"></div>

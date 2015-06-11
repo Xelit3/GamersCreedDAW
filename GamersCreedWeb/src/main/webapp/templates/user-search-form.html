@@ -1,0 +1,14 @@
+<form class="defaultform" ng-submit="gCreedCtrl.searchUser()">
+	<label for="inputName">Find a user</label>
+	<input type="text" name="inputName" ng-model="gCreedCtrl.textToFind"/>
+	<input type="submit" name="inputSubmit" value="Search" />
+	
+	<br />
+</form>
+<table>
+	<tr ng-repeat="vUser in gCreedCtrl.foundedArray">
+		<td>{{vUser.getUsername()}}</td>
+		<td><button ng--click="gCreedCtrl.followUser(vUser.getId(), $index)">Follow</button></td>
+	</tr>	
+</table>
+

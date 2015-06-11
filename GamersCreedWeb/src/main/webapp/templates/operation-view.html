@@ -1,15 +1,17 @@
 <h2>Operations</h2>
 <form class="defaultform" ng-submit="gCreedCtrl.makeOperation()">
 	<div id="fromUserDiv">
-		<select id="selectedUserReceiver" ng-change="gCreedCtrl.getUserReceiverData()" ng-model="gCreedCtrl.tempUserReceiver" ng-options="vUser.username for vUser in gCreedCtrl.usersArray track by vUser.id"></select>
-		<select id="videogameReceiverSelected" ng-model="gCreedCtrl.tmpVideogameReceiver" ng-if="gCreedCtrl.tempUserReceiver != null" ng-options="vVideogame.name for vVideogame in gCreedCtrl.videogamesRecieverArray track by vVideogame.id"></select> 
+		<label for="selectedUserReceiver">Select user</label><select name="selectedUserReceiver" id="selectedUserReceiver" ng-change="gCreedCtrl.getUserReceiverData()" ng-model="gCreedCtrl.tempUserReceiver" ng-options="vUser.username for vUser in gCreedCtrl.usersArray track by vUser.id"></select>
+		<br />
+		<label ng-if="gCreedCtrl.tempUserReceiver != null" for="videogameReceiverSelected">Select a videogame</label><select name="videogameReceiverSelected" id="videogameReceiverSelected" ng-model="gCreedCtrl.tmpVideogameReceiver" ng-if="gCreedCtrl.tempUserReceiver != null" ng-options="vVideogame.name for vVideogame in gCreedCtrl.videogamesRecieverArray track by vVideogame.id"></select> 
 	</div>
 	
- 	<div id="localUserDiv" ng-show="gCreedCtrl.tmpVideogameReceiver">
+	<div id="localUserDiv" ng-show="gCreedCtrl.tmpVideogameReceiver">
+	<p>Yoy can exchange a game form money, another game or maybe both of them</p>
 		<table>
 			<tr>
 				<td>Price: </td>
-				<td><input type="number" step="any" name="offeredPrice" ng-model="gCreedCtrl.operation.price" /></td>
+				<td><input type="number" min="-50" max="50" step="any" name="offeredPrice" ng-model="gCreedCtrl.operation.price" /></td>
 			</tr>
 			<tr>
 				<td>Game to exange</td>

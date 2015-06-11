@@ -17,6 +17,8 @@
 		this.citieArray = new Array();
 		this.forumSectionsArray = new Array();
 		this.forumThreadsArray = new Array();
+		//Videogames variables
+		this.videogame = new videogameObj();
 		//Variables for operations		
 		this.videogamesRecieverArray = new Array();
 		this.videogamesSenderArray = new Array();
@@ -24,6 +26,10 @@
 		this.tempUserReceiver;
 		this.tmpVideogameSender;
 		this.tmpVideogameReceiver;
+		//Variables for searching
+		this.textToFind = "";
+		this.foundedArray = new Array();
+		
 		
 		$scope.appAction=0;
 		//if user is not registered, basic or admin
@@ -50,7 +56,9 @@
 			if(response[0]){
 				this.user = new userObj();
 				this.user.construct(response[1].id, response[1].roleId, response[1].name, response[1].username, response[1].mail);
-				this.user.setAddress(response[1].addressStreet, response[1].addressCp, response[1].addressCity, response[1].addressCountry);
+				var tmpCountry = new countryObj();		
+				tmpCountry.construct(response[1].addressCountryId, response[1].addressCountry);
+				this.user.setAddress(response[1].addressStreet, response[1].addressCp, response[1].addressCity, tmpCountry);
 				$scope.appAction=0;
 				$scope.userType=response[1].roleId;
 			}
@@ -114,6 +122,31 @@
 			    else{
 			    	alert("Error in register");
 			    }
+		};
+		
+		this.modifyUser=function(){			
+			this.user.format();
+			this.user=angular.copy(this.user);
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 22,
+					JSONUserData :JSON.stringify(this.user)					
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;
+					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(!response){
+		    	alert("Error in register");
+		    }
 		};
 		
 		this.checkAvail = function ()
@@ -197,8 +230,6 @@
 				}
 		    });
 			this.user = new userObj();
-			//$scope.userType=-1;
-			//$scope.appAction=0;
 			location.reload();
 		};
 		
@@ -257,7 +288,7 @@
 			this.getSessionUserVideogames();			
 		};
 		
-		this.getSessionUserVideogames = function(){
+		this.getSessionUserVideogames = function(){			
 			$.ajax({
 				url : 'VideogameServlet',
 				type : "POST",
@@ -283,11 +314,26 @@
 		    		this.videogamesSenderArray.push(videogame);
 		    	}
 		    }
-		};
-		
+		};		
 		
 		this.videogameSuggest = function(){
-			//TODO
+			this.videogame.format();
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 34,
+					JSONVideogameData :JSON.stringify(this.videogame)
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
 		};
 		
 		this.makeOperation = function(){			
@@ -301,7 +347,7 @@
 				},
 				async: true,
 				success : function(responseText) {
-					response = responseText;					
+					alert(responseText);					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert("There has been an error while connecting to the server, try later");
@@ -487,10 +533,10 @@
 		
 		this.submitPost=function(){
 			var post = new postObj();
-			 post.construct(null, this.user.getUsername(), $("#contentPostBox").val());
-			 this.postArray.push(post);
+			post.construct(null, this.user.getUsername(), $("#contentPostBox").val());
+			this.postArray.push(post);
 			 
-			 $.ajax({
+			$.ajax({
 				url : 'UserServlet',
 				type : "POST",
 				data : {
@@ -508,7 +554,186 @@
 					console.log(xhr.status + "\n" + thrownError);
 				} 	
 			 });
-		};		
+		};
+		
+		this.searchUser = function(){
+			this.foundedArray = new Array();
+			
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 19,
+					username: this.textToFind
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			});
+			if (response[0]) {
+				for (var i = 0; i<response[1].length; i++) {
+					var user = new userObj();
+					user.construct(response[1][i].id, response[1][i].roleId, response[1][i].name, response[1][i].username, response[1][i].mail);
+					user.setAddress(response[1][i].addressStreet, response[1][i].addressCp, response[1][i].addressCity, response[1][i].addressCountry);
+					this.foundedArray.push(user);
+				}
+			}
+			else
+				alert("No user found");
+		};
+		
+		this.searchVideogame = function(){
+			this.foundedArray = new Array();
+			
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 35,
+					name: this.textToFind
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			});
+			if (response[0]) {
+				for (var i = 0; i<response[1].length; i++) {
+					var videogame = new videogameObj();
+		    		videogame.construct(response[1][i].id, response[1][i].name, response[1][i].developer, response[1][i].publisher, response[1][i].year);		    		
+		    		this.foundedArray.push(videogame);
+				}
+			}
+			else
+				alert("No videogame found");
+		};
+		
+		this.followUser = function(anId, anIndex){
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 20,
+					userLocalId: this.user.getId(),
+					userFollowId: anId
+				},
+				async: true,
+				success : function(responseText) {
+					alert(responseText);				
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			});
+			
+			this.followingsArray.push(this.foundedArray[anIndex]);
+			this.textToFind = "";
+			this.foundedArray = new Array();
+		};
+		
+		this.addVideogameToUser = function(anId, anIndex){
+			$.ajax({
+				url : 'UserServlet',
+				type : "POST",
+				data : {
+					action : 21,
+					userId: this.user.getId(),
+					videogameId: anId
+				},
+				async: true,
+				success : function(responseText) {
+					alert(responseText);
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			});
+			
+			this.videogamesArray.push(this.foundedArray[anIndex]);
+			this.textToFind = "";
+			this.foundedArray = new Array();
+		};
+		
+		this.confirmVideogame = function(anIndex){
+			$.ajax({
+				url : 'VideogameServlet',
+				type : "POST",
+				data : {
+					action : 36,
+					videogameId: this.videogamesArray[anIndex].getId()
+				},
+				async: true,
+				success : function(responseText) {
+					alert(responseText);
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				} 	
+			});
+		};
+		
+		this.loadUnconfirmedUserOperations = function(){
+			$.ajax({
+				url : 'OperationsServlet',
+				type : "POST",
+				data : {
+					action : 41,
+					userId: this.user.getId(),
+				},
+				async: false,
+				success : function(responseText) {
+					response = responseText;										
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })
+		    if(response[0]){
+		    	this.foundedArray = new Array();
+		    	for(var i=0; i<response[1].length; i++){
+		    		var operation = new operationObj();
+		    		operation.construct(response[1][i].id, response[1][i].userSenderId, response[1][i].userReceiverId, response[1][i].userSenderName, response[1][i].dateSended, response[1][i].price, response[1][i].videogameSenderId, response[1][i].videogameReceiverId, response[1][i].videogameSenderName, response[1][i].videogameReceiverName);
+		    		this.foundedArray.push(operation);
+		    	}
+		    }
+		};
+		
+		this.acceptOperation = function(aConfirmation, anIndex){
+			var operation = this.foundedArray[anIndex];
+			operation.setRejected(!aConfirmation);
+			$.ajax({
+				url : 'OperationsServlet',
+				type : "POST",
+				data : {
+					action : 42,
+					JSONOperationData: JSON.stringify(operation)					
+				},
+				async: true,
+				success : function(responseText) {
+					alert(responseText);
+					this.foundedArray = new Array();
+					$scope.appAction=2;
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("There has been an error while connecting to the server, try later");
+					console.log(xhr.status+"\n"+thrownError);
+				}
+		    })		    
+		};
+		
 	});
 
 	gamersCreedApp.directive("loginForm", function (){
@@ -603,5 +828,35 @@
 		  controllerAs: 'videogameSuggestionForm'
 		};
 	});
+	gamersCreedApp.directive("userSearchForm", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/user-search-form.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'userSearchForm'
+		};
+	});
+	gamersCreedApp.directive("videogameSearchForm", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/videogame-search-form.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'videogameSearchForm'
+		};
+	});
+	gamersCreedApp.directive("unconfirmedUserOperationView", function (){
+		return {
+		  restrict: 'E',
+		  templateUrl:"templates/unconfirmed-user-operation-view.html",
+		  controller:function(){
+			
+		  },
+		  controllerAs: 'unconfirmedUserOperationView'
+		};
+	});	
 
 })();

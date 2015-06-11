@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.project.gamerscreed.view.VideogameBasicData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,9 @@ import java.util.List;
 @Entity
 @Table(name="videogames")
 @NamedQueries({
-		@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v"),
-		@NamedQuery(name="Videogame.findAllUnconfirmed", query="SELECT v FROM Videogame v WHERE v.confirmed = false"),
-		@NamedQuery(name="Videogame.confirmVideogame", query="UPDATE Videogame v SET v.confirmed = true WHERE v.id = :id")
+		@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v WHERE v.id > 0"),
+		@NamedQuery(name="Videogame.searchVideogame", query="SELECT v FROM Videogame v WHERE v.name = :name AND v.confirmed = true"),
+		@NamedQuery(name="Videogame.findAllByConfirmation", query="SELECT v FROM Videogame v WHERE v.confirmed = :confirmed")		
 })
 public class Videogame implements Serializable {
 	
@@ -69,6 +71,15 @@ public class Videogame implements Serializable {
 	 * Instantiates a new videogame.
 	 */
 	public Videogame() {
+	}
+
+	public Videogame(VideogameBasicData aVideogameBasicData) {
+		this.name = aVideogameBasicData.getName();
+		this.year = aVideogameBasicData.getYear();
+		this.publisher = new Brand();
+		this.publisher.setId(aVideogameBasicData.getPublisherId());
+		this.developer = new Brand();
+		this.developer.setId(aVideogameBasicData.getDeveloperId());
 	}
 
 	/**
@@ -168,6 +179,8 @@ public class Videogame implements Serializable {
 	 * @return the operation
 	 */
 	public Operation addOperationsReceived(Operation operationsReceived) {
+		if(this.getOperationsReceived() == null)
+			this.operationsReceived = new ArrayList<Operation>();
 		getOperationsReceived().add(operationsReceived);
 		operationsReceived.setVideogameReceived(this);
 
@@ -212,6 +225,8 @@ public class Videogame implements Serializable {
 	 * @return the operation
 	 */
 	public Operation addOperationsSended(Operation operationsSended) {
+		if(this.getOperationsSended() == null)
+			this.operationsSended = new ArrayList<Operation>();
 		getOperationsSended().add(operationsSended);
 		operationsSended.setVideogameSended(this);
 

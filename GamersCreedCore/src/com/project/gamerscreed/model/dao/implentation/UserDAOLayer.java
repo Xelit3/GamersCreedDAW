@@ -8,6 +8,9 @@ import javax.persistence.TypedQuery;
 
 import com.project.gamerscreed.model.dao.GenericDAOLayer;
 import com.project.gamerscreed.model.dao.UserDAO;
+import com.project.gamerscreed.model.dto.Address;
+import com.project.gamerscreed.model.dto.City;
+import com.project.gamerscreed.model.dto.Country;
 import com.project.gamerscreed.model.dto.Role;
 import com.project.gamerscreed.model.dto.User;
 import com.project.gamerscreed.model.dto.Videogame;
@@ -56,7 +59,25 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	public boolean modify(User anObject) {
 		try{			
 			this.beginTransaction();
-			this.entityManager.merge(anObject);
+			User tmpUserReference = this.entityManager.getReference(User.class, anObject.getId());
+			if(anObject.getName() != null)
+				tmpUserReference.setName(anObject.getName());
+			if(anObject.getMail() != null)
+				tmpUserReference.setMail(anObject.getMail());
+			if(tmpUserReference.getAddress() == null)
+				tmpUserReference.setAddress(new Address());
+			if(anObject.getAddress().getStreet() != null)
+				tmpUserReference.getAddress().setStreet(anObject.getAddress().getStreet());
+			if(anObject.getAddress().getCp() > 0)
+				tmpUserReference.getAddress().setCp(anObject.getAddress().getCp());
+			if(tmpUserReference.getAddress().getCity() == null)
+				tmpUserReference.getAddress().setCity(new City());
+			if(anObject.getAddress().getCity().getCountry().getId() > 0)
+				tmpUserReference.getAddress().getCity().setCountry(this.entityManager.getReference(Country.class, anObject.getAddress().getCity().getCountry().getId()));
+			if(anObject.getAddress().getCity().getName() != null)
+				tmpUserReference.getAddress().getCity().setName(anObject.getAddress().getCity().getName());
+						
+			this.entityManager.merge(tmpUserReference);
 			this.commitTransaction();
 			this.closeTransaction();
 
@@ -314,6 +335,17 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	public List<User> getOtherUsers(int anId) {
 		TypedQuery<User> query = this.entityManager.createNamedQuery("User.findOthers", User.class);
 		query.setParameter("id", anId);
+				
+		return query.getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.project.gamerscreed.model.dao.UserDAO#searchUser(String)
+	 */
+	@Override
+	public List<User> searchUser(String aUsername) {
+		TypedQuery<User> query = this.entityManager.createNamedQuery("User.searchUser", User.class);
+		query.setParameter("username", aUsername);
 				
 		return query.getResultList();
 	}

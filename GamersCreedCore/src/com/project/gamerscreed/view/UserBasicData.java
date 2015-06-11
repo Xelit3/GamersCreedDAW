@@ -36,6 +36,8 @@ public class UserBasicData {
 	/** The address country. */
 	private String addressCountry;
 	
+	private int addressCountryId;
+	
 	/**
 	 * Instantiates a new user basic data.
 	 *
@@ -52,6 +54,7 @@ public class UserBasicData {
 			this.addressStreet = anUser.getAddress().getStreet();
 			this.addressCity = anUser.getAddress().getCity().getName();
 			this.addressCountry = anUser.getAddress().getCity().getCountry().getName();
+			this.addressCountryId = anUser.getAddress().getCity().getCountry().getId();
 		}		
 	}
 
@@ -215,6 +218,20 @@ public class UserBasicData {
 	 */
 	public void setAddressCountry(String addressCountry) {
 		this.addressCountry = addressCountry;
+	}
+
+	/**
+	 * @return the addressCountryId
+	 */
+	public int getAddressCountryId() {
+		return addressCountryId;
+	}
+
+	/**
+	 * @param addressCountryId the addressCountryId to set
+	 */
+	public void setAddressCountryId(int addressCountryId) {
+		this.addressCountryId = addressCountryId;
 	}
 
 }

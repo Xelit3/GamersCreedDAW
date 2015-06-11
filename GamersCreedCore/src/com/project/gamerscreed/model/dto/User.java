@@ -1,11 +1,25 @@
 package com.project.gamerscreed.model.dto;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.project.gamerscreed.view.UserBasicData;
 
 /**
  * The persistent class for the users database table.
@@ -16,7 +30,8 @@ import java.util.List;
 @Table(name="users")
 @NamedQueries({
 	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
-	@NamedQuery(name="User.findOthers", query="SELECT u FROM User u Where u.id <> :id"),
+	@NamedQuery(name="User.findOthers", query="SELECT u FROM User u WHERE u.id <> :id"),
+	@NamedQuery(name="User.searchUser", query="SELECT u FROM User u WHERE u.username = :username"),
 	@NamedQuery(name="User.getById", query="SELECT u FROM User u WHERE u.id = :id"),
 	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
 	@NamedQuery(name="User.getAllFollowers", query="SELECT u FROM User u JOIN FETCH u.followers WHERE u.id = :id")
@@ -164,7 +179,18 @@ public class User implements Serializable {
 		this.address = anAddress;
 		this.role = aRole;
 	}
-
+	
+	public User(UserBasicData anUser){
+		this.id = anUser.getId();
+		this.username = anUser.getUsername();
+		this.name = anUser.getName();
+		this.mail = anUser.getMail();
+		this.address = new Address();
+		this.address.setCity(new City(anUser.getAddressCity(), new Country(anUser.getAddressCountryId())));
+		this.address.setCp(anUser.getAddressCp());
+		this.address.setStreet(anUser.getAddressStreet());
+	}
+	
 	/**
 	 * Gets the id.
 	 *

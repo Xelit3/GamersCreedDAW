@@ -18,12 +18,19 @@ public interface VideogameDAO extends GenericDAOInterface<Videogame> {
 	 * @param anId the an id
 	 * @return true, if successful
 	 */
-	public boolean confirmVideogame(int anId);
+	public boolean changeConfirmation(int anId);
 	
 	/**
-	 * Gets the all unconfirmed games.
+	 * Gets the all by confirmation
 	 *
-	 * @return the all unconfirmed games
+	 * @return the all confirmed/unconfirmed games
 	 */
-	public List<Videogame> getAllUnconfirmedGames();
+	public List<Videogame> getAllByConfirmation(boolean aConf);
+	
+	/**
+	 * Search videogames by name
+	 *
+	 * @return the founded videogames
+	 */
+	public List<Videogame> searchVideogame(String aName);
 }

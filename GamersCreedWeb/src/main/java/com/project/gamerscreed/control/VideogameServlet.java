@@ -92,7 +92,19 @@ public class VideogameServlet extends HttpServlet {
 					
 				case 33: //get all places
 					getAllPlaces(request, response);
-					break;	
+					break;
+					
+				case 34: //make a videogame suggestion
+					makeVideogameSuggestion(request, response);
+					break;
+					
+				case 35: //search videogames
+					searchVideogame(request, response);
+					break;
+					
+				case 36:
+					changeVideogameConfirmation(request, response);
+					break;
 								
 				default:
 					out.println("Action number wrong");
@@ -107,6 +119,55 @@ public class VideogameServlet extends HttpServlet {
 			System.out.println("Error in the server - "+e);
 			e.printStackTrace();
 		}
+	}
+
+	private void changeVideogameConfirmation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int tmpVideogameId = Integer.parseInt(request.getParameter("videogameId"));
+		boolean tmpFlag = false;
+		VideogameDAO tmpLayer = new VideogameDAOLayer();
+		tmpFlag = tmpLayer.changeConfirmation(tmpVideogameId);
+		if(tmpFlag)
+			response.getWriter().println("Confirmation/uncorfimation done");
+		else
+			response.getWriter().println("Confirmation/uncorfimation fail");
+	}
+
+	private void searchVideogame(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String tmpVideogameName = request.getParameter("name");
+		VideogameDAO tmpVideogameLayer = new VideogameDAOLayer();
+		List<Object> tmpResponseData = new ArrayList<Object>();
+		
+		List<Videogame> tmpVideogames = tmpVideogameLayer.searchVideogame(tmpVideogameName);
+		List<VideogameBasicData> tmpVideogamesResponse = new ArrayList<VideogameBasicData>();
+		
+		if(tmpVideogames.size() > 0){
+			tmpResponseData.add(true);
+			for(Videogame v : tmpVideogames){
+				tmpVideogamesResponse.add(new VideogameBasicData(v));				
+			}
+			tmpResponseData.add(tmpVideogamesResponse);
+		}
+		else{
+			tmpResponseData.add(false);			
+		}
+		
+		String json = new Gson().toJson(tmpResponseData);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);		
+	}
+
+	private void makeVideogameSuggestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();		
+		
+		VideogameBasicData tmpVideogameReceived = new Gson().fromJson(request.getParameter("JSONVideogameData"), VideogameBasicData.class);
+		Videogame tmpVideogame = new Videogame(tmpVideogameReceived);
+		tmpVideogame.setConfirmed(false);
+		VideogameDAO tmpDAO =new VideogameDAOLayer();
+		
+		boolean val = tmpDAO.create(tmpVideogame);		
+		out.print("User creation is: " + val);				
 	}
 
 	/**

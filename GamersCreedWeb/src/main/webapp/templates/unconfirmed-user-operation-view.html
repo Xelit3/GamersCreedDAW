@@ -1,0 +1,14 @@
+<h2>Unconfirmed operations</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Sender</th><th>Requested game</th><th>Sended game</th><th>Price offered</th><th>Date sended</th><th></th><th></th>
+		</tr>
+	</thead>
+		<tr ng-repeat="vOperation in gCreedCtrl.foundedArray">
+			<td>{{vOperation.userSenderName}}</td><td>{{vOperation.videogameReceiverName}}</td><td>{{vOperation.videogameSenderName}}</td><td>{{vOperation.price}}</td><td>{{vOperation.dateSended}}</td><td><button ng-click="gCreedCtrl.acceptOperation(true, $index)">Accept</button></td><td><button ng-click="gCreedCtrl.acceptOperation(false, $index)">Reject</button></td>
+		</tr>
+	<tbody>
+	</tbody>
+</table>

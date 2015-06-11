@@ -1,0 +1,14 @@
+<form class="defaultform" ng-submit="gCreedCtrl.searchVideogame()">
+	<label for="inputName">Find a videogame</label>
+	<input type="text" name="inputName" ng-model="gCreedCtrl.textToFind"/>
+	<input type="submit" name="inputSubmit" value="Search" />
+	
+	<br />
+</form>
+<table>
+	<tr ng-repeat="vVideogame in gCreedCtrl.foundedArray"">
+		<td>{{vVideogame.getName()}}</td>
+		<td><button ng--click="gCreedCtrl.addVideogameToUser(vVideogame.getId(), $index)">Add videogame</button></td>
+	</tr>	
+</table>
+

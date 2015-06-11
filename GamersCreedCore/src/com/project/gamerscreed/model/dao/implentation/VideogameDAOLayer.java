@@ -104,16 +104,20 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	 * @see com.project.gamerscreed.model.dao.VideogameDAO#confirmVideogame(int)
 	 */
 	@Override
-	public boolean confirmVideogame(int anId) {
+	public boolean changeConfirmation(int anId) {
 		try{			
-			TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.confirmVideogame", Videogame.class);
-			query.setParameter("id", anId);
-			int tmpResult = query.executeUpdate();
+			Videogame tmpVideogame = new Videogame();
+			tmpVideogame.setId(anId);
 			
-			if(tmpResult > 0)
-				return true;
-			else
-				return false;
+			this.beginTransaction();
+			tmpVideogame = this.entityManager.getReference(Videogame.class, tmpVideogame.getId());
+			tmpVideogame.setConfirmed(!tmpVideogame.getConfirmed());
+			
+			this.entityManager.merge(tmpVideogame);
+			this.commitTransaction();
+			this.closeTransaction();
+			
+			return true;			
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -126,8 +130,18 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	 * @see com.project.gamerscreed.model.dao.VideogameDAO#getAllUnconfirmedGames()
 	 */
 	@Override
-	public List<Videogame> getAllUnconfirmedGames() {
+	public List<Videogame> getAllByConfirmation(boolean aConf) {
 		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.findAllUnconfirmed", Videogame.class);
+		query.setParameter("confirmed", aConf);
+		List<Videogame> result = query.getResultList();
+		
+		return result;
+	}
+
+	@Override
+	public List<Videogame> searchVideogame(String aName) {
+		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.searchVideogame", Videogame.class);
+		query.setParameter("name", aName);
 		List<Videogame> result = query.getResultList();
 		
 		return result;

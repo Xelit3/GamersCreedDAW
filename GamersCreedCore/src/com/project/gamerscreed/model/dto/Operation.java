@@ -16,8 +16,7 @@ import java.util.Date;
 @Entity
 @Table(name="operations")
 @NamedQueries({
-	@NamedQuery(name="Operation.findAll", query="SELECT o FROM Operation o"),
-	@NamedQuery(name="Operation.rejectOperation", query="UPDATE Operation o SET o.rejected = false WHERE o.id = :id")
+	@NamedQuery(name="Operation.findAllByUser", query="SELECT o FROM Operation o WHERE o.userReceived.id = :userId AND o.rejected = false AND o.dateAccepted = null")	
 })
 public class Operation implements Serializable {
 	

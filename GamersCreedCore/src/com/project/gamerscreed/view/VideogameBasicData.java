@@ -27,6 +27,9 @@ public class VideogameBasicData {
 	/** The confirmed. */
 	public boolean confirmed;
 	
+	public int publisherId;
+	public int developerId;
+	
 	/**
 	 * Instantiates a new videogame basic data.
 	 *
@@ -147,6 +150,34 @@ public class VideogameBasicData {
 	 */
 	public void setConfirmed(boolean confirmed) {
 		this.confirmed = confirmed;
+	}
+
+	/**
+	 * @return the publisherId
+	 */
+	public int getPublisherId() {
+		return publisherId;
+	}
+
+	/**
+	 * @param publisherId the publisherId to set
+	 */
+	public void setPublisherId(int publisherId) {
+		this.publisherId = publisherId;
+	}
+
+	/**
+	 * @return the developerId
+	 */
+	public int getDeveloperId() {
+		return developerId;
+	}
+
+	/**
+	 * @param developerId the developerId to set
+	 */
+	public void setDeveloperId(int developerId) {
+		this.developerId = developerId;
 	}	
 	
 }

@@ -42,6 +42,10 @@ public class Country implements Serializable {
 	 */
 	public Country() {
 	}
+	
+	public Country(int anId){
+		this.id = anId;
+	}
 
 	/**
 	 * Instantiates a new country.

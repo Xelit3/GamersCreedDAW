@@ -75,6 +75,7 @@ public class UserServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		int action = Integer.parseInt(request.getParameter("action"));
+		
 		try{
 			switch (action){
 				case 10: //check if username already exist in DB
@@ -112,6 +113,21 @@ public class UserServlet extends HttpServlet {
 				case 18: //Get all list of data for session user
 					getAllUserLists(request, response);
 					break;
+					
+				case 19: //Search users
+					searchUsers(request, response);
+					break;
+					
+				case 20: //Follow operation
+					followUser(request, response);
+					break;
+					
+				case 21: //Add videogame to user
+					addVideogameToUser(request, response);
+					
+				case 22: //modify user
+					modifyUser(request, response);
+					break;	
 								
 				default:
 					out.println("Action number wrong");
@@ -127,7 +143,73 @@ public class UserServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-	}	
+	}
+	
+	private void modifyUser(HttpServletRequest request,	HttpServletResponse response) throws IOException {
+		SessionBean sessionBean =sessionIsOpen(request);
+		if(sessionBean!=null){
+			PrintWriter out = response.getWriter();
+			UserBasicData tmpReceivedUser = new Gson().fromJson(request.getParameter("JSONUserData"), UserBasicData.class);
+			User tmpUser = new User(tmpReceivedUser);
+		
+			UserDAO userDAO =new UserDAOLayer();
+			boolean val = userDAO.modify(tmpUser);			
+			out.print("User mod is: " + val);	
+		}
+	}
+	
+	private void addVideogameToUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		UserDAO tmpLayer = new UserDAOLayer();
+		
+		User tmpUser = new User();
+		tmpUser.setId(Integer.parseInt(request.getParameter("userId")));
+		Videogame tmpVideogame = new Videogame();
+		tmpVideogame.setId(Integer.parseInt(request.getParameter("videogameId")));
+		
+		boolean tmpFlag = tmpLayer.addVideogameToUser(tmpUser, tmpVideogame);
+		
+		response.getWriter().println("Videogame added: " + tmpFlag);
+	}
+
+	private void followUser(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, IOException{
+		int tmpUserLocalId = Integer.parseInt(request.getParameter("userLocalId"));
+		int tmpUserFollowId = Integer.parseInt(request.getParameter("userFollowId"));
+		
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		
+		User tmpUserLocal = tmpUserLayer.getUserById(tmpUserLocalId);
+		User tmpUserFollow = tmpUserLayer.getUserById(tmpUserFollowId);
+		
+		boolean tmpFlag = tmpUserLayer.addFollower(tmpUserFollow, tmpUserLocal);
+		
+		response.getWriter().println("Following user: " + tmpFlag);
+	}
+
+	private void searchUsers(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String tmpUsername = request.getParameter("username");
+		UserDAO tmpUserLayer = new UserDAOLayer();
+		List<Object> tmpResponseData = new ArrayList<Object>();
+		
+		List<User> tmpUsers = tmpUserLayer.searchUser(tmpUsername);
+		List<UserBasicData> tmpUsersResponse = new ArrayList<UserBasicData>();
+		
+		if(tmpUsers.size() > 0){
+			tmpResponseData.add(true);
+			for(User u : tmpUsers){
+				tmpUsersResponse.add(new UserBasicData(u));				
+			}
+			tmpResponseData.add(tmpUsersResponse);
+		}
+		else{
+			tmpResponseData.add(false);			
+		}
+		
+		String json = new Gson().toJson(tmpResponseData);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
+	}
 
 	/**
 	 * Gets the all users.
@@ -336,10 +418,10 @@ public class UserServlet extends HttpServlet {
 			//Operations array creation
 			List<String> tmpOperations = new ArrayList<String>();
 			for(Operation o : tmpUser.getOperationsReceived()){
-				tmpOperations.add(new String("Operation received - " + o.getId() + ", FROM: " + o.getUserReceived().getUsername()));
+				tmpOperations.add(new String("Op. received - " + o.getId() + ", FROM: " + o.getUserSender().getUsername()) + o.getDateSended().toString());
 			}
 			for(Operation o : tmpUser.getOperationsSended()){
-				tmpOperations.add(new String("Operation sended - " + o.getId() + ", TO: " + o.getUserReceived().getUsername()));
+				tmpOperations.add(new String("Op. sended - " + o.getId() + ", TO: " + o.getUserReceived().getUsername()) + o.getDateSended().toString());
 			}
 			tmpResponseArray.add(tmpOperations);
 		} 

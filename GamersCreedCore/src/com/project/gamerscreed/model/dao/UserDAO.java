@@ -98,4 +98,12 @@ public interface UserDAO extends GenericDAOInterface<User> {
 	 * @return the other users
 	 */
 	public List<User> getOtherUsers(int anId);
+	
+	/**
+	 * Search an user by username
+	 *
+	 * @param anId the an id
+	 * @return the other users
+	 */
+	public List<User> searchUser(String aUsername);
 }

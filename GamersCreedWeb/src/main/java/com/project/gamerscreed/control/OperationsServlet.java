@@ -2,6 +2,8 @@ package com.project.gamerscreed.control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +14,6 @@ import com.google.gson.Gson;
 import com.project.gamerscreed.model.dao.OperationDAO;
 import com.project.gamerscreed.model.dao.implentation.OperationDAOLayer;
 import com.project.gamerscreed.model.dto.Operation;
-import com.project.gamerscreed.model.dto.User;
-import com.project.gamerscreed.model.dto.Videogame;
 import com.project.gamerscreed.view.OperationBasicData;
 
 /**
@@ -66,9 +66,17 @@ public class OperationsServlet extends HttpServlet {
 		try{
 			switch (action){
 			
-				case 40: //get all videogames
+				case 40: //create operation
 					makeOperation(request, response);
-					break;				
+					break;
+					
+				case 41: //get all unconfirmed games
+					getAllUnconfirmedOperations(request, response);
+					break;
+					
+				case 42: //accept/rejectOperation
+					acceptOperation(request, response);
+					break;
 								
 				default:
 					out.println("Action number wrong");
@@ -85,6 +93,51 @@ public class OperationsServlet extends HttpServlet {
 		}
 	}
 
+	private void acceptOperation(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		OperationBasicData tmpReceivedOperation = new Gson().fromJson(request.getParameter("JSONOperationData"), OperationBasicData.class);
+		
+		OperationDAO tmpLayer = new OperationDAOLayer();
+		boolean tmpFlag = false;
+		
+		if(!tmpReceivedOperation.isRejected()){
+			tmpFlag = tmpLayer.acceptOperation(tmpReceivedOperation.getId());
+			if(tmpFlag)
+				response.getWriter().println("Operation accepted");
+		}
+			
+		
+		else if(tmpReceivedOperation.isRejected()){
+			tmpFlag = tmpLayer.rejectOperation(tmpReceivedOperation.getId());
+			if(tmpFlag)
+				response.getWriter().println("Operation rejected");
+		}				
+	}
+
+	private void getAllUnconfirmedOperations(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, IOException{
+		int tmpUserId = Integer.parseInt(request.getParameter("userId"));
+		
+		OperationDAO tmpLayer = new OperationDAOLayer();
+		List<Operation> tmpOperations = tmpLayer.getAllUnconfirmedByUser(tmpUserId);
+		List<OperationBasicData> tmpOperationsFormated = new ArrayList<OperationBasicData>();
+		List<Object> tmpResponseData = new ArrayList<Object>();		
+		
+		if(!tmpOperations.isEmpty()){
+			tmpResponseData.add(true);
+			for (Operation o : tmpOperations) {
+				tmpOperationsFormated.add(new OperationBasicData(o));
+			}
+			tmpResponseData.add(tmpOperationsFormated);
+		}
+		else
+			tmpResponseData.add(false);
+		
+		String json = new Gson().toJson(tmpResponseData);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);		
+	}
+
 	/**
 	 * Make operation.
 	 *
@@ -98,10 +151,9 @@ public class OperationsServlet extends HttpServlet {
 		System.out.println();
 		OperationDAO operationDAO =new OperationDAOLayer();
 		
-		boolean val = operationDAO.create(tmpOperation);
+		boolean tmpFlag = operationDAO.create(tmpOperation);
 		
-		System.out.println("Operation creation is: " + val);
-		
-		}
+		response.getWriter().println("Operation creation is: " + tmpFlag);
+	}
 
 }

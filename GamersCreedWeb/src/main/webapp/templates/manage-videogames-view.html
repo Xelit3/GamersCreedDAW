@@ -18,7 +18,7 @@
 	      		</select>
 	      	</td>
 			<td><input type="number" ng-model="vVideogame.year" /></td>
-			<td><input type="checkbox" ng-model="vVideogame.confirmed" /></td>
+			<td><input type="checkbox" ng-model="vVideogame.confirmed" ng-change="gCreedCtrl.confirmVideogame($index)"/></td>
 		</tr>
 	</table>
 </form>

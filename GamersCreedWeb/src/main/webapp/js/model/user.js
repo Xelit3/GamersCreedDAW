@@ -16,6 +16,7 @@ function userObj ()
 	this.addressStreet;
 	this.addressCity;
 	this.addressCountry;
+	this.addressCountryId;
 	this.operationsSended;
 	this.operationsReceived;
 	this.videogames;
@@ -56,8 +57,13 @@ function userObj ()
 	this.getOperationsReceived = function (){return this.operationsReceived;}
 	this.getVideogames = function (){return this.videogames;}
 	this.getPosts = function (){return this.posts;}
+	
+	this.format = function(){
+		this.addressCountryId = this.addressCountry.getId();
+		this.addressCountry = this.addressCountry.getName();
+	};
 
 	this.toString = function(){
-		return "ID: " + this.id + "- Username:" + this.username;
+		return "Id: " + this.id + "- Username:" + this.username;
 	};
 }

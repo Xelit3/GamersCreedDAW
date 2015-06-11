@@ -1,5 +1,6 @@
 package com.project.gamerscreed.model.dao.implentation;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -29,19 +30,26 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 			anOperation.setUserSender(this.entityManager.getReference(User.class, anOperation.getUserSender().getId()));
 			anOperation.setVideogameReceived(this.entityManager.getReference(Videogame.class, anOperation.getVideogameReceived().getId()));
 			//Just in case of a trade between two games
-			if(anOperation.getVideogameSended() != null)
+			if(anOperation.getVideogameSended().getId() > 0){
 				anOperation.setVideogameSended(this.entityManager.getReference(Videogame.class, anOperation.getVideogameSended().getId()));
+				anOperation.getVideogameSended().addOperationsSended(anOperation);
+				this.entityManager.merge(anOperation.getVideogameSended());
+			}
+			else{
+				anOperation.setVideogameSended(this.entityManager.getReference(Videogame.class, 0));
+				anOperation.getVideogameSended().addOperationsSended(anOperation);
+				this.entityManager.merge(anOperation.getVideogameSended());
+			}	
 			
 			this.entityManager.persist(anOperation);
 			
 			anOperation.getUserReceived().addOperationsReceived(anOperation);
 			anOperation.getUserSender().addOperationsSended(anOperation);
-			anOperation.getVideogameSended().addOperationsSended(anOperation);
+			
 			anOperation.getVideogameReceived().addOperationsReceived(anOperation);
 			
 			this.entityManager.merge(anOperation.getUserReceived());
-			this.entityManager.merge(anOperation.getUserSender());
-			this.entityManager.merge(anOperation.getVideogameSended());
+			this.entityManager.merge(anOperation.getUserSender());			
 			this.entityManager.merge(anOperation.getVideogameReceived());
 			
 			this.commitTransaction();
@@ -101,8 +109,49 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 	 */
 	@Override
 	public boolean acceptOperation(int anId) {
-		//TODO Accept operation
-		return false;
+		try {
+			this.beginTransaction();
+			
+			Operation tmpOperation = this.entityManager.getReference(Operation.class, anId);
+			tmpOperation.setRejected(false);
+			tmpOperation.setDateAccepted(new Date());
+			
+			tmpOperation.setUserSender(this.entityManager.getReference(User.class, tmpOperation.getUserSender().getId()));
+			tmpOperation.setUserReceived(this.entityManager.getReference(User.class, tmpOperation.getUserReceived().getId()));
+			tmpOperation.setVideogameReceived(this.entityManager.getReference(Videogame.class, tmpOperation.getVideogameReceived().getId()));
+			tmpOperation.setVideogameSended(this.entityManager.getReference(Videogame.class, tmpOperation.getVideogameSended().getId()));
+			
+			tmpOperation.getUserSender().getVideogames().add(tmpOperation.getVideogameReceived());
+			tmpOperation.getUserReceived().getVideogames().remove(tmpOperation.getVideogameReceived());
+			
+			tmpOperation.getVideogameReceived().getUsers().remove(tmpOperation.getUserReceived());
+			tmpOperation.getVideogameReceived().getUsers().add(tmpOperation.getUserSender());
+					
+			if(tmpOperation.getVideogameSended().getId() != 0){
+				tmpOperation.getUserReceived().getVideogames().add(tmpOperation.getVideogameSended());
+				tmpOperation.getUserSender().getVideogames().remove(tmpOperation.getVideogameSended());
+				tmpOperation.getVideogameSended().getUsers().remove(tmpOperation.getUserSender());
+				tmpOperation.getVideogameSended().getUsers().add(tmpOperation.getUserReceived());
+				
+				this.entityManager.merge(tmpOperation.getVideogameSended());
+			}
+			
+			this.entityManager.merge(tmpOperation.getVideogameReceived());
+			this.entityManager.merge(tmpOperation.getUserSender());
+			this.entityManager.merge(tmpOperation.getUserReceived());
+			
+			this.entityManager.merge(tmpOperation);
+			
+			this.commitTransaction();
+			this.closeTransaction();
+			
+			return true;
+		} 
+		catch (Exception e) {			
+			e.printStackTrace();
+			
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -111,20 +160,30 @@ public class OperationDAOLayer extends GenericDAOLayer implements OperationDAO {
 	@Override
 	public boolean rejectOperation(int anId) {
 		try{
-			TypedQuery<Operation> query = this.entityManager.createNamedQuery("Operation.rejectOperation", Operation.class);
-			query.setParameter("id", anId);
-			int tmpResult = query.executeUpdate();
+			this.beginTransaction();
 			
-			if(tmpResult > 0)
-				return true;
-			else
-				return false;
+			Operation tmpOperation = this.entityManager.getReference(Operation.class, anId);
+			tmpOperation.setRejected(true);
+			
+			this.entityManager.merge(tmpOperation);
+			this.commitTransaction();
+			this.closeTransaction();
+			
+			return true;			
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
 		
+	}
+
+	@Override
+	public List<Operation> getAllUnconfirmedByUser(int anId) {
+		TypedQuery<Operation> query = this.entityManager.createNamedQuery("Operation.findAllByUser", Operation.class);
+		query.setParameter("userId", anId);
+				
+		return query.getResultList();
 	}	
 
 }
