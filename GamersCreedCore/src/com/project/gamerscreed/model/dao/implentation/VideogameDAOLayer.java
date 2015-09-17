@@ -63,6 +63,7 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 				tmpVideogame.setName(aVideogame.getName());
 			tmpVideogame.setPublisher(this.entityManager.getReference(Brand.class, aVideogame.getPublisher().getId()));
 			tmpVideogame.setDeveloper(this.entityManager.getReference(Brand.class, aVideogame.getDeveloper().getId()));
+			tmpVideogame.setYear(aVideogame.getYear());
 			this.entityManager.merge(tmpVideogame);
 			this.commitTransaction();
 			
