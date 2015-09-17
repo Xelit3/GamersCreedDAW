@@ -344,8 +344,8 @@ public class UserDAOLayer extends GenericDAOLayer implements UserDAO{
 	@Override
 	public List<User> searchUser(String aUsername) {
 		TypedQuery<User> query = this.entityManager.createNamedQuery("User.searchUser", User.class);
-		query.setParameter("username", aUsername);
-				
+//		query.setParameter("username", aUsername);
+		query.setParameter("username", "%" + aUsername + "%");
 		return query.getResultList();
 	}
 	

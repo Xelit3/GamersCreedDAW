@@ -31,7 +31,7 @@ import com.project.gamerscreed.view.UserBasicData;
 @NamedQueries({
 	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
 	@NamedQuery(name="User.findOthers", query="SELECT u FROM User u WHERE u.id <> :id"),
-	@NamedQuery(name="User.searchUser", query="SELECT u FROM User u WHERE u.username = :username"),
+	@NamedQuery(name="User.searchUser", query="SELECT u FROM User u WHERE u.username LIKE :username"),
 	@NamedQuery(name="User.getById", query="SELECT u FROM User u WHERE u.id = :id"),
 	@NamedQuery(name="User.loginUser", query="SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
 	@NamedQuery(name="User.getAllFollowers", query="SELECT u FROM User u JOIN FETCH u.followers WHERE u.id = :id")

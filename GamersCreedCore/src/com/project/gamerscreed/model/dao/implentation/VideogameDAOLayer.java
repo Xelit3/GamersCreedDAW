@@ -145,7 +145,8 @@ public class VideogameDAOLayer extends GenericDAOLayer implements VideogameDAO{
 	@Override
 	public List<Videogame> searchVideogame(String aName) {
 		TypedQuery<Videogame> query = this.entityManager.createNamedQuery("Videogame.searchVideogame", Videogame.class);
-		query.setParameter("name", aName);
+//		query.setParameter("name", aName);
+		query.setParameter("name", "%" + aName + "%");
 		List<Videogame> result = query.getResultList();
 		
 		return result;

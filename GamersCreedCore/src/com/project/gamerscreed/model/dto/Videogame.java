@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name="videogames")
 @NamedQueries({
 		@NamedQuery(name="Videogame.findAll", query="SELECT v FROM Videogame v WHERE v.id > 0"),
-		@NamedQuery(name="Videogame.searchVideogame", query="SELECT v FROM Videogame v WHERE v.name = :name AND v.confirmed = true"),
+		@NamedQuery(name="Videogame.searchVideogame", query="SELECT v FROM Videogame v WHERE v.name like :name AND v.confirmed = true"),
 		@NamedQuery(name="Videogame.findAllByConfirmation", query="SELECT v FROM Videogame v WHERE v.confirmed = :confirmed")		
 })
 public class Videogame implements Serializable {
