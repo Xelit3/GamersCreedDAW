@@ -4,11 +4,9 @@
 <head>
 	<title>Gamer's creed</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<link rel="shortcut icon" HREF="img/icon.jpg"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />	
+	<link rel="shortcut icon" HREF="img/icon.jpg"/>	
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
-	<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
+	
 	<!-- Angular-->
 	<script src="js/frameWorks/angular/angular.min.js" type="text/javascript" xml:space="preserve"></script>
 	<script src="js/frameWorks/angular/i18n/angular-locale_es-es.js" type="text/javascript" xml:space="preserve"></script>
@@ -18,14 +16,7 @@
 	<!-- jQuery-->
 	<script src="js/frameWorks/jQuery/jQuery.js" type="text/javascript" xml:space="preserve"></script>
 
-	<!-- Datepicker-->
-	<script src="js/frameWorks/jQuery/jquery.min.js" type = "text/javascript"></script>
-	<script src="js/frameWorks/jQuery/jquery-ui.min.js" type = "text/javascript"></script>
-		
-	<!-- jQuery Cookies management-->
-	<script src="js/frameWorks/jQuery/jquery-cookie/jquery.cookie.js" type="text/javascript" xml:space="preserve"></script>
-
-	<!-- Other JS scripts -->			
+	<!-- Own JS scripts -->			
 	<script type="text/javascript" src="js/model/post.js"></script>
 	<script type="text/javascript" src="js/model/user.js"></script>
 	<script type="text/javascript" src="js/model/brand.js"></script>
