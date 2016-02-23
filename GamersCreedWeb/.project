@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>GamersCreedWeb</name>
+	<name>GamersCreedDAWWeb</name>
 	<comment></comment>
 	<projects>
 		<project>GamersCreedCore</project>
+		<project>GamersCreedDAWCore</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
